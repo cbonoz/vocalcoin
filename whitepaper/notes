@@ -1,0 +1,71 @@
+
+
+Vocalcoin
+
+Unbundled real estate transactions on the blockchain.
+
+Abstract:
+
+Vocalcoin is building a decentralized exchange, liquidity provider mechanism, clearinghouse
+messaging network, and asset-backed blockchain gateway. OmiseGO is not
+owned by any single one party. Instead, it is an open distributed network of validators
+which enforce behavior of all participants. It uses the mechanism of a protocol token
+to create a proof-of-stake blockchain to enable enforcement of market activity amongst
+participants. This high-performant distributed network enforces exchange across asset
+classes, from fiat-backed issuers to fully decentralized blockchain tokens (ERC-20
+style and native cryptocurrencies). Unlike nearly all other decentralized exchange platforms,
+this allows for decentralized exchange of other blockchains and between multiple
+blockchains directly without a trusted gateway token. Markets may be able to signifi-
+cantly reduce spreads and encourage market assurance via decentralizing custody and
+increased transparency of market activity. This is achieved using smart contracts, protocol
+tokens enforcing correct market behavior of orderbook matching, a new construction
+of Ethereum bonded external enforcement of clearinghouse activity, and commitments
+to historical exchange data for use with Ethereum smart contracts.
+
+Introduction: 
+
+The traditional model of real estate is to compensate brokers upon deal closure - with the broker taking on the order 5% of the transaction cost at the end of the sale in the United States (citation needed).
+Vocalcoin changes this in two ways.
+
+Vocalcoin is a new way of 
+
+The benefits of Vocalcoin are two fold:
+1. Provide an intermediate list of real estate transactions that are conducted and auditable completely on the blockchain.
+2. Create a marketplace where real estate buyers and be connected with agent counterparts in a frictionless way.
+
+Vocalcoin
+
+Existing Work
+
+
+Specification
+
+Protocol:
+
+TODO: Describe smart contract.
+
+
+
+
+Distribution:
+
+
+Token Launch (50%)
+ZRX is inherently a governance token that plays a critical role in the process of upgrading Vocalcoin protocol. We are fully committed to formulating a functional and theoretically sound governance model and we plan to dedicate significant resources to R&D.
+Retained by Vocalcoin (15%)
+The Vocalcoin core development team will be able to sustain itself for approximately five years using funds raised through the token launch. If Vocalcoin protocol proves to be as foundational a technology as we believe it to be, the retained ZRX tokens will allow the Vocalcoin core development team to sustain operations beyond the first 5 years.
+Developer Fund (15%)
+The Developer Fund will be used to make targeted capital injections into high potential projects and teams that are attempting to grow the Vocalcoin ecosystem, strategic partnerships, hackathon prizes and community development activities.
+Founding Team (10%)
+The founding team’s allocation of ZRX will vest over a traditional 4 year vesting schedule with a one year cliff. We believe this should be standard practice for any team that is committed to making their project a long term success.
+Early Backers & Advisors (10%)
+Our backers and advisors have provided capital, resources and guidance that have allowed us to fill out our team, setup a robust legal entity and build a fully functional product before launching a token. As a result, we have a proven track record and can offer a token that holds genuine utility.
+
+
+Involvement:
+
+
+Appendix:
+
+
+
