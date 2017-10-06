@@ -1,4 +1,4 @@
-pragma solidity 0.4.11;
+pragma solidity ^0.4.16;
 
 contract SafeMath {
     function safeMul(uint a, uint b) internal constant returns (uint256) {
@@ -9,6 +9,7 @@ contract SafeMath {
 
     function safeDiv(uint a, uint b) internal constant returns (uint256) {
         uint c = a / b;
+        assert(b != 0);
         return c;
     }
 
