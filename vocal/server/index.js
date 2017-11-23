@@ -13,12 +13,12 @@ const pg = require('pg');
 const path = require('path');
 
 // Variable and Server Setup //
-const prod = true;
+const prod = false;
 
 const dbUser = process.env.ADMIN_DB_USER;
 const dbPass = process.env.ADMIN_DB_PASS;
 const dbName = 'vocal';
-const connectionString = process.env.GITHELPERS_DATABASE_URL || `postgres://${dbUser}:${dbPass}@localhost:5432/${dbName}`;
+const connectionString = process.env.VOCAL_DATABASE_URL || `postgres://${dbUser}:${dbPass}@localhost:5432/${dbName}`;
 console.log('connectionString', connectionString);
 
 const pool = new pg.Pool({
@@ -29,7 +29,6 @@ const PORT = 9006;
 
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(server, { origins: '*:*' });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -78,9 +77,6 @@ app.get('/api/hello', (req, res) => {
 //             return res.status(200).json(result.rows);
 //         });
 // });
-
-
-
 
 // DB Connection and server start //
 
