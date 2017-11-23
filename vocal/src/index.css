@@ -3,3 +3,535 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+/* Custom Styles Below */
+
+
+.react-rotating-text-cursor {
+  animation: blinking-cursor 0.8s cubic-bezier(0.68, 0.01, 0.01, 0.99) 0s infinite;
+}
+
+@keyframes blinking-cursor {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.sync-result-image {
+  width: 32px;
+}
+
+.sync-result-box {
+  padding: 5px;
+}
+
+.home-video-heading {
+  margin: 20px;
+  padding-bottom: 40px;
+}
+
+.login-image {
+  margin-bottom: 20px;
+  height: 60px;
+  padding-bottom: 2px;
+}
+
+.home-video-section {
+  background: white;
+  padding-top: 40px;
+  padding-bottom: 100px;
+}
+
+.center-video {
+  margin: 0 auto;
+  text-align:center;
+}
+
+.synced-issues h3 {
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+}
+
+.refresh-button {
+  margin: 25px;
+  min-width: 250px
+}
+
+.group-padding {
+  padding: 20px;
+}
+
+.stats-text {
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.centered {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.search-image {
+  max-width: 250px;
+  margin: 10px;
+  padding-top: 25px;
+}
+
+.search-form {
+  margin: 20px;
+}
+
+.error-text {
+  padding: 20px;
+  margin: 20px !important;
+}
+
+.search-subtitle-text {
+  margin-bottom: 20px;
+}
+
+.search-banner-text {
+  margin: 20px;
+  padding: 20px;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.faq-box {
+  padding-left: 20px;
+}
+
+.patient-row {
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.search-result {
+  width: 100%;
+  height: 100px;
+  border: 1px solid black;
+  padding: 20px;
+  margin: 10px;
+} 
+
+.user-stats-header {
+  margin: 30px;
+}
+
+.start-button {
+  font-size: 16px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 15px;
+  margin-top: 20px;
+  padding-bottom: 15px;
+}
+
+.patient-heading {
+  color: purple;
+}
+
+.page-heading {
+  color: purple;
+}
+
+.react-rotating-text-cursor {
+  animation: blinking-cursor 0.8s cubic-bezier(0.68, 0.01, 0.01, 0.99) 0s infinite;
+}
+
+@keyframes blinking-cursor {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.jumbotron {
+  height: 100vh;
+}
+
+.navbar {
+  margin-bottom: 0px;
+  border-radius: 0px;
+}
+
+.top-margin {
+  margin-top: 20px;
+}
+
+.static-modal-jumbotron {
+  color: #222222;
+  opacity: 1.0;
+}
+
+.feed-heading {
+  /* margin-top: 15px; */
+  padding: 5px;
+}
+
+.feed-item {
+  padding: 10px;
+  border: 1px solid black;
+  margin-bottom: 10px;
+  background: whitesmoke;
+}
+
+.jumbotron p {
+  font-size: 26px;
+}
+
+.black-divider {
+  background: black;
+  height: 75px;
+  width: 100%;
+}
+
+.jumbotron {
+  margin-bottom: 0px !important;
+}
+
+.code-grid {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.white {
+  color: white !important;
+}
+
+.purple {
+  color: purple !important;
+}
+
+.home-right-col {
+  padding-right: 15px;
+}
+
+.home-banner-image {
+  margin-top: 75px;
+  margin-bottom: 15px;
+  height: 100px;
+}
+
+@media (max-width: 767px) {
+  .home-banner-image {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    height: 60px;
+  }
+}
+
+.faq-bottom-text {
+  margin-top: 40px;
+  padding-top: 40px;
+}
+
+.header-image {
+  height: 52px;
+  /* line-height: 60px; */
+  /* padding-top: 12px; */
+  cursor: pointer;
+}
+
+.footer-image {
+  height: 50px;
+  padding-bottom: 5px;
+  cursor: pointer;
+
+}
+
+.home-box-grid {
+  margin-top: 50px;
+  padding: 5px;
+}
+
+.home-box {
+  font-size: 16px;
+  line-height: 24px;
+  padding: 15px;
+  min-height: 280px;
+}
+
+.clear {
+  clear: both;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.slogan-text {
+  font-size: 20px;  
+}
+
+.githelpers-search-input {
+  padding-left: 5px;
+  padding-bottom: 2px;
+  padding-top:2px;
+  margin: 5px;
+  font-size: large;
+  font-weight: bold;
+  text-align: center; 
+  margin-bottom: 25px;
+}
+
+.github-name-input {
+  padding-left: 5px;
+  padding-bottom: 2px;
+  padding-top:2px;
+  margin: 5px;
+  width: 50%;
+  font-size: large;
+  font-weight: bold;
+  text-align: center; 
+  margin-bottom: 25px;
+}
+
+.githelpers-result-title {
+  padding-bottom: 10px;
+  padding-top: 10px;
+  font-size: x-large;
+}
+
+.react-tabs__tab--selected {
+  color: #3b5998;
+  border-color: #3b5998;
+  font-weight: bold;
+}
+
+.red {
+  color: red;
+}
+
+.react-tabs__tab {
+  width: 50%;
+  font-size: x-large;
+  text-align: center;
+  border-bottom: 5px solid #3b5998;
+}
+
+.dark-background {
+  background: #292c2f;
+}
+
+.border-bottom-blue {
+  border-bottom: 5px solid #3b5998;
+}
+
+.githelpers-results {
+  padding: 20px;
+  margin: 20px;
+}
+
+.facebook-blue {
+  color: #3b5998; 
+}
+
+.navbar-nav a:hover  {
+  background: #e7e7e7;
+}
+
+.help-icon {
+  padding: 30px;
+  color: gray;
+  vertical-align: bottom;
+}
+
+.home-learn-more {
+  font-size: small !important;
+  text-decoration: underline;
+  margin: 20px;
+}
+
+.pull-right {
+  float: right;
+}
+
+.home-bottom-text {
+  margin: 50px !important;
+  font-size: 20px;
+  padding-bottom: 10px;
+  color: white;
+}
+
+.home-box-number {
+  color: white;
+  text-align: center;
+  font-size: 72px;
+  font-weight: bold;
+}
+
+.white-background {
+  background: white;
+}
+
+.bootstrap-green {
+  background: #dff0d8;
+}
+
+.header-text-section {
+  margin: 50px;
+}
+
+.navbar-nav li:hover {
+  background: #dbdbdb;
+}
+
+.meal-plan-button {
+  margin: 10px;
+}
+
+.header-text {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.black {
+  color: black;
+}
+
+.transparency-jumbotron {
+  background: rgb(0, 0, 0);
+  max-height: 100%;
+  background-size: cover;
+}
+
+.selected-item {
+  background: #eee;
+  font-weight: bold;
+}
+
+.sidebar-container {
+  /* border: 1px solid black; */
+}
+
+.search-form {
+  max-width: 600px;
+}
+
+/* .sidebar-item:hover {
+  background: lightsteelblue !important;
+} */
+
+.full-width {
+  width: 100%;
+}
+
+.feed-item {
+  width: auto !important;
+  overflow: hidden;
+}
+
+.dots-width {
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.home-background {
+  /* background: #0d112B; */
+  background: #3b5998;
+}
+
+.sidebar-item {
+  border: 5px;
+  width: 100%;
+  margin: 3px;
+  height: 50px;
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.centered {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.active-row {
+  background: lightblue !important;
+}
+
+.push-left {
+  float: left !important;
+}
+
+.img-img {
+  width: 100px;
+  height: 100px;
+}
+
+.dashboard-container {
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.login-area {
+  margin: 0 auto;
+  max-width: 300px;
+  border: 1px solid black;
+  height: 300px;
+}
+
+#facebook-login-button button {
+  color: white;
+  background: #3b5998;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#github-login-button button {
+  color: white;
+  background: black;
+  margin: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.github-logo {
+  margin-top: 20px;
+  padding: 25px;
+  width: 150px;
+}
+
+.page-header {
+  margin: 20px;
+}
+
+.small {
+  font-size: small !important;
+}
+
+.medium {
+  font-size: medium !important;
+}
+
+.large {
+  font-size: large !important;
+}
+
+.xlarge {
+  font-size: x-large !important;
+}
