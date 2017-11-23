@@ -3,23 +3,41 @@ import { Navbar, NavItem, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import vocal from '../assets/vocal_trans_black.png';
-import { firebaseAuth, fbLogin } from '../utils/fire';
+import LoginModal from './login/LoginModal';
+import { firebaseAuth } from '../utils/fire';
 import firebase from 'firebase';
 
 export default class Header extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            showModal: false
+        }
         this._logout = this._logout.bind(this);
         this._login = this._login.bind(this);
+        this.open  = this.open.bind(this);
+        this.close  = this.close.bind(this);
     }
-d
+
+    close() {
+        this.setState({ showModal: false });
+    }
+
+    open() {
+        this.setState({ showModal: true });
+    }
+
     _login() {
-        fbLogin()
+        this.open();
     }
 
     _logout() {
-        firebaseAuth().signOut();
+        firebaseAuth().signOut().then(function() {
+            // Sign-out successful.
+          }).catch(function(error) {
+            // An error happened.
+          });
     }
 
     render() {
@@ -58,6 +76,8 @@ d
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
+
+                <LoginModal showModal={this.state.showModal} close={self.close.bind(self)} />
             </div>
         )
     }

@@ -7,16 +7,16 @@ import YouTube from 'react-youtube';
 import HelpSteps from './HelpSteps';
 
 import vocal from '../assets/vocal_trans_black.png';
-import bgImage from '../assets/banner_25.png';
+import bgImage from '../assets/banner_10.png';
 
-import { fbLogin, firebaseAuth } from '../utils/fire';
+import { firebaseAuth } from '../utils/fire';
 
 export default class Home extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            title: 'The future is Vocal' ,
+            title: 'The Future is Vocal' ,
             slogan: 'Vocal is a currency platform that puts the advertising experience back in the hands of users.',
             words: ['building', 'sharing', 'discovering'],
             blocks: [],
@@ -64,8 +64,8 @@ export default class Home extends Component {
                                                 <p className="centered large bold">
                                                     What are you waiting for?<br />
                                                 </p>
-                                                <Button bsStyle="primary" className="start-button" onClick={() => fbLogin()}>
-                                                    Get Started
+                                                <Button bsStyle="primary" className="start-button" onClick={() => { window.location = "/faq"}}>
+                                                    Learn More
                                                     &nbsp;<i className="centered clear fa fa-paper-plane " aria-hidden="true"></i>
                                                 </Button>
                                                 <Link to="/faq">
