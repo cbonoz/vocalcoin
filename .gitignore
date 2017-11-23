@@ -22,6 +22,9 @@ server/node_modules/
 coverage/
 test/
 
+vocal/node_modules
+vocal/server/node_modules
+
 # production
 /build
 

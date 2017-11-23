@@ -1,0 +1,24 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Nodejs server for vocal coin platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vocal",
+    "coin",
+    "server",
+    "node"
+  ],
+  "author": "Vocal",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "pg": "^7.4.0"
+  }
+}
