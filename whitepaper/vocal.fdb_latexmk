@@ -1,11 +1,11 @@
 # Fdb version 3
-["biber vocal"] 1506391710 "vocal.bcf" "vocal.bbl" "vocal" 1506951362
-  "vocal.bcf" 1506823865 95748 ce8224e22e5659ea65d965505ef2ffee ""
+["biber vocal"] 1506391710 "vocal.bcf" "vocal.bbl" "vocal" 1510110632
+  "vocal.bcf" 1510110632 95748 ce8224e22e5659ea65d965505ef2ffee ""
   (generated)
-  "vocal.bbl"
   "vocal.blg"
-["pdflatex"] 1506785191 "/Users/cbuonocore/personal/coins/vocal/whitepaper/vocal.tex" "vocal.pdf" "vocal" 1506951362
-  "/Users/cbuonocore/personal/coins/vocal/whitepaper/vocal.tex" 1506951362 35358 e0e3f749ac68bfc52c1c28abaa5d52c2 ""
+  "vocal.bbl"
+["pdflatex"] 1510110630 "/Users/cbuonocore/personal/coins/vocal/whitepaper/vocal.tex" "vocal.pdf" "vocal" 1510110632
+  "/Users/cbuonocore/personal/coins/vocal/whitepaper/vocal.tex" 1510110630 34966 95f7416436bd3111b685b72dcc36902c ""
   "/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/adobe/helvetic/phvb7t.tfm" 1480098688 2240 eb56c13537f4d8a0bd3fafc25572b1bd ""
@@ -176,15 +176,15 @@
   "/usr/local/texlive/2017/texmf-var/web2c/pdftex/pdflatex.fmt" 1495593487 4129592 0e6cfee100d68e6d96b92c0258f2ff73 ""
   "/usr/local/texlive/2017/texmf.cnf" 1495593465 577 2b71d4d888f9e5560b2e99985915a9fa ""
   "assets/architecture.png" 1506823865 91248 13bd6d17f106966f6921f95684026281 ""
-  "references.bib" 1506823865 438 368a0fe967db5d287b98599d496f5753 ""
-  "vocal.aux" 1506823865 4350 d3a69f2210ce19184719b41d73a4a86f ""
+  "references.bib" 1510110631 438 b49917a9e0f334ea8f5a23dfc2c1354d ""
+  "vocal.aux" 1510110632 4309 801aa890feb91dcc2d8aa4791456c2a9 ""
   "vocal.bbl" 1506823865 466 87c763802318ca007e475d2fb9c40fb5 "biber vocal"
-  "vocal.run.xml" 1506823865 2350 eb191f3d61fb91b37d125664b89042bb ""
-  "vocal.tex" 1506951362 35358 e0e3f749ac68bfc52c1c28abaa5d52c2 ""
+  "vocal.run.xml" 1510110632 2350 eb191f3d61fb91b37d125664b89042bb ""
+  "vocal.tex" 1510110630 34966 95f7416436bd3111b685b72dcc36902c ""
   (generated)
   "vocal.bcf"
   "vocal.pdf"
-  "vocal.log"
-  "references.bib"
-  "vocal.run.xml"
   "vocal.aux"
+  "vocal.log"
+  "vocal.run.xml"
+  "references.bib"

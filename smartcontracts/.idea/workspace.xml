@@ -124,13 +124,13 @@
       <find>ZRX</find>
       <find>0</find>
       <find>0.4.1</find>
-      <find>0.4.11</find>
+      <find>0.4.15</find>
     </findStrings>
     <replaceStrings>
       <replace />
       <replace>VOCAL_</replace>
       <replace>Vocal</replace>
-      <replace>^0.4.16</replace>
+      <replace>^0.4.15</replace>
     </replaceStrings>
   </component>
   <component name="GradleLocalSettings">

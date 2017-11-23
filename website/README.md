@@ -1,1 +1,0 @@
-# Vocal website code

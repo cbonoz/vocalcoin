@@ -333,7 +333,7 @@
     % not capitalized unless they are the first or last word of the title.
     % Linebreaks \\ can be used within to get better formatting as desired.
     % Do not put math or special symbols in the title.
-    \title{Vocal\\ A Token for Decentralized Advertisement}
+    \title{Vocal\\ A Platform for Decentralized Advertisement}
     
     
     % author names and affiliations
@@ -341,12 +341,9 @@
     % affiliations
     \author{
     \IEEEauthorblockN{Eric Asquith}
-    % \IEEEauthorblockA{Vocaltoken}
+    % \IEEEauthorblockA{ Vocal Coin}
     \and
     \IEEEauthorblockN{Chris Buonocore}
-    % \IEEEauthorblockA{Residential Way}
-    \and
-    \IEEEauthorblockN{Murch Ewings}
     % \IEEEauthorblockA{Residential Way}
     }
     
@@ -381,23 +378,18 @@
     % As a general rule, do not put math, special symbols or citations
     % in the abstract
     \begin{abstract}
-    Vocal is building a decentralized exchange, liquidity provider mechanism, clearinghouse
-    messaging network, and asset-backed blockchain gateway. Vocal is not
-    owned by any single one party. Instead, it is an open distributed network of validators
-    which enforce behavior of all participants. It uses the mechanism of a protocol token
+   Vocal is building a currency platform and exchange that puts the control of the advertising experience back in the hands of consumers. Vocal is not owned by any single one party. Rather, it is managed by an open distributed network of validators
+    which enforce behavior of all participants. It uses the mechanism of a protocol coin
     to create a proof-of-stake blockchain to enable enforcement of market activity amongst
     participants. This high-performant distributed network enforces exchange across asset
-    classes, from fiat-backed issuers to fully decentralized blockchain tokens (ERC-20
-    style and native cryptocurrencies). Unlike nearly all other decentralized exchange platforms,
-    this allows for decentralized exchange of other blockchains and between multiple
-    blockchains directly without a trusted gateway token. Markets may be able to significantly reduce spreads and encourage market assurance via decentralizing custody and
-    increased transparency of market activity. This is achieved using smart contracts, protocol
-    tokens enforcing correct market behavior of orderbook matching, a new construction
-    of Ethereum bonded external enforcement of clearinghouse activity, and commitments
+    classes, from fiat-backed issuers to fully decentralized blockchain coins (ERC-20
+    style and native cryptocurrencies). Unlike nearly all other decentralized exchange platforms, this allows for decentralized exchange of other blockchains and between multiple
+    blockchains directly without a trusted gateway coin. Markets may be able to significantly reduce spreads and encourage market assurance via decentralizing custody and
+    increased transparency of market activity. This is achieved using smart contracts, which enforce correct market behavior of order-book matching, and commitments
     to historical exchange data for use with Ethereum smart contracts.
     
     \hfill mds
-    \hfill September, 2017
+    \hfill November, 2017
 
     \end{abstract}
 
@@ -415,72 +407,71 @@
     \IEEEpeerreviewmaketitle
     \section{Introduction}
 
-    Advertising has long been a unidirectional business; advertisers often force their ads/messaging upon end users in exchange for public awareness.
-    This year (2017), the US Digital Advertising market will reach \$83 billion in aggregate transactions - offering large growth opportunities for new and innovative advertisement offering platforms.
+    Advertising has long been a unidirectional business; many advertisers force ads and messaging upon end users in exchange for public awareness. These advertisers often due this in exchange for payment by a third party. This year (2017), the US Digital Advertising market will reach \$83 billion in aggregate transactions - offering large growth opportunities for new and innovative advertisement offering platforms.
     % (TODO: add this citation for the above figure here- https://www.emarketer.com/Article/Google-Facebook-Increase-Their-Grip-on-Digital-Ad-Market/1015417) 
-    
-    Vocal seeks to reverse that model by providing user with the power to control their advertising experience.
-    In the Vocal app, users are able to control their advertising experiences by watching ads provided by a network of peers and sponsers. As users continue to watch advertisements, they begin to earn credit (Vocal) which can either be redeemed for their own marketing purposes or traded to other users. 
-    Vocal seeks to provide advertisers exposure in a new and creative way, and to, equally, create a marketplace where consumers can earn credit for their own use or investment purposes.
+
+   Vocal seeks to reverse this model by providing a platform wherein users can earn a unit of exchange (in this case the Vocal Coin) by engaging with advertisers through the Vocal application. Within the Vocal application, users are able to control their advertising experiences by watching ads provided by a network of peers and sponsors. As users continue to watch advertisements, they begin to earn credit (Vocal) which can either be redeemed for their own marketing purposes or traded to other users. 
+
+   Vocal seeks to provide advertisers exposure in a new and creative way, and to, equally, create a marketplace where consumers can earn credit for their own use or investment purposes.
 
     % no \IEEEPARstart
     \section{Scope of Use}
 
-    Vocal is targeted at two main user groups: Consumers and Producers. In this section we will explain how each of these terms are defined in the Vocal model.
+   Vocal is targeted at two main user groups: Consumers and Producers. In this section we will explain how each of these terms are defined in the Vocal model.
 
     \subsection{Producers and Consumers}
 
-    \subsubsection{Producers} Producers are the advertising partners and providers. Put anotehr way, these producers are the consumer goods entities (i.e. anyone in CVS) and companies in the crypto/blockchain space.
+    \subsubsection{Producers} Producers are the advertising partners and providers. Put another way, these producers are the consumer goods entities (i.e. anyone in CVS) and companies in the crypto/blockchain space.
 
-    \subsubsection{Consumers} The scope of consumers is designed to have limited barriers to entry. The consumers include anyone interested in generating passive value generation by watching and interacting with advertisements. Producers of ads can also be consumers - earning Vocal token as they watch and interact with advertisements provided by advertisers (other Producers).
+    \subsubsection{Consumers} The scope of consumers is designed to have limited barriers to entry. The consumers include anyone interested in generating passive value generation by watching and interacting with advertisements. Producers of ads can also be consumers - earning Vocal coin as they watch and interact with advertisements provided by advertisers (other Producers).
 
     % \subsection{Free Market Model}
 
-    % TODO: explain the consumer/producer ecosystem. Expand on the open market philosophy of the Vocal token.
+    % TODO: explain the consumer/producer ecosystem. Expand on the open market philosophy of the Vocal coin.
     \section{Existing Work}
 
-    Open trade is a fundamental aspect of Vocal token (and financial activity in general). There are many other efforts which seek to build advertising-focused currencies that are publicly tradeable.
+    Open trade is a fundamental aspect of Vocal coin (and financial activity in general). There are many other efforts which seek to build advertising-focused currencies that are publicly trade-able.
 
-    Basic Attention Token (TODO: cite) is one example - with a main concept to track the user's attention span to ads by creating a custom browser, Brave, which can track user attentiveness when viewing advertisements. 
+    Basic Attention Coin (BAT) is one example of such a currency - with a main concept to track the user's attention span to ads by creating a custom browser, Brave, which can track user attentiveness when viewing advertisements. 
 
-    Vocal's model is in some sense much simpler. Vocal provides a symbiotic relationship between advertising partners and consumers by providing an exchange of advertising content that benefits both parties.
+    In contrast, Vocal's model is simpler. Vocal provides a medium for a mutually beneficial relationship between advertising partners and consumers by providing an exchange of advertising content that benefits both parties.
 
-    % TODO:{Discuss/compare BasicAttentionToken and other competitors}
+    % TODO:{Discuss/compare BasicAttentionCoin and other competitors}
 
-    \section{Vocal Token}
+    \section{Vocal Coin}
 
     % Chris please speak to this. Yesterday you had reservations about an ICO – why?
     % How does blockchain come in – would we verify watching of ad on blockchain?
     % Let’s make articulate argument. The better it is the better chance of successful ICO and more convincing a case to get advertisers willing to participate. I am not too concerned about consumers participating, I am more thinking of how we can get advertisers on board with our proposal. 
 
-    The Vocal token is the main unit of exchange and credit in the Vocal exosystem; however, the utility of Vocal extends to these primary areas:
+    The Vocal coin is the main unit of exchange and credit in the Vocal ecosystem; however, the utility of Vocal extends to these primary areas:
 
     \begin{enumerate}
-      \item As a main unit of bookeeping for advertisement publishing and viewing.
-      \item As a store of value - the vocal token may be able to redeem more or less in the future.
-      \item As a unit of purchase - the vocal token can be redeemed for offers and services from public retailers.
+      \item As a main unit of bookkeeping for advertisement publishing and viewing.
+      \item As a store of value - the vocal coin may be able to redeem more or less in the future.
+      \item As a unit of purchase - the vocal coin can be redeemed for offers and services from public retailers.
     \end{enumerate}
 
     \section{Design}
 
-    The Vocal token is an ERC20 based currency, which will have an initial public offering which buys a predefined amount of advertisement credit. Once the token has reached the required funding level, the Vocal market will open to public - enabling open trade and use of the token on the Ethereum blockchain.
+    The Vocal coin is an ERC20 based currency, which will have an initial public offering which buys a predefined amount of advertisement credit. Once the coin has reached the required funding level, the Vocal market will open to public - enabling open trade and use of the coin on the Ethereum blockchain.
 
-    As users view advertisements, the vocal token is recorded in the user's application and delivered every sunday night to the user's wallet in a single transaction. 
-    These records are proof of all Vocal token transfers and are stored publicly on the Vocal blockchain. 
+    As users view advertisements, the vocal coin is recorded in the user's application and delivered every Sunday night to the user's wallet in a single transaction. 
+    These records are proof of all Vocal coin transfers and are stored publicly on the Vocal blockchain. 
 
 
     \subsection{Blockchain Overview}
 
-    The above model for tracking and transacting Vocal token implies a large volume of activity (carrying a large amount of additional weight on the network). At the time of this writing, not all of this activity will be able to take place on the Ethereum main chain (due to known scaling limitations of the Ethereum blockchain).
+    The above model for tracking and transacting Vocal coin implies a large volume of activity (carrying a large amount of additional weight on the network). At the time of this writing, not all of this activity will be able to take place on the Ethereum main chain (due to known scaling limitations of the Ethereum blockchain).
 
 
-    These scaling concerns may be mitigated by the upcoming Ethereum blockchain improvements (TODO: cite these announcements here). However, we will plan to use a batched approach which provides both the benefit of reducing the cost of transacting for the end user on the main network and reduces the complexity of tracking public transactions.
+    These scaling concerns may be mitigated by the upcoming Ethereum blockchain improvements such as Metropolis (the next upgrade to the Ethereum blockchain scaling system). However, we will plan to use a batched approach which provides both the benefit of reducing the cost of transacting for the end user on the main network and reduces the complexity of tracking public transactions.
 
-    Vocal is largely a token which will connect to other blockchains via public exchange - largely backed by the Ethereum token. Acitivity on other blockchains can interlink with this chain. The Vocal chain validates the activity of the behavior of all the participants on the main net (albeit if transactions are performed off the main chain these cannot be tracked, see LocalBitcoin as an example (TODO: cite this)).
+   Vocal is largely a coin which will connect to other blockchains via public exchange - largely backed by the Ethereum coin. Activity on other blockchains can interlink with this chain. The Vocal chain validates the activity of the behavior of all the participants on the main net (albeit if transactions are performed off the main chain these cannot be tracked, see the website LocalBitcoins.com as an example).
 
-    The Vocal token itself is providing the computation and enforcement of the design via the smart contract protocol. Owning Vocal token grants the user the right to validate this chain through transaction fees, payment, interchange, trading, and clearinghouse use. 
+    The Vocal coin itself is providing the computation and enforcement of the design via the smart contract protocol. Owning Vocal coin grants the user the right to validate this chain through transaction fees, payment, interchange, trading, and clearinghouse use. 
 
-    \subsection{Holding Vocal Token}
+    \subsection{Holding Vocal Coin}
 
     \section{Discussion}
 
@@ -496,37 +487,34 @@
 
     % \subsection{Limitations}
     % TODO:{discuss limitations of transactions per second on Ethereum}
-    % TODO:{Address these counter arguments and others for the token.}
+    % TODO:{Address these counter arguments and others for the coin.}
     
-    \section{Token Supply}
+    \section{Coin Supply}
 
-    Vocal token follows a fixed token distribution model as to be described in this section.
+   Vocal coin follows a fixed coin distribution model as to be described in this section.
 
     \subsection{Total Cap}
-    Vocal will be capped at a total circulating supply of $100,000,000,000$ tokens. Tokens will be earned by engaging with advertisements (either by watching, viewing, or opening advertisements).
-     The token quantity earned for each action will vary according to the total number of supply still remaining. In this sense, viewing ads has become the notion of mining - rewarding users for participation on the network.
+   Vocal will be capped at a total circulating supply of $100,000,000$ coins. Coins will be earned by engaging with advertisements (either by watching, viewing, or opening advertisements).
+     The coin quantity earned for each action will vary according to the total number of supply still remaining. In this sense, viewing ads has become the notion of mining - rewarding users for participation on the network.
 
-     As more tokens are mined and held - the token quantity reward granted will diminish; however, the corresponding market or redeemable value of the token may correspondingly increase in value. This model lends itself similarly to Bitcoin. In that users
+     As more coins are mined and held - the coin quantity reward granted will diminish; however, the corresponding market or redeemable value of the coin may correspondingly increase in value. This model lends itself similarly to Bitcoin. In that users
      will still be given roughly equivalent reward for the amount of work and early holders/participants will potentially be rewarded for their early entry point and involvement.
 
-    \subsection{Distribution*}
-    *section to be potentially removed before publish (distribution and release schedule of the token will be included on the FAQ).
+    \section{Distribution}
 
     The distribution of the coin will proceed as follows.
 
-
     \begin{enumerate}
     \item Vocal Launch (50\%)
-    Vocal is inherently a governance token that plays a critical role in the process of upgrading Vocal protocol. We are fully committed to formulating a functional and theoretically sound governance model and we plan to dedicate significant resources to Research and Development.
-    \item Retained by Vocaltoken (15\%)
-    The Vocaltoken core development team will be able to sustain itself for approximately five years using funds raised through the token launch. If Vocaltoken protocol proves to be as foundational a technology as we believe it to be, 
-    the retained Vocal tokens will allow the Vocaltoken core development team to sustain operations beyond the first 5 years.
+   Vocal is inherently a publicly traded and earned coin that plays a critical role in the expansion of this new ad engagement platform. We are fully committed to creating a sound governance structure and we plan to dedicate significant resources to the continued Research and Development of the platform.
+    \item Retained by Vocal Coin (15\%)
+    The Vocal coin core development team will be able to sustain itself using funds raised through the coin launch. If the Vocal platform proves itself to be a fundamental technology as we believe it to be, the retained Vocal coins will allow the Vocal development team to sustain operations for many years.
     \item Developer Fund (15\%)
-    The Developer Fund will be used to make targeted capital injections into high potential projects and teams that are attempting to grow the Vocaltoken ecosystem, strategic partnerships, hackathon prizes and community development activities.
+    The Developer Fund will be used to make targeted capital injections into high potential projects and teams that are attempting to grow the Vocal Coin ecosystem, strategic partnerships, hackathon prizes and community development activities.
     \item Founding Team (10\%)
-    The founding team’s allocation of Vocal will vest over a traditional 4 year vesting schedule with a one year cliff. We believe this should be standard practice for any team that is committed to making their project a long term success.
+    The founding team’s allocation of Vocal will vest over a traditional 4 year vesting schedule with a one year cliff. This is standard practice for equity vesting and we believe the same standards should be applied to the coin offering. 
     \item Early Backers and Advisors (10\%)
-    Our backers and advisors have provided capital, resources and guidance that have allowed us to fill out our team, setup a robust legal entity and build a fully functional product before launching a token. As a result, we have a proven track record and can offer a token that holds genuine utility.
+    Our backer and advisors are valuable resources to the expansion and growth of the Vocal platform. This remaining 10\% will be reserved for them, as a continued incentive to offer guidance and sustain a coin that holds genuine utility.
     \end{enumerate}
     
     % \subsection{Subsection Heading Here}
@@ -537,13 +525,13 @@
 
     \subsection{Challenges and Limitations}
 
-    Creating an advertising-based currency poses a few challenges. For example,
+    Creating an advertising-based currency poses several challenges. We highlight a few of them here; for example,
 
     \begin{enumerate}
       \item In order for advertisers to participate, the opportunity for them should be equal to or greater than current other opportunities and channels. 
-      \item Is that true for participation in Vocal? For their participation, they would be both paying for Vocal and be willing to provide a good or service to a consumer in exchange for tokens. How is this better than distributing coupon’s from a advertiser’s point of view?
-      \item Why would an advertiser want tokens? What do they do with them thereafter?
-      \item The quality of the advertisement view is important to its value. For instance, if a user is watching ads continuously, the value of a single ad may not be necessarily very high. How does Vocal mitigate this? And how does this affect the go to market strategies for advertisers who wish to become involved with Vocal Token?
+      \item Is that true for participation in Vocal? For their participation, they would be both paying for Vocal and be willing to provide a good or service to a consumer in exchange for coins. How is this better than distributing coupon’s from a advertiser’s point of view?
+      \item Why would an advertiser want coins? What do they do with them thereafter?
+      \item The quality of the advertisement view is important to its value. For instance, if a user is watching ads continuously, the value of a single ad may not be necessarily very high. How does Vocal mitigate this? And how does this affect the go to market strategies for advertisers who wish to become involved with Vocal Coin?
     \end{enumerate}
 
     These are fundamental questions to be solved by our Roadmap below.
@@ -555,16 +543,16 @@
     \newcommand\ytl[2]{
     \parbox[b]{8em}{\hfill{\color{cyan}\bfseries\sffamily #1}~$\cdots\cdots$~}\makebox[0pt][c]{$\bullet$}\vrule\quad \parbox[c]{3cm}{\vspace{7pt}\color{red!40!black!80}\raggedright\sffamily #2.\\[7pt]}\\[-3pt]}
     \begin{table}
-    \caption{Vocal Token Timeline}
+    \caption{Vocal Coin Timeline}
     \centering
     \begin{minipage}[t]{\linewidth}
     \color{gray}
     \rule{\linewidth}{1pt}
-    \ytl{Nov 2017}{Finish token proposal and development}
-    \ytl{Dec 2017}{Finish Client facing token application}
-    \ytl{Jan 2018}{Vocal Token Presale}
+    \ytl{Nov 2017}{Finish coin proposal and development}
+    \ytl{Dec 2017}{Finish Client facing coin application}
+    \ytl{Jan 2018}{Vocal Coin Presale}
     \ytl{Apr 2018}{Mobile application released for Android}
-    \ytl{Jul 2018}{Tokens redeemable for goods and services}
+    \ytl{Jul 2018}{Coins redeemable for goods and services}
     \ytl{Dec 2018}{Obtain retail partnerships for addition offers}
     \ytl{2019}{TBD: Ongoing security and product development}
     \bigskip
@@ -578,11 +566,11 @@
     %   2017 & \\
     %   September & Finish Development \\
     %   November & Coin Presale \\ 
-    %   December & Public Token Launch \\
+    %   December & Public Coin Launch \\
     %   2018 & \\
     %   January & Accounting and Web Platform\\
     %   April & Android Mobile App released\\
-    %   July & Tokens redeemable for goods and services
+    %   July & Coins redeemable for goods and services
     %   December & Obtain retail partnerships for additional offers \\
     %   2019 & \\
     %   January -> & TBD \\
@@ -592,32 +580,29 @@
     % TODO:{Discussion of road map features and potential extensions of the protocol}
     
     \section{Conclusion}
-    Vocal is a token that has potential both as a store of advertising value and as an accounting system for advertisement engagement. Taking inspiration from both the Bitcoin and Ethereum mining models, one of Vocal's main goals is to create a token ecosystem whose rewards stay consistent over time (but with greater potential for individual growth with a more early the entry point). The token is designed to be easily accountable by transactions discoverable on the public ethereum (ERC20) blockchain.
+   Vocal is a coin that has potential both as a store of advertising value and as an accounting system for advertisement engagement. Taking inspiration from both the Bitcoin and Ethereum mining models, one of Vocal's main goals is to create a coin ecosystem whose rewards stay consistent over time (but with greater potential for individual growth with a more early the entry point). The coin is designed to be easily accountable by transactions discoverable on the public ethereum (ERC20) blockchain.
 
-    Vocal token's initial offering will be done in early December 2017.
+   Vocal coin's initial offering will be done in early January 2018.
 
-    % TODO:{Summarize Vocal objectives}
+    % TODO:{Summarize Vocal objectives} 
     
     % conference papers do not normally have an appendix
     % use section* for acknowledgment
     \section*{Appendix}
 
     \subsection{Founding Team}
-    Vocal was founded by Eric Asquith, Murch Ewings, and Chris Buonocore.
-     Eric and Murch are Boston-area natives and bring a complimentary blend of professional experience to Vocal. 
-     Eric, an attorney and real estate broker, and Murch, formerly a consultant and CPA with a wealth of relevant experience, share a vision for how technology can fix the broken advertising model. 
-     Chris is a developer from silicon valley with over 8 years of development experience, holding expertise in creating and scaling cloud based software platforms.  
+   Vocal was founded by Eric Asquith and Chris Buonocore. Eric is a Boston-area natives and bring a complimentary blend of professional experience to Vocal. He is also an attorney and real estate broker, with a clear vision for how technology can fix relationships between customers and advertisers. Chris is a former consultant and now developer from silicon valley with over 8 years of development experience. He brings wealth of relevant experience to take Vocal to consumers - holding expertise in creating and scaling mobile-based software platforms.  
 
     \subsection{Acknowledgements}
 
     We would like to express our gratitude to our mentors, advisors and to the many people in the Ethereum community that have been so welcoming and generous with their knowledge. 
-    In particular, we would like to thank the following folks for providing insight during the development and prototyping process % TODO:{add advisors}. 
-    And of course all the folks in the Boston Cryptocurrency and Ethereum developers meetup groups for their support and advice.
+    In particular, we would like to thank the folks in the Boston Cryptocurrency and Ethereum developers meetup groups for their support and advice.
 
     \subsection{ERC20 Vocal Protocol}
-    Vocal follows the ERC20 (ethereum-blockchain) protocol for recording transactions.
-    ERC20 establishes a standard contract ABI for tokens on the Ethereum blockchain and has become the de facto representation for all types of digital assets. ERC20 tokens share the same contract interface, simplifying integration with external contracts.
+   Vocal follows the ERC20 (ethereum-blockchain) protocol for recording transactions.
+    ERC20 establishes a standard contract ABI for coins on the Ethereum blockchain and has become the de facto representation for all types of digital assets. ERC20 coins share the same contract interface, simplifying integration with external contracts.
     Core ERC20 functions include:
+
     \begin{enumerate}
     \item transfer(to, value)
     \item balanceOf(owner)
@@ -625,11 +610,12 @@
     \item allowance(owner, spender)
     \item transferFrom(from, to, value)
     \end{enumerate}
-    EIP101 includes a proposal to change ether to follow the ERC20 token standard. For now, a “wrapper” smart contract may be used as a proxy for ERC20 ether. For reference, see the Maker implementation or the Gnosis implementation.
+
+    EIP101 includes a proposal to change ether to follow the ERC20 coin standard. For now, a “wrapper” smart contract may be used as a proxy for ERC20 ether. For reference, see the Maker implementation or the Gnosis implementation.
     \subsubsection{Contract ABI}
-    EIP50 proposes an extension to the contract ABI to support structs. This would allow the commu- nity to establish standard Order and Signature data structures, simplifying our contract interface and integrations with external contracts.
+    EIP50 proposes an extension to the contract ABI to support structs. This would allow the community to establish standard Order and Signature data structures, simplifying our contract interface and integrations with external contracts.
     \subsubsection{Ethereum Name Service}
-    EIP137 or Ethereum Name Service (ENS) will be used to resolve human-readable names, such as “my- name.eth,” into machine-readable identifiers that may represent Ethereum addresses, Swarm and/or IPFS content hashes or other identifiers. It can also be used to associate metadata with names, such as contract ABIs or whois information. ENS will be used by 0x protocol to create more intuitive message formats that optionally reference Makers, Takers and Relayers by name.
+    EIP137 or Ethereum Name Service (ENS) will be used to resolve human-readable names, such as “myname.eth,” into machine-readable identifiers that may represent Ethereum addresses, Swarm and/or IPFS content hashes or other identifiers. It can also be used to associate metadata with names, such as contract ABIs or whois information. ENS will be used by 0x protocol to create more intuitive message formats that optionally reference Makers, Takers and Relayers by name.
     % \cite{Voit2012b}
  
     
@@ -667,8 +653,6 @@
     % \bibliography{mybib}{}
     % \bibliographystyle{plain}
    
-    
-    % that's all folks
     \end{document}
     
     
