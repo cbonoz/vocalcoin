@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Dashboard from './components/dash/Dashboard';
-// import Search from './components/dash/Search';
+import WhitePaper from './components/WhitePaper';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -86,8 +86,8 @@ class App extends Component {
           <div>
             <Header authed={this.state.authed}/>
             <Switch>
+              <Route authed={this.state.authed} path="/whitepaper" component={WhitePaper} />
               <Route authed={this.state.authed} path="/faq" component={FAQ}/>
-              {/* <Route authed={this.state.authed} path="/search" component={Search} /> */}
               <PublicRoute authed={this.state.authed} exact path="/" component={Home} />
               <PrivateRoute authed={this.state.authed} path="/dashboard" component={Dashboard}/>
               <Route authed={this.state.authed} render={() => <h1 className="centered">Page not found</h1>} />
