@@ -15,6 +15,9 @@ const path = require('path');
 // Variable and Server Setup //
 const prod = false;
 
+// custom libraries.
+const vocal = require('./vocal');
+
 const dbUser = process.env.ADMIN_DB_USER;
 const dbPass = process.env.ADMIN_DB_PASS;
 const dbName = 'vocal';
@@ -47,36 +50,72 @@ app.get('/api/hello', (req, res) => {
     return res.json("hello world");
 });
 
-// app.get('/api/events/:count', (req, res, next) => {
-//   const countParam = req.params.count === undefined ? null : req.params.count;
-//   const count = Math.min(Math.abs(countParam), 8);
+app.get('/api/balance', (req, res) => {
+    const email = req.params.email;
+    pool.query(`SELECT * FROM balance where email='${email}'ORDER BY time DESC limit 1`, (err, result) => {
+            console.log('balance', err, count, result)
+            if (err) {
+              console.error('balance error', err);
+              return res.status(500).json(err);
+            }
+            // pool.end()
+            return res.json(result.rows);
+          });
+});
 
-//   pool.query('SELECT * FROM events ORDER BY id DESC limit ' + count, (err, result) => {
-//     console.log('getEvents', err, count, result)
-//     if (err) {
-//       console.error('events error', err);
-//       return res.status(500).json(err);
-//     }
-//     // pool.end()
-//     return res.json(result.rows);
-//   })
-// });
+app.get('/api/history', (req, res) => {
+    const email = req.params.email;
+    pool.query(`SELECT * FROM balance where email='${email}'`, (err, result) => {
+            console.log('history', err, count, result)
+            if (err) {
+              console.error('history error', err);
+              return res.status(500).json(err);
+            }
+            // pool.end()
+            return res.json(result.rows);
+          });
+});
+
+app.get('/api/transactions', (req, res) => {
+    const email = req.params.email;
+    pool.query(`SELECT * FROM transactions where email='${email}'`, (err, result) => {
+            console.log('transactions', err, count, result)
+            if (err) {
+              console.error('transactions error', err);
+              return res.status(500).json(err);
+            }
+            // pool.end()
+            return res.json(result.rows);
+          });
+});
+
+app.post('/api/vocal/add', (req, res) => {
+    const body = req.body;
+    const email = body.email;
+    if (!email) {
+        return res.status(400).json({message: "email must be defined"});
+    }
+
+    // calculate the amount of vocal to credit based on the email (TODO: and other params).
+    const amount = vocal.calculateVocalCredit(email);
+
+    // TODO: add insert query into the blockchain or transactions db BEFORE processing the modify request to the balance.
+    // If for some reason the request fails (either) rolls back the entire transaction.
 
 
-// // Perform the db search for the passed query -> return a list of active issue results
-// app.post('/api/search', (req, res) => {
-//     const body = req.body;
-//     const query = body.query.toLowerCase();
-//     // TODO: implement stronger search filtering (including languages).
-//     pool.query("select * from issues where (body ILIKE $1 or title ILIKE $1)", [`%${query}%`],
-//         function (err, result) {
-//             if (err) {
-//                 console.error('search error', err);
-//                 return res.status(500).json(err);
-//             }
-//             return res.status(200).json(result.rows);
-//         });
-// });
+    // If the email is in the DB, modify the balance by amount, else create a new balance 
+    //TODO: make this an update query, or insert.
+    pool.query(`SELECT * FROM balance where email='${email}'`, (err, result) => {
+        console.log('vocal add', err, count, result)
+        if (err) {
+          console.error('vocal add error', err);
+          return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
+      });
+
+});
 
 // DB Connection and server start //
 
