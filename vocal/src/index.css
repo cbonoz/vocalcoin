@@ -27,6 +27,12 @@ body {
   width: 32px;
 }
 
+.dashboard-image {
+  margin-top: 50px !important;
+  margin-bottom: 50px !important;
+  width: 150px;
+}
+
 .login-form {
   padding: 20px;
 }
@@ -51,7 +57,7 @@ body {
 
 .login-image {
   margin-bottom: 20px;
-  height: 150px;
+  height: 100px;
   padding-bottom: 2px;
 }
 
@@ -101,8 +107,8 @@ body {
 }
 
 .error-text {
-  padding: 20px;
-  margin: 20px !important;
+  padding: 10px;
+  margin: 10px !important;
 }
 
 .search-subtitle-text {
@@ -290,6 +296,7 @@ body {
 
 .slogan-text {
   font-size: 20px;  
+  padding: 20px;
 }
 
 .githelpers-search-input {
