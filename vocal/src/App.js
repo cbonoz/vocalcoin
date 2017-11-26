@@ -21,7 +21,9 @@ import { firebaseAuth } from './utils/fire';
 
 import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
 import { toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.min.css';
+import 'react-vis/dist/style.css';
 
 function PrivateRoute({component: Component, authed, ...rest}) {
   return (

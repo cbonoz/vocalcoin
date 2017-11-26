@@ -22,6 +22,7 @@ export default class Header extends Component {
 
     close() {
         this.setState({ showModal: false });
+        window.location = "/dashboard";
     }
 
     open() {

@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import { Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 
+import { firebaseAuth } from '../../utils/fire';
+
 import AccountHistory from './AccountHistory';
 import UpdateAddress from './UpdateAddress';
+
+import vocal from '../../assets/vocal_trans_black.png';
 
 export default class Dashboard extends Component {
 
@@ -13,39 +17,34 @@ export default class Dashboard extends Component {
         };
     }
 
-    componentDidMount() {
-        const self = this;
-        this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
-            self.setState({ currentUser: user });
-        })
-    }
-
-    componentWillUnmount() {
-        this.removeListener();
-    }
-
     render() {
         const self = this;
         return (
-            <div className="dashboard-content">
-                <h1>Dashboard (protected)</h1>
+            <div className="dashboard-content centered">
+                <img src={vocal} className="centered dashboard-image" />
+                {/* <h1>User Dashboard</h1> */}
+                {self.state.currentUser && <p className="email-subtitle">{self.state.currentUser.email}</p>}
                 <Row>
-                    <Col xs={12} md={6}>
+                    <Col xsHidden md={1} />
+                    <Col xs={12} md={10}>
                         <ListGroup>
-                            <ListGroupItem header={'Account History'}/>
+                            <ListGroupItem header={'User Dashboard'} bsStyle="success" />
                             <ListGroupItem>
-                                <AccountHistory currentUser={self.state.currentUser}/>
+                                <AccountHistory currentUser={self.state.currentUser} />
                             </ListGroupItem>
                         </ListGroup>
                     </Col>
+                    <Col xsHidden md={1} />
                 </Row>
                 <Row>
-                    <Col xs={12} md={6}>
-                            <ListGroupItem header={'Manage Deposit Address'}/>
-                            <ListGroupItem>
-                                <UpdateAddress currentUser={self.state.currentUser}/>
-                            </ListGroupItem>
+                    <Col xsHidden md={1} />
+                    <Col xs={12} md={10}>
+                        <ListGroupItem header={'Manage Deposit Address'} bsStyle="danger" />
+                        <ListGroupItem>
+                            <UpdateAddress currentUser={self.state.currentUser} />
+                        </ListGroupItem>
                     </Col>
+                    <Col xsHidden md={1} />
                 </Row>
             </div>
         )

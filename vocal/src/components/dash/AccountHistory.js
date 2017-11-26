@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from 'react-vis';
 
 import api from './../../utils/api';
-
-import "./../../node_modules/react-vis/dist/style";
+import { firebaseAuth } from '../../utils/fire';
 
 export default class AccountHistory extends Component {
 
@@ -15,18 +14,31 @@ export default class AccountHistory extends Component {
                 { x: 2, y: 5 },
                 { x: 3, y: 15 }
             ],
+            currentUser: null,
             loading: false,
             error: null
         };
 
         this._getTransactionData = this._getTransactionData.bind(this);
-        
+    }
+
+    componentWillMount() {
+        const self = this;
+        this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
+            self.setState({ currentUser: user });
+            console.log('user', JSON.stringify(user));
+            self._getTransactionData();
+        })
+    }
+
+    componentWillUnmount() {
+        this.removeListener();
     }
 
     _getTransactionData() {
         const self = this;
-        self.setState( {loading: true, error: null} );
-        const user = self.props.currentUser;
+        self.setState({ loading: true, error: null });
+        const user = self.state.currentUser;
 
         // TODO: handle error case
         api.getTransactionHistory(user);
@@ -37,27 +49,26 @@ export default class AccountHistory extends Component {
         //     self.setState( {transactionData: [], loading: false, error: err})
         // });
     }
-    
-    componentWillMount() {
-        this._getTransactionData(this.props.currentUser);
-    }
-    
+
     render() {
         const self = this;
         return (
-            <div>
-                {!(self.state.loading && self.state.error) && <XYPlot
-                    width={300}
-                    height={300}>
-                    <HorizontalGridLines />
-                    <LineSeries
-                        data={self.state.transactionData} />
-                    <XAxis />
-                    <YAxis />
-                </XYPlot>}
+            <div className="centered">
+                {!(self.state.loading && self.state.error) && <div className="centered">
+                    <XYPlot
+                    width={400}
+                    height={400}
+                    >
+                        <HorizontalGridLines />
+                        <LineSeries
+                            data={self.state.transactionData} />
+                        <XAxis />
+                        <YAxis />
+                    </XYPlot>
+                </div>}
                 {self.state.loading && <div className="loading-spinner"></div>}
                 {(!self.state.loading && self.state.error) &&
-                     <div className="history-error error-text red">
+                    <div className="history-error error-text red">
                         {self.state.error}
                     </div>
                 }
