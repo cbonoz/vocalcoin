@@ -81,7 +81,9 @@ contract Crowdsale {
     // update state
     weiRaised = weiRaised.add(weiAmount);
 
-    token.mint(beneficiary, tokens);
+    // Commented out below mint method because the token is not meant to be mintable.
+    // token.mint(beneficiary, tokens);
+
     TokenPurchase(msg.sender, beneficiary, weiAmount, tokens);
 
     forwardFunds();
