@@ -55,8 +55,23 @@ app.get('/api/hello', (req, res) => {
 });
 
 // TODO: each request below should do an address lookup (based on the past in email) to find the appropriate address to credit or find the balance for.
+// TODO: this request queries the BLOCKCHAIN for the current balance.
+app.get('/api/balance/current', (req, res) => {
+    const email = req.params.email;
+    // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
+    pool.query(`SELECT * FROM balance where email='${email}'ORDER BY time DESC limit 1`, (err, result) => {
+            console.log('balance', err, count, result)
+            if (err) {
+              console.error('balance error', err);
+              return res.status(500).json(err);
+            }
+            // pool.end()
+            return res.json(result.rows);
+          });
+});
 
-app.get('/api/balance', (req, res) => {
+// TODO: this request queries POSTGRES for transactions/credits to the user (email) that have NOT been processed yet.
+app.get('/api/balance/pending', (req, res) => {
     const email = req.params.email;
     // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
     pool.query(`SELECT * FROM balance where email='${email}'ORDER BY time DESC limit 1`, (err, result) => {
