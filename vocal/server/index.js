@@ -71,7 +71,7 @@ app.get('/api/balance', (req, res) => {
 });
 
 // Check if the given email param exists in the DB and contains a non-null address.
-app.get('/api/address/verify', (req, res) => {
+app.get('/api/address', (req, res) => {
     const email = req.params.email;
     pool.query(`SELECT * FROM users where email='${email}'`, (err, result) => {
             console.log('verify address', err, count, result)
@@ -83,11 +83,15 @@ app.get('/api/address/verify', (req, res) => {
             if (result.rows) {
                 const userRow = result.rows[0];
                 // TODO: use an actual ethereum address validator (rather than isBlank).
-                const hasAddress = isBlank(userRow['address']);
-                return res.json(hasAddress)
+                const address = userRow['address']
+                const hasAddress = !isBlank(address);
+                if (hasAddress) {
+                    return res.json(address)
+                }
             }
+
             // pool.end()
-            return res.json(false);
+            return res.json("");
           });
 });
 
