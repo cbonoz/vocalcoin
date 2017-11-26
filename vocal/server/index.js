@@ -68,7 +68,7 @@ app.get('/api/balance', (req, res) => {
 });
 
 // Check if the given email param exists in the DB and contains a non-null address.
-app.get('/api/verify/address', (req, res) => {
+app.get('/api/address/verify', (req, res) => {
     const email = req.params.email;
     pool.query(`SELECT * FROM users where email='${email}'`, (err, result) => {
             console.log('verify address', err, count, result)
@@ -79,6 +79,7 @@ app.get('/api/verify/address', (req, res) => {
 
             if (result.rows) {
                 const userRow = result.rows[0];
+                // TODO: use an actual ethereum address validator (rather than isBlank).
                 const hasAddress = isBlank(userRow['address']);
                 return res.json(hasAddress)
             }
@@ -86,6 +87,25 @@ app.get('/api/verify/address', (req, res) => {
             return res.json(false);
           });
 });
+
+app.post('/api/address/update', (req, res) => {
+    const body = req.body;
+    const email = body.email;
+    const address = body.address;
+
+    // TODO: update this to change the registered public eth address of the give user (indicated by their email).
+    return res.json(true);
+    // pool.query(`SELECT * FROM transactions where email='${email}'`, (err, result) => {
+    //     console.log('transactions', err, count, result)
+    //     if (err) {
+    //       console.error('transactions error', err);
+    //       return res.status(500).json(err);
+    //     }
+    //     // pool.end()
+    //     return res.json(result.rows);
+    //   });
+
+    });
 
 app.get('/api/history', (req, res) => {
     const email = req.params.email;
@@ -112,6 +132,7 @@ app.get('/api/transactions', (req, res) => {
             return res.json(result.rows);
           });
 });
+
 
 app.post('/api/vocal/add', (req, res) => {
     const body = req.body;
