@@ -60,8 +60,23 @@ app.get('/api/hello', (req, res) => {
 });
 
 // TODO: each request below should do an address lookup (based on the past in email) to find the appropriate address to credit or find the balance for.
+// TODO: this request queries the BLOCKCHAIN for the current balance.
+app.get('/api/balance/current', (req, res) => {
+    const email = req.params.email;
+    // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
+    pool.query(`SELECT * FROM balance where email='${email}'ORDER BY time DESC limit 1`, (err, result) => {
+            console.log('balance', err, count, result)
+            if (err) {
+              console.error('balance error', err);
+              return res.status(500).json(err);
+            }
+            // pool.end()
+            return res.json(result.rows);
+          });
+});
 
-app.get('/api/balance', (req, res) => {
+// TODO: this request queries POSTGRES for transactions/credits to the user (email) that have NOT been processed yet.
+app.get('/api/balance/pending', (req, res) => {
     const email = req.params.email;
 
     // TODO: Query the infura test network for the most recent balance of the user via jsonrpc call after
@@ -83,7 +98,7 @@ app.get('/api/balance', (req, res) => {
 });
 
 // Check if the given email param exists in the DB and contains a non-null address.
-app.get('/api/address/verify', (req, res) => {
+app.get('/api/address', (req, res) => {
     const email = req.params.email;
     pool.query(`SELECT * FROM users where email='${email}'`, (err, result) => {
             console.log('verify address', err, count, result)
@@ -95,11 +110,15 @@ app.get('/api/address/verify', (req, res) => {
             if (result.rows) {
                 const userRow = result.rows[0];
                 // TODO: use an actual ethereum address validator (rather than isBlank).
-                const hasAddress = isBlank(userRow['address']);
-                return res.json(hasAddress)
+                const address = userRow['address']
+                const hasAddress = !isBlank(address);
+                if (hasAddress) {
+                    return res.json(address)
+                }
             }
+
             // pool.end()
-            return res.json(false);
+            return res.json("");
           });
 });
 
