@@ -38,6 +38,9 @@ CREATE TABLE events (
 -- TODO: add issues table 
 -- (or figure out alternative way of indexing/aggregating user issues with the vocal label )
 
+-- INSERT INTO users (id, email, address)
+--   VALUES (1, 'test@anupvasudevan.com', 'test34243278o324test34');
+
 -- INSERT INTO events (name, time)
 --   VALUES ('new registration', '1');
 

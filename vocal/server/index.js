@@ -36,8 +36,13 @@ const server = require('http').createServer(app);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const whitelist = ['https://vocalcoin.com', 'https://www.vocalcoin.com']
+const whitelist = ['https://vocalcoin.com', 'https://www.vocalcoin.com'];
 app.use(cors({ origin: whitelist }));
+
+// Test Ethereum Network (INFURAnet)
+const infuraTestNet = "https://infuranet.infura.io/";
+const infuraAccessToken = process.env.INFURA_ACCESS_TOKEN;
+const infuraMnemonic = process.env.INFURA_MNEMONIC;
 
 pool.on('error', (err, client) => {
     console.error('Unexpected error on idle client', err)
@@ -58,6 +63,13 @@ app.get('/api/hello', (req, res) => {
 
 app.get('/api/balance', (req, res) => {
     const email = req.params.email;
+
+    // TODO: Query the infura test network for the most recent balance of the user via jsonrpc call after
+    // deploying contracts to Infura Test framework.
+
+
+
+
     // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
     pool.query(`SELECT * FROM balance where email='${email}'ORDER BY time DESC limit 1`, (err, result) => {
             console.log('balance', err, count, result)
@@ -67,7 +79,7 @@ app.get('/api/balance', (req, res) => {
             }
             // pool.end()
             return res.json(result.rows);
-          });
+          })
 });
 
 // Check if the given email param exists in the DB and contains a non-null address.
