@@ -42,7 +42,11 @@ app.use(cors({ origin: whitelist }));
 pool.on('error', (err, client) => {
     console.error('Unexpected error on idle client', err)
     process.exit(-1)
-})
+});
+
+function isBlank(str) {
+    return (!str || /^\s*$/.test(str));
+}
 
 // Endpoints //
 
@@ -60,6 +64,26 @@ app.get('/api/balance', (req, res) => {
             }
             // pool.end()
             return res.json(result.rows);
+          });
+});
+
+// Check if the given email param exists in the DB and contains a non-null address.
+app.get('/api/verify/address', (req, res) => {
+    const email = req.params.email;
+    pool.query(`SELECT * FROM users where email='${email}'`, (err, result) => {
+            console.log('verify address', err, count, result)
+            if (err) {
+              console.error('verify address', err);
+              return res.status(500).json(err);
+            }
+
+            if (result.rows) {
+                const userRow = result.rows[0];
+                const hasAddress = isBlank(userRow['address']);
+                return res.json(hasAddress)
+            }
+            // pool.end()
+            return res.json(false);
           });
 });
 
@@ -117,7 +141,7 @@ app.post('/api/vocal/add', (req, res) => {
 
 });
 
-// DB Connection and server start //
+// DB Connection and Server start //
 
 pool.connect((err, client, done) => {
     if (err) {

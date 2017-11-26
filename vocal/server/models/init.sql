@@ -22,6 +22,13 @@ CREATE TABLE balances (
 );
 
 /* For socket io */
+CREATE TABLE users (
+  ID SERIAL PRIMARY KEY,
+  email VARCHAR,
+  address VARCHAR
+);
+
+/* For socket io */
 CREATE TABLE events (
   ID SERIAL PRIMARY KEY,
   name VARCHAR,
