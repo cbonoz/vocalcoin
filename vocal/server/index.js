@@ -54,8 +54,11 @@ app.get('/api/hello', (req, res) => {
     return res.json("hello world");
 });
 
+// TODO: each request below should do an address lookup (based on the past in email) to find the appropriate address to credit or find the balance for.
+
 app.get('/api/balance', (req, res) => {
     const email = req.params.email;
+    // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
     pool.query(`SELECT * FROM balance where email='${email}'ORDER BY time DESC limit 1`, (err, result) => {
             console.log('balance', err, count, result)
             if (err) {
@@ -107,6 +110,7 @@ app.post('/api/address/update', (req, res) => {
 
     });
 
+// @Deprecated
 app.get('/api/history', (req, res) => {
     const email = req.params.email;
     pool.query(`SELECT * FROM balance where email='${email}'`, (err, result) => {
@@ -120,6 +124,7 @@ app.get('/api/history', (req, res) => {
           });
 });
 
+// TODO: query the blockchain for the transactions submitted by the given email (using the address lookup).
 app.get('/api/transactions', (req, res) => {
     const email = req.params.email;
     pool.query(`SELECT * FROM transactions where email='${email}'`, (err, result) => {
@@ -133,7 +138,7 @@ app.get('/api/transactions', (req, res) => {
           });
 });
 
-
+// TODO: use the email to do an address lookup to add the vocal coin to the user's account.
 app.post('/api/vocal/add', (req, res) => {
     const body = req.body;
     const email = body.email;
@@ -146,7 +151,6 @@ app.post('/api/vocal/add', (req, res) => {
 
     // TODO: add insert query into the blockchain or transactions db BEFORE processing the modify request to the balance.
     // If for some reason the request fails (either) rolls back the entire transaction.
-
 
     // If the email is in the DB, modify the balance by amount, else create a new balance 
     //TODO: make this an update query, or insert.
