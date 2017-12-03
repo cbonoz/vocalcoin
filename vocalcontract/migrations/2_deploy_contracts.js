@@ -1,5 +1,5 @@
 var VocalToken = artifacts.require("./VocalToken.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(VocalToken);
+  deployer.deploy(VocalToken, {gas: 290000});
 };

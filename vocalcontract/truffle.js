@@ -5,7 +5,8 @@ const infuraTestNet = "https://infuranet.infura.io/";
 const ropstenTestNet = "https://ropsten.infura.io/";
 const infuraAccessToken = process.env.INFURA_ACCESS_TOKEN;
 const infuraMnemonic = process.env.INFURA_MNEMONIC;
-console.log(infuraAccessToken, infuraMnemonic)
+
+console.log('infuraData', infuraAccessToken, infuraMnemonic);
 
 module.exports = {
   networks: {

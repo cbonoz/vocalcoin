@@ -1,7 +1,7 @@
 const library = (function () {
     const axios = require('axios');
 
-    const PORT = 9006;
+    const PORT = 9007;
 
     const BASE_URL = "https://www.vocalcoin.com"
     const MAX_EVENTS = 8;

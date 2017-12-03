@@ -28,7 +28,7 @@ const pool = new pg.Pool({
     connectionString: connectionString,
 })
 
-const PORT = 9006;
+const PORT = 9007;
 
 const app = express();
 const server = require('http').createServer(app);
@@ -59,20 +59,59 @@ app.get('/api/hello', (req, res) => {
     return res.json("hello world");
 });
 
+/* Map endpoints */
+
+api.get('/api/issues/region', (req, res) => {
+
+});
+
+app.post('/api/vote', (req, res) => {
+    const body = req.body;
+    const vote = body.vote;
+    const query = vocal.insertVoteQuery(vote);
+
+    pool.query(query, (err, result) => {
+        console.log('postVote', err, count, result)
+        if (err) {
+            console.error('balance error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
+    });
+});
+
+app.post('/api/issue', (req, res) => {
+    const body = req.body;
+    const issue = body.issue;
+    const query = vocal.insertIssueQuery(issue);
+
+    pool.query(query, (err, result) => {
+        console.log('postIssue', err, count, result)
+        if (err) {
+            console.error('balance error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
+    });
+
+});
+
 // TODO: each request below should do an address lookup (based on the past in email) to find the appropriate address to credit or find the balance for.
 // TODO: this request queries the BLOCKCHAIN for the current balance.
 app.get('/api/balance/current', (req, res) => {
     const email = req.params.email;
     // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
     pool.query(`SELECT * FROM balance where email='${email}'ORDER BY time DESC limit 1`, (err, result) => {
-            console.log('balance', err, count, result)
-            if (err) {
-              console.error('balance error', err);
-              return res.status(500).json(err);
-            }
-            // pool.end()
-            return res.json(result.rows);
-          });
+        console.log('balance', err, count, result)
+        if (err) {
+            console.error('balance error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
+    });
 });
 
 // TODO: this request queries POSTGRES for transactions/credits to the user (email) that have NOT been processed yet.
@@ -87,39 +126,39 @@ app.get('/api/balance/pending', (req, res) => {
 
     // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
     pool.query(`SELECT * FROM balance where email='${email}'ORDER BY time DESC limit 1`, (err, result) => {
-            console.log('balance', err, count, result)
-            if (err) {
-              console.error('balance error', err);
-              return res.status(500).json(err);
-            }
-            // pool.end()
-            return res.json(result.rows);
-          })
+        console.log('balance', err, count, result)
+        if (err) {
+            console.error('balance error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
+    })
 });
 
 // Check if the given email param exists in the DB and contains a non-null address.
 app.get('/api/address', (req, res) => {
     const email = req.params.email;
     pool.query(`SELECT * FROM users where email='${email}'`, (err, result) => {
-            console.log('verify address', err, count, result)
-            if (err) {
-              console.error('verify address', err);
-              return res.status(500).json(err);
-            }
+        console.log('verify address', err, count, result)
+        if (err) {
+            console.error('verify address', err);
+            return res.status(500).json(err);
+        }
 
-            if (result.rows) {
-                const userRow = result.rows[0];
-                // TODO: use an actual ethereum address validator (rather than isBlank).
-                const address = userRow['address']
-                const hasAddress = !isBlank(address);
-                if (hasAddress) {
-                    return res.json(address)
-                }
+        if (result.rows) {
+            const userRow = result.rows[0];
+            // TODO: use an actual ethereum address validator (rather than isBlank).
+            const address = userRow['address']
+            const hasAddress = !isBlank(address);
+            if (hasAddress) {
+                return res.json(address)
             }
+        }
 
-            // pool.end()
-            return res.json("");
-          });
+        // pool.end()
+        return res.json("");
+    });
 });
 
 app.post('/api/address/update', (req, res) => {
@@ -139,34 +178,34 @@ app.post('/api/address/update', (req, res) => {
     //     return res.json(result.rows);
     //   });
 
-    });
+});
 
 // @Deprecated
 app.get('/api/history', (req, res) => {
     const email = req.params.email;
     pool.query(`SELECT * FROM balance where email='${email}'`, (err, result) => {
-            console.log('history', err, count, result)
-            if (err) {
-              console.error('history error', err);
-              return res.status(500).json(err);
-            }
-            // pool.end()
-            return res.json(result.rows);
-          });
+        console.log('history', err, count, result)
+        if (err) {
+            console.error('history error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
+    });
 });
 
 // TODO: query the blockchain for the transactions submitted by the given email (using the address lookup).
 app.get('/api/transactions', (req, res) => {
     const email = req.params.email;
     pool.query(`SELECT * FROM transactions where email='${email}'`, (err, result) => {
-            console.log('transactions', err, count, result)
-            if (err) {
-              console.error('transactions error', err);
-              return res.status(500).json(err);
-            }
-            // pool.end()
-            return res.json(result.rows);
-          });
+        console.log('transactions', err, count, result)
+        if (err) {
+            console.error('transactions error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
+    });
 });
 
 // TODO: use the email to do an address lookup to add the vocal coin to the user's account.
@@ -174,7 +213,7 @@ app.post('/api/vocal/add', (req, res) => {
     const body = req.body;
     const email = body.email;
     if (!email) {
-        return res.status(400).json({message: "email must be defined"});
+        return res.status(400).json({ message: "email must be defined" });
     }
 
     // calculate the amount of vocal to credit based on the email (TODO: and other params).
@@ -188,13 +227,30 @@ app.post('/api/vocal/add', (req, res) => {
     pool.query(`SELECT * FROM balance where email='${email}'`, (err, result) => {
         console.log('vocal add', err, count, result)
         if (err) {
-          console.error('vocal add error', err);
-          return res.status(500).json(err);
+            console.error('vocal add error', err);
+            return res.status(500).json(err);
         }
         // pool.end()
         return res.json(result.rows);
-      });
+    });
 
+});
+
+// Socket IO handlers //
+
+io.origins('*:*') // for latest version
+io.on('connection', function (client) {
+    client.on('connect', function () {
+        console.log('user connect');
+    });
+    client.on('action', function (event) {
+        pool.query('INSERT INTO events(name, time) values($1, $2)', [event.name, event.time]);
+        console.log('action', JSON.stringify(event));
+        io.emit('incoming', event)
+    });
+    client.on('disconnect', function () {
+        console.log('user disconnect');
+    });
 });
 
 // DB Connection and Server start //
