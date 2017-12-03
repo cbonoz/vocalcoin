@@ -69,7 +69,7 @@ export default class Header extends Component {
                             {!authed && <LinkContainer to="/whitepaper"><NavItem>View Whitepaper</NavItem></LinkContainer>}
                             {authed && <NavItem onClick={() => self._logout()}>Logout</NavItem>}
                             {!authed && <NavItem onClick={() => self._login()}>
-                                Login&nbsp;&nbsp;<i className="centered clear fa fa-paper-plane facebook-blue" aria-hidden="true"></i>}
+                                Login&nbsp;&nbsp;<i className="centered clear fa fa-paper-plane facebook-blue" aria-hidden="true"></i>
                             </NavItem>}
                         </Nav>
                     </Navbar.Collapse>
