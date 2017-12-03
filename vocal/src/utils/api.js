@@ -33,6 +33,16 @@ const library = (function () {
         return axios.get(url).then(response => response.data);
     }
 
+    function postVocal(userId) {
+        const url = `${BASE_URL}/api/vocal/add`;
+        return axios.post(url, {
+            userId: userId
+        }).then(response => {
+            const data = response.data;
+            return data;
+        });
+    }
+
     function postIssue(userId, issue) {
         const url = `${BASE_URL}/api/issue`;
         return axios.post(url, {
@@ -74,17 +84,15 @@ const library = (function () {
     // TODO: return axios promises for the requests below.
 
     function getTransactionHistory(user) {
-        const email = user.email;
+        const userId = user.userId;
         return null;
     }
 
     function getAddress(user) {
-        const email = user.email;
         return null;
     }
 
     function postAddress(user) {
-        const email = user.email;
         return null;
     }
 
