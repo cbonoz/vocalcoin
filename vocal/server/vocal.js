@@ -12,28 +12,38 @@ const library = (function () {
     }
 
     // TODO: update this to not simply return a constant (make a dynamic credit amount).
-    const calculateVocalCredit = (email) => {
+    const calculateVocalCredit = (userId) => {
         return REWARD_VALUE;
     }
 
     function insertVoteQuery(vote) {
-        
+
     }
 
     function insertIssueQuery(issue) {
 
     }
 
-    function modifyVocalQuery(userId, amount) {
+    function addVocalQuery(userId, amount) {
 
+    }
+
+    function updateAddressQuery(userId, newAddress) {
+
+    }
+
+    function insertEventQuery(name, time) {
+        return `INSERT INTO events(name, time) values(${event.name}, ${event.time})`;
     }
 
     return {
         getRandom: getRandom,
         calculateVocalCredit: calculateVocalCredit,
         insertIssueQuery: insertIssueQuery,
+        insertEventQuery: insertEventQuery,
         insertVoteQuery: insertVoteQuery,
-        modifyVocalQuery: modifyVocalQuery,
+        addVocalQuery: addVocalQuery,
+        updateAddressQuery: updateAddressQuery,
         formatDateTimeMs: formatDateTimeMs
     }
 

@@ -17,6 +17,9 @@ const prod = false;
 
 // custom libraries.
 const vocal = require('./vocal');
+const contract = require('./contract');
+
+const vocalContract = contract.vocalContract;
 
 const dbUser = process.env.ADMIN_DB_USER;
 const dbPass = process.env.ADMIN_DB_PASS;
@@ -95,15 +98,37 @@ app.post('/api/issue', (req, res) => {
         // pool.end()
         return res.json(result.rows);
     });
-
 });
 
-// TODO: each request below should do an address lookup (based on the past in email) to find the appropriate address to credit or find the balance for.
+app.post('/api/vocal/add', (req, res) => {
+    const body = req.body;
+    const userId = body.userId;
+    if (!userId) {
+        return res.status(400).json({ message: "userId must be defined" });
+    }
+    // calculate the amount of vocal to credit based on the userId (TODO: and other params).
+    const amount = vocal.calculateVocalCredit(userId);
+    const query = vocal.addVocalQuery(userId, amount);
+
+    pool.query(query, (err, result) => {
+        console.log('vocal add', err, count, result)
+        if (err) {
+            console.error('vocal add error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
+    });
+});
+
+/* Query methods */
+
+// TODO: each request below should do an address lookup (based on the past in userId) to find the appropriate address to credit or find the balance for.
 // TODO: this request queries the BLOCKCHAIN for the current balance.
-app.get('/api/balance/current', (req, res) => {
-    const email = req.params.email;
+app.get('/api/balance', (req, res) => {
+    const userId = req.params.userId;
     // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
-    pool.query(`SELECT * FROM balance where email='${email}'ORDER BY time DESC limit 1`, (err, result) => {
+    pool.query(`SELECT * FROM balance where userId='${userId}'ORDER BY time DESC limit 1`, (err, result) => {
         console.log('balance', err, count, result)
         if (err) {
             console.error('balance error', err);
@@ -114,32 +139,10 @@ app.get('/api/balance/current', (req, res) => {
     });
 });
 
-// TODO: this request queries POSTGRES for transactions/credits to the user (email) that have NOT been processed yet.
-app.get('/api/balance/pending', (req, res) => {
-    const email = req.params.email;
-
-    // TODO: Query the infura test network for the most recent balance of the user via jsonrpc call after
-    // deploying contracts to Infura Test framework.
-
-
-
-
-    // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
-    pool.query(`SELECT * FROM balance where email='${email}'ORDER BY time DESC limit 1`, (err, result) => {
-        console.log('balance', err, count, result)
-        if (err) {
-            console.error('balance error', err);
-            return res.status(500).json(err);
-        }
-        // pool.end()
-        return res.json(result.rows);
-    })
-});
-
-// Check if the given email param exists in the DB and contains a non-null address.
+// Check if the given userId param exists in the DB and contains a non-null address.
 app.get('/api/address', (req, res) => {
-    const email = req.params.email;
-    pool.query(`SELECT * FROM users where email='${email}'`, (err, result) => {
+    const userId = req.params.userId;
+    pool.query(`SELECT * FROM users where userId='${userId}'`, (err, result) => {
         console.log('verify address', err, count, result)
         if (err) {
             console.error('verify address', err);
@@ -163,41 +166,19 @@ app.get('/api/address', (req, res) => {
 
 app.post('/api/address/update', (req, res) => {
     const body = req.body;
-    const email = body.email;
+    const userId = body.userId;
     const address = body.address;
 
-    // TODO: update this to change the registered public eth address of the give user (indicated by their email).
+    const query = vocal.updateAddressQuery(userId, address)
+    // TODO: update this to change the registered public eth address of the give user (indicated by their userId).
     return res.json(true);
-    // pool.query(`SELECT * FROM transactions where email='${email}'`, (err, result) => {
-    //     console.log('transactions', err, count, result)
-    //     if (err) {
-    //       console.error('transactions error', err);
-    //       return res.status(500).json(err);
-    //     }
-    //     // pool.end()
-    //     return res.json(result.rows);
-    //   });
 
 });
 
-// @Deprecated
-app.get('/api/history', (req, res) => {
-    const email = req.params.email;
-    pool.query(`SELECT * FROM balance where email='${email}'`, (err, result) => {
-        console.log('history', err, count, result)
-        if (err) {
-            console.error('history error', err);
-            return res.status(500).json(err);
-        }
-        // pool.end()
-        return res.json(result.rows);
-    });
-});
-
-// TODO: query the blockchain for the transactions submitted by the given email (using the address lookup).
+// TODO: query the blockchain for the transactions submitted by the given userId (using the address lookup).
 app.get('/api/transactions', (req, res) => {
-    const email = req.params.email;
-    pool.query(`SELECT * FROM transactions where email='${email}'`, (err, result) => {
+    const userId = req.params.userId;
+    pool.query(`SELECT * FROM transactions where userId='${userId}'`, (err, result) => {
         console.log('transactions', err, count, result)
         if (err) {
             console.error('transactions error', err);
@@ -208,34 +189,6 @@ app.get('/api/transactions', (req, res) => {
     });
 });
 
-// TODO: use the email to do an address lookup to add the vocal coin to the user's account.
-app.post('/api/vocal/add', (req, res) => {
-    const body = req.body;
-    const email = body.email;
-    if (!email) {
-        return res.status(400).json({ message: "email must be defined" });
-    }
-
-    // calculate the amount of vocal to credit based on the email (TODO: and other params).
-    const amount = vocal.calculateVocalCredit(email);
-
-    // TODO: add insert query into the blockchain or transactions db BEFORE processing the modify request to the balance.
-    // If for some reason the request fails (either) rolls back the entire transaction.
-
-    // If the email is in the DB, modify the balance by amount, else create a new balance 
-    //TODO: make this an update query, or insert.
-    pool.query(`SELECT * FROM balance where email='${email}'`, (err, result) => {
-        console.log('vocal add', err, count, result)
-        if (err) {
-            console.error('vocal add error', err);
-            return res.status(500).json(err);
-        }
-        // pool.end()
-        return res.json(result.rows);
-    });
-
-});
-
 // Socket IO handlers //
 
 io.origins('*:*') // for latest version
@@ -244,7 +197,8 @@ io.on('connection', function (client) {
         console.log('user connect');
     });
     client.on('action', function (event) {
-        pool.query('INSERT INTO events(name, time) values($1, $2)', [event.name, event.time]);
+        const query = vocal.insertEventQuery(event.name, event.time);
+        pool.query(query);
         console.log('action', JSON.stringify(event));
         io.emit('incoming', event)
     });
