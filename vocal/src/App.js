@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Dashboard from './components/dash/Dashboard';
+import MapPage from './components/dash/MapPage';
 import WhitePaper from './components/WhitePaper';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
@@ -41,7 +42,7 @@ function PublicRoute({component: Component, authed, ...rest}) {
       {...rest}
       render={(props) => authed === false
         ? <Component {...props} />
-        : <Redirect to='/dashboard' />}/>
+        : <Redirect to='/map' />}/>
   );
 }
 
@@ -92,6 +93,7 @@ class App extends Component {
               <Route authed={this.state.authed} path="/faq" component={FAQ}/>
               <PublicRoute authed={this.state.authed} exact path="/" component={Home} />
               <PrivateRoute authed={this.state.authed} path="/dashboard" component={Dashboard}/>
+              <PrivateRoute authed={this.state.authed} path="/map" component={MapPage}/>
               <Route authed={this.state.authed} render={() => <h1 className="centered">Page not found</h1>} />
             </Switch>
             <Footer />

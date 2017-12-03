@@ -63,7 +63,8 @@ export default class Header extends Component {
                                 <img className="header-image" src={currentUser.photoURL}/>
                             </LinkContainer>}
                         <Nav pullRight>
-                                {authed && <LinkContainer to="/dashboard"><NavItem>Your Dashboard</NavItem></LinkContainer>}
+                                {authed && <LinkContainer to="/dashboard"><NavItem>Your Account</NavItem></LinkContainer>}
+                                {authed && <LinkContainer to="/map"><NavItem>Explore</NavItem></LinkContainer>}
                             <LinkContainer to="/whitepaper">
                                 <NavItem>View Whitepaper</NavItem>
                             </LinkContainer>

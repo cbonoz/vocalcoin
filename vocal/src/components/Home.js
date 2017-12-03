@@ -17,7 +17,8 @@ export default class Home extends Component {
         super(props);
         this.state = {
             title: 'The Future is Vocal' ,
-            slogan: 'Vocal is a currency platform that puts the advertising experience back in the hands of users.',
+            // slogan: 'Vocal is a currency platform that puts the advertising experience back in the hands of users.',
+            slogan: 'Vocal is a currency platform for encouraging civic engagement',
             words: ['building', 'sharing', 'discovering'],
             blocks: [],
             authed: this.props.authed

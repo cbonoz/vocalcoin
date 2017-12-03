@@ -8,6 +8,8 @@
     "react": "^16.1.1",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.1.1",
+    "react-geolocation": "^1.0.3",
+    "react-google-maps": "^9.4.1",
     "react-paginate": "^5.0.0",
     "react-pdf": "^2.4.1",
     "react-rotating-text": "^1.2.1",
@@ -19,6 +21,7 @@
     "react-stack-grid": "^0.6.0",
     "react-tabs": "^2.1.1",
     "react-toastify": "^2.2.0",
+    "react-vis": "^1.7.10",
     "react-youtube": "^7.5.0",
     "socket.io-client": "^2.0.4",
     "universal-cookie": "^2.1.0"
