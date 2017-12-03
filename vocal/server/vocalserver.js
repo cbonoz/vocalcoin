@@ -17,6 +17,9 @@ const prod = false;
 
 // custom libraries.
 const vocal = require('./vocal');
+const contract = require('./contract');
+
+const vocalContract = contract.vocalContract;
 
 const dbUser = process.env.ADMIN_DB_USER;
 const dbPass = process.env.ADMIN_DB_PASS;
