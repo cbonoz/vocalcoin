@@ -2,6 +2,11 @@ const library = (function () {
 
   // TODO: replace with actual contract address
   const CONTRACT_ADDR = '0xe0b79b3d705cd09435475904bf54520929eae4e8';
+  // TODO: replace with ropsten (test net).
+  const WEB3_PROVIDER = "http://localhost:8545";
+  // TODO: replace with actual compiled contract abi.
+  const CONTRACT_ABI = "contracts/contracts.json";
+
 
   const fs = require("fs");
   const Web3 = require('web3'); // https://www.npmjs.com/package/web3
@@ -17,12 +22,11 @@ const library = (function () {
     web3 = new Web3(web3.currentProvider);
   } else {
     // set the provider you want from Web3.providers
-    // TODO: replace with ropsten (test net).
-    web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER));
   }
 
   // Fetch ABI
-  const source = fs.readFileSync("contracts/contracts.json");
+  const source = fs.readFileSync(CONTRACT_ABI);
   const contracts = JSON.parse(source)["contracts"];
   const abi = JSON.parse(contracts.SampleContract.abi);
 
