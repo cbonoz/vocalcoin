@@ -115,7 +115,6 @@ export default class MapPage extends Component {
     return (
       <div>
         <MapWithASearchBox />
-
       </div>
     )
   }

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Jumbotron, Button, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ReactRotatingText from 'react-rotating-text';
+import HeaderBox from './data/HeaderBox';
+import SocketFeed from './SocketFeed';
 import YouTube from 'react-youtube';
 
 import HelpSteps from './HelpSteps';
@@ -19,7 +21,7 @@ export default class Home extends Component {
             title: 'The Future is Vocal' ,
             // slogan: 'Vocal is a currency platform that puts the advertising experience back in the hands of users.',
             // slogan: 'Vocal is a currency platform for encouraging civic engagement',
-            slogan: "Vocal is a cryptocurrency cenetered around social change and civic engagement",
+            slogan: "Vocal is a cryptocurrency platform promoting social change and civic engagement",
             words: ['building', 'sharing', 'discovering'],
             blocks: [],
             authed: this.props.authed
@@ -51,7 +53,7 @@ export default class Home extends Component {
                 <div className="home-content">
                     <Row>
                         <Jumbotron className="jumbotron transparency-jumbotron" style={backgroundStyle}>
-                            <Col xs={12} md={12}>
+                            <Col xs={12} md={8}>
                                 <div className="static-modal-jumbotron opaque centered">
                                     <img className="home-banner-image" src={vocal} />
                                     <h2 className="bold title-text">
@@ -79,14 +81,14 @@ export default class Home extends Component {
 
                                 </div>
                             </Col>
-                            {/* <Col xs={12} md={3} className="home-right-col">
+                            <Col xs={12} md={3} className="home-right-col">
                                 <ListGroup>
-                                    <HeaderBox header={"Recent Activity"}>
+                                    <HeaderBox header={"What's Happening"}>
                                         <SocketFeed />
                                     </HeaderBox>
                                 </ListGroup>
                             </Col>
-                            <Col xsHidden md={1} /> */}
+                            <Col xsHidden md={1} />
                         </Jumbotron>
                     </Row>
                 </div>
