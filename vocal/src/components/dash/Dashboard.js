@@ -22,11 +22,10 @@ export default class Dashboard extends Component {
         return (
             <div className="dashboard-content centered">
                 <img src={vocal} className="centered dashboard-image" />
-                {/* <h1>User Dashboard</h1> */}
+                {/* <p class="italic">Dashboard</p> */}
                 {self.state.currentUser && <p className="email-subtitle">{self.state.currentUser.email}</p>}
                 <Row>
-                    <Col xsHidden md={1} />
-                    <Col xs={12} md={10}>
+                    <Col xs={12} md={12}>
                         <ListGroup>
                             <ListGroupItem header={'User Dashboard'} bsStyle="success" />
                             <ListGroupItem>
@@ -37,14 +36,12 @@ export default class Dashboard extends Component {
                     <Col xsHidden md={1} />
                 </Row>
                 <Row>
-                    <Col xsHidden md={1} />
-                    <Col xs={12} md={10}>
+                    <Col xs={12} md={12}>
                         <ListGroupItem header={'Manage Deposit Address'} bsStyle="danger" />
                         <ListGroupItem>
                             <UpdateAddress currentUser={self.state.currentUser} />
                         </ListGroupItem>
                     </Col>
-                    <Col xsHidden md={1} />
                 </Row>
             </div>
         )

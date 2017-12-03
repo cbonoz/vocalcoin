@@ -12,19 +12,21 @@ export default class FAQ extends Component {
         this.questions = [
             {
                 question: "What is Vocal?",
-                answer: "Vocal is a currency platform that puts the advertising experience back in the hands of users by rewarding them for engaging with advertisers."
+                // answer: "Vocal is a currency platform that puts the advertising experience back in the hands of users by rewarding them for engaging with advertisers."
+                answer: "Vocal is a currency platform designed to reward and promote civic engagement in voting for government initiatives",
             },
             {
                 question: "How does Vocal work?",
-                answer: "Vocal credits a market rate amount of coin for each ad you watch. This amount is dynamic and will gradually decrease with time as more users join the platform. The best time to start earning is now."
+                // answer: "Vocal credits a market rate amount of coin for each ad you watch. This amount is dynamic and will gradually decrease with time as more users join the platform. The best time to start earning is now."
+                answer: "Vocal credits a variable* amount of coin for each vote that you submit. This amount is dynamic and will gradually decrease as more users get involved",
             },
             {
                 question: "How long has Vocal been around?",
                 answer: "Vocal was launched in Winter 2017."
             },
             {
-                question: "Do I need an account?",
-                answer: "Yes"
+                question: "Do I need an account to participate?",
+                answer: "Yes. This account will be used to track the amount of token you have, as well as enable tracking of each user contextually in terms of whether a particular vote has already submitted or not by a certain user."
             },
         ]
     }
@@ -50,8 +52,9 @@ export default class FAQ extends Component {
                         <p className="large faq-box">{entry.answer}</p>
                     </Accordion>);
                 })}
-                {}
                 {!self.state.currentUser && <p className="centered faq-bottom-text large">Ready? Click login in the Header bar to begin.</p>}
+
+                <div className='faq-whitepaper centered'><a href="/whitepaper">View Whitepaper</a></div>
             </div>
         )
     }

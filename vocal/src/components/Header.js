@@ -16,8 +16,8 @@ export default class Header extends Component {
         }
         this._logout = this._logout.bind(this);
         this._login = this._login.bind(this);
-        this.open  = this.open.bind(this);
-        this.close  = this.close.bind(this);
+        this.open = this.open.bind(this);
+        this.close = this.close.bind(this);
     }
 
     close() {
@@ -34,11 +34,11 @@ export default class Header extends Component {
     }
 
     _logout() {
-        firebaseAuth().signOut().then(function() {
+        firebaseAuth().signOut().then(function () {
             // Sign-out successful.
-          }).catch(function(error) {
+        }).catch(function (error) {
             // An error happened.
-          });
+        });
     }
 
     render() {
@@ -59,21 +59,17 @@ export default class Header extends Component {
                         <Navbar.Toggle />
                     </Navbar.Header>
                     <Navbar.Collapse>
-                            {authed && <LinkContainer to='/dashboard'>
-                                <img className="header-image" src={currentUser.photoURL}/>
-                            </LinkContainer>}
+                        {authed && <LinkContainer to='/dashboard'>
+                            <img className="header-image" src={currentUser.photoURL} />
+                        </LinkContainer>}
                         <Nav pullRight>
-                                {authed && <LinkContainer to="/dashboard"><NavItem>Your Account</NavItem></LinkContainer>}
-                                {authed && <LinkContainer to="/map"><NavItem>Explore</NavItem></LinkContainer>}
-                            <LinkContainer to="/whitepaper">
-                                <NavItem>View Whitepaper</NavItem>
-                            </LinkContainer>
-                            <LinkContainer to="/faq">
-                                <NavItem>What is Vocal - FAQ</NavItem>
-                            </LinkContainer>
+                            {!authed && <LinkContainer to="/faq"><NavItem>What is Vocal - FAQ</NavItem></LinkContainer>}
+                            {authed && <LinkContainer to="/dashboard"><NavItem>Your Account</NavItem></LinkContainer>}
+                            {authed && <LinkContainer to="/map"><NavItem>Explore Issues</NavItem></LinkContainer>}
+                            {!authed && <LinkContainer to="/whitepaper"><NavItem>View Whitepaper</NavItem></LinkContainer>}
                             {authed && <NavItem onClick={() => self._logout()}>Logout</NavItem>}
-                            {!authed && <NavItem onClick={() => self._login()}>Login&nbsp;&nbsp;
-                            <i className="centered clear fa fa-paper-plane facebook-blue" aria-hidden="true"></i>
+                            {!authed && <NavItem onClick={() => self._login()}>
+                                Login&nbsp;&nbsp;<i className="centered clear fa fa-paper-plane facebook-blue" aria-hidden="true"></i>}
                             </NavItem>}
                         </Nav>
                     </Navbar.Collapse>
