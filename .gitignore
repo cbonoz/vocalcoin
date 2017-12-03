@@ -24,6 +24,8 @@ test/
 
 vocal/node_modules
 vocal/server/node_modules
+vocalcontracts/node_modules
+vocalcontracts/node_modules/
 
 # production
 /build
