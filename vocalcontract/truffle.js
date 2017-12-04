@@ -25,16 +25,6 @@ module.exports = {
       // gas: 290000,
       gas: 2900000,
       gasPrice: '0x4A817C800'
-    },
-    ropstenGucciManePunk: {
-      network_id: "3",
-      host: "localhost",
-      port: 8545,
-      gas: 2900000
     }
-  },
-  rpc: {
-    host: 'localhost',
-    port: 8080
   }
 };
