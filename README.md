@@ -10,3 +10,10 @@
 
 
 ## Additional Notes:
+
+## Truffle Instructions:
+```
+cd vocal/vocalcontract
+truffle compile
+truffle migrate --network ropsten
+```
