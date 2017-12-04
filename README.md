@@ -12,6 +12,9 @@
 ## Additional Notes:
 
 ## Truffle Instructions:
+
+Instructions to deploy contract to testnet
+
 ```
 cd vocal/vocalcontract
 truffle compile
