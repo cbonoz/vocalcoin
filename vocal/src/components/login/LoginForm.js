@@ -150,8 +150,7 @@ export default class LoginForm extends Component {
               <Checkbox onChange={self.handleCheckboxChange} checked={self.state.isRegister}>Register</Checkbox>
               {/* <Button bsSize="large" bsStyle="danger" className="login-button" onClick={self.handleRegister}>Register</Button> */}
             </FormGroup>
-            {self.state.error &&
-              <p className="error-text centered red italics medium">{self.state.error}</p>}
+            {self.state.error && <p className="error-text centered red italics medium">{self.state.error}</p>}
           </Form>
       </div>
     );
