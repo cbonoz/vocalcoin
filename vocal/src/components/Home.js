@@ -65,9 +65,7 @@ export default class Home extends Component {
                                     <div className="header-text-section">
                                         <span className="header-text">
                                             <div className="centered">
-                                                <p className="centered large bold">
-                                                    What are you waiting for?<br />
-                                                </p>
+                                                <p className="centered large bold">What are you waiting for?<br /></p>
                                                 <Button bsStyle="primary" className="start-button" onClick={() => { window.location = "/faq"}}>
                                                     Learn More
                                                     &nbsp;<i className="centered clear fa fa-paper-plane " aria-hidden="true"></i>

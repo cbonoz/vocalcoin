@@ -2,9 +2,11 @@ const library = (function () {
     const axios = require('axios');
 
     const PORT = 9007;
-
-    const BASE_URL = "https://www.vocalcoin.com"
     const MAX_EVENTS = 8;
+
+    // const BASE_URL = "https://www.vocalcoin.com"
+    // TODO: add https
+    const BASE_URL = `http://172.31.56.84:${PORT}`;
     const socket = require('socket.io-client')(BASE_URL);
 
     const getRandom = (items) => {

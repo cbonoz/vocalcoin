@@ -110,17 +110,17 @@ export default class LoginForm extends Component {
     const self = this;
     return (
       <div className="login-form">
-        <Row>
           <Form>
             <FormGroup className="login-form-group">
-              <Col xsHidden md={1} />
-              <Col componentClass={ControlLabel} sm={2} md={2}>
+            <Row>
+              <Col componentClass={ControlLabel} sm={1} md={2}>
                 Email:
-          </Col>
+              </Col>
               <Col sm={10} md={8}>
                 <FormControl placeholder="email" type="text" value={self.state.email} onChange={self.handleEmailChange} />
               </Col>
-              <Col xsHidden md={1} />
+              <Col sm={1} md={2} />
+              </Row>
             </FormGroup>
             <FormGroup className="login-form-group">
               <Col xsHidden md={1} />
@@ -153,7 +153,6 @@ export default class LoginForm extends Component {
             {self.state.error &&
               <p className="error-text centered red italics medium">{self.state.error}</p>}
           </Form>
-        </Row>
       </div>
     );
   }

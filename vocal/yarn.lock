@@ -5766,9 +5766,9 @@ react-paginate@^5.0.0:
     prop-types "^15.6.0"
     react-addons-create-fragment "^15.0.0"
 
-react-pdf@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-2.4.1.tgz#13c16fc7320c623b5739d51e82ea23044d154b44"
+react-pdf@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-2.4.2.tgz#22d73de4548a007440f2ce56b6e09b913ed85859"
   dependencies:
     babel-runtime "^6.26.0"
     lodash.once "^4.1.1"
