@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import {Button} from 'react-bootstrap';dd
+import {Button} from 'react-bootstrap';
+import IssueModal from './../modals/IssueModal';
 import Geolocation from "react-geolocation";
 import maputil from '../../utils/maputil';
 import api from '../../utils/api';
