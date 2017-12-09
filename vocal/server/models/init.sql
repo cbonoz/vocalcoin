@@ -23,7 +23,8 @@ CREATE TABLE votes (
   lat float(7),
   lng float(7),
   time BIGINT,
-  message VARCHAR
+  message VARCHAR,
+  agree BOOLEAN NOT NULL
 )
 
 -- Represents the vocal balances for each user

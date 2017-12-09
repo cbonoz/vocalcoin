@@ -19,11 +19,18 @@ const library = (function () {
         return `${date.toDateString()} ${date.toLocaleTimeString()}`;
     }
 
-    // Get issues within the bounding box.
-    // TODO: update to take 4 bo points.
-    function getIssuesForRegion(lat, lng) {
-        const url = `${BASE_URL}/api/issues/region/${lat}/${lng}`;
-        return axios.get(url).then(response => response.data);
+    // Get issues within the bounding box of the map.
+    function getIssuesForRegion(lat1, lng1, lat2, lng2) {
+        const url = `${BASE_URL}/api/issues/region/`;
+        return axios.post(url, {
+            lat1: lat1,
+            lat2: lat2,
+            lng1: lng1,
+            lng2: lng2
+        }).then(response => {
+            const data = response.data;
+            return data;
+        });
     }
 
     function getIssueDetails(issueId) {

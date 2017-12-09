@@ -17,8 +17,8 @@ const library = (function () {
     }
 
     function insertVoteQuery(vote) {
-        return `INSERT INTO votes(issue_id, user_id, lat, lng, time, message) ` +
-            `values(${vote.issue_id}, ${vote.user_id}, ${vote.lat}, ${vote.lng}, ${vote.time}, ${vote.message})`;
+        return `INSERT INTO votes(issue_id, user_id, lat, lng, time, message, agree) ` +
+            `values(${vote.issue_id}, ${vote.user_id}, ${vote.lat}, ${vote.lng}, ${vote.time}, ${vote.message}, ${vote.agree})`;
     }
 
     function insertIssueQuery(issue) {
@@ -34,7 +34,8 @@ const library = (function () {
 
     }
 
-    function getIssuesQuery(lat1, lat2, lng1, lng2) {
+    // point 1 is sw corner, point 2 is ne corner.
+    function getIssuesQuery(lat1, lng1, lat2, lng2) {
         return `SELECT * from issues where lat > ${lat1} and lat < ${lat2} and lng > ${lng1} and lng < ${lng2}`;
     }
 

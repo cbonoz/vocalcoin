@@ -71,7 +71,7 @@ api.post('/api/issues/region', (req, res) => {
     const lng1 = body.lng1;
     const lng2 = body.lng2;
 
-    const query = vocal.getIssuesQuery(lat1, lat2, lng1, lng2);
+    const query = vocal.getIssuesQuery(lat1, lng1, lat2, lng2);
 
     pool.query(query, (err, result) => {
         console.log('issues', err, count, result)
@@ -92,7 +92,7 @@ app.post('/api/vote', (req, res) => {
     pool.query(query, (err, result) => {
         console.log('postVote', err, count, result)
         if (err) {
-            console.error('balance error', err);
+            console.error('postVote error', err);
             return res.status(500).json(err);
         }
         // pool.end()
@@ -108,7 +108,7 @@ app.post('/api/issue', (req, res) => {
     pool.query(query, (err, result) => {
         console.log('postIssue', err, count, result)
         if (err) {
-            console.error('balance error', err);
+            console.error('postIssue error', err);
             return res.status(500).json(err);
         }
         // pool.end()

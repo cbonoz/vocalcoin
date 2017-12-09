@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Geolocation from "react-geolocation";
 import maputil from '../../utils/maputil';
+import api from '../../utils/api';
 
 import {
   withScriptjs,
@@ -11,6 +12,7 @@ import {
 
 import _ from "lodash";
 import { compose, withProps, lifecycle } from "recompose";
+import { toast } from 'react-toastify';
 
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox";
 const google = window.google
@@ -28,6 +30,7 @@ const MapWithASearchBox = compose(
 
       this.setState({
         bounds: null,
+        error: null,
         center: {
           lat: 41.9, lng: -87.624
         },
@@ -36,10 +39,27 @@ const MapWithASearchBox = compose(
           refs.map = ref;
         },
         onBoundsChanged: () => {
+          const self = this;
+          const currBounds = refs.map.getBounds();
           this.setState({
-            bounds: refs.map.getBounds(),
             center: refs.map.getCenter(),
-          })
+            bounds: currBounds
+          });
+          const sw_lat = currBounds.getSouthWest().lat();
+          const sw_lon = currBounds.getSouthWest().lng();
+          const ne_lat = currBounds.getNorthEast().lat();
+          const ne_lon = currBounds.getNorthEast().lng();
+          console.log(`New bounds: ${JSON.stringify(currBounds)}`);
+
+          api.getIssuesForRegion(sw_lat, sw_lon, ne_lat, ne_lon).then((data) => {
+            const issues = data.issues;
+            self.setState( {issues: issues, error: null} );
+
+          }).catch((err) => {
+            const issues = [];
+            self.setState( {issues: issues, error: err} );
+            // toast(<div><b>There was a problem fulfilling your request: {err}</b></div>);
+          });
         },
         onSearchBoxMounted: ref => {
           refs.searchBox = ref;
@@ -55,6 +75,7 @@ const MapWithASearchBox = compose(
               bounds.extend(place.geometry.location)
             }
           });
+
           const nextMarkers = places.map(place => ({
             position: place.geometry.location,
           }));
