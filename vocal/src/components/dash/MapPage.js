@@ -54,7 +54,6 @@ const MapWithASearchBox = compose(
           api.getIssuesForRegion(sw_lat, sw_lon, ne_lat, ne_lon).then((data) => {
             const issues = data.issues;
             self.setState( {issues: issues, error: null} );
-
           }).catch((err) => {
             const issues = [];
             self.setState( {issues: issues, error: err} );
