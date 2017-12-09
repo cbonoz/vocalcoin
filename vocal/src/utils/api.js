@@ -7,7 +7,8 @@ const library = (function () {
     // const BASE_URL = "https://www.vocalcoin.com"
     // TODO: add https
     const BASE_URL = `http://172.31.56.84:${PORT}`;
-    const socket = require('socket.io-client')(BASE_URL);
+    // const socket = require('socket.io-client')(BASE_URL);
+    const socket = null;
 
     const getRandom = (items) => {
         return items[Math.floor(Math.random()*items.length)];

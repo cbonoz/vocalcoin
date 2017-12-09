@@ -63,10 +63,19 @@ body {
   padding-bottom: 2px;
 }
 
+.footer-slogan {
+  font-family:  serif;
+  margin-left: 2px;
+  font-size: 12px;
+  color: whitesmoke;
+}
+
 .home-video-section {
-  background: white;
+  font-family: Cochin, Georgia, Garamond;
+  color: whitesmoke;
+  background: #292c2f;
   padding-top: 40px;
-  padding-bottom: 100px;
+  padding-bottom: 150px;
 }
 
 .center-video {
@@ -448,6 +457,7 @@ d
 .home-background {
   /* background: #0d112B; */
   background: #3b5998;
+  /* background: black; */
 }
 
 .sidebar-item {
