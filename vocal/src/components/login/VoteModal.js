@@ -1,53 +1,55 @@
 import React, { Component } from 'react'
 import { Button, Modal, Popover, Tooltip, OverlayTrigger } from 'react-bootstrap';
-import api from '../../utils/api';
+import VoteForm from './VoteForm';
 
-import { getIssueDetails, postVote } from '../../utils/api';
+import { getVoteDetails, postVote } from '../../utils/api';
 
 import vocal from '../../assets/vocal_square_trans.png';
 
-export default class IssueModal extends Component {
+export default class VoteModal extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            loading: false,
-            error: false,
+            vote: this.props.vote
         };
 
-        this._createIssueFromForm = this._createIssueFromForm.bind(this);
-        this.postIssue = this.postIssue.bind(this);
-
-    }
-
-    _createIssueFromForm(form) {
-        return {};
+        this.postVote = this.postVote.bind(this);
+        this._createVoteFromForm = this._createVoteFromForm.bind(this); 
     }
 
     componentWillMount() {
-        // TODO: invoke web request (if necessary) to retrieve the details for the selected issue id.
+        // TODO: invoke web request (if necessary) to retrieve the details for the selected vote id.
     }
 
-    postIssue() {
+    _createVoteFromForm() {
+        const form = null;
+        return {
+
+        };
+    }
+
+    postVote() {
         const self = this;
         self.setState({loading: true});
         // TODO: grab fields from form and post to server.
         const form = null;
-        const issue = self._createIssueFromForm(form)
+        const vote = self._createVoteFromForm(form)
 
-        api.postIssue(issue).then((res) => {
+        api.postVote(vote).then((res) => {
             self.setState({loading: false, error: null});
-            console.log('postIssue: ' + res);
-            // TODO: alert user that issue created and close the modal.
+            console.log('postVote: ' + res);
+            // TODO: alert user that vote created and close the modal.
 
         }).catch((err) => {
             self.setState({loading: false, error: err});
         });
     }
+
     
     render() {
         const self = this;
-        const issue = self.props.issue;
+        const vote = self.props.vote;
 
         const popover = (
             <Popover id="modal-popover" title="popover">
@@ -63,13 +65,14 @@ export default class IssueModal extends Component {
             <div>
                 <Modal show={this.props.showModal} onHide={this.props.toggleModal}>
                     <Modal.Header closeButton>
-                        <Modal.Title className="centered">Create New Issue</Modal.Title>
+                        <Modal.Title className="centered">Vote on {vote.title}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <hr />
                         {/* Overflowing text vertically will automatically scroll */}
                         <div className="centered">
-                            {/* TODO: Add form to create new issue and post to server. */}
+                            <img src={vocal} className="centered login-image"/>
+                            <p>{JSON.stringify(vote)}</p>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

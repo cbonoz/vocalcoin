@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Button} from 'react-bootstrap';dd
 import Geolocation from "react-geolocation";
 import maputil from '../../utils/maputil';
 import api from '../../utils/api';
@@ -31,12 +32,17 @@ const MapWithASearchBox = compose(
       this.setState({
         bounds: null,
         error: null,
+        showModal: false,
         center: {
           lat: 41.9, lng: -87.624
         },
         markers: [],
         onMapMounted: ref => {
           refs.map = ref;
+        },
+        toggleModal: () => {
+          const isOpen = this.state.showModal;
+          this.setState({showModal: !isOpen})
         },
         onBoundsChanged: () => {
           const self = this;
@@ -92,6 +98,7 @@ const MapWithASearchBox = compose(
   withScriptjs,
   withGoogleMap
 )(props =>
+  <div>
   <GoogleMap
     ref={props.onMapMounted}
     defaultZoom={15}
@@ -102,30 +109,38 @@ const MapWithASearchBox = compose(
       ref={props.onSearchBoxMounted}
       bounds={props.bounds}
       controlPosition={google.maps.ControlPosition.TOP_LEFT}
-      onPlacesChanged={props.onPlacesChanged}
-    >
-      <input
-        type="text"
-        placeholder="Jump to a Location"
-        style={{
-          boxSizing: `border-box`,
-          border: `1px solid transparent`,
-          width: `240px`,
-          height: `32px`,
-          marginTop: `27px`,
-          padding: `0 12px`,
-          borderRadius: `3px`,
-          boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-          fontSize: `14px`,
-          outline: `none`,
-          textOverflow: `ellipses`,
-        }}
-      />
+      onPlacesChanged={props.onPlacesChanged}>
+      <div>
+        <input
+          type="text"
+          placeholder="Jump to a Location"
+          style={{
+            boxSizing: `border-box`,
+            border: `1px solid transparent`,
+            width: `240px`,
+            height: `32px`,
+            marginTop: `27px`,
+            padding: `0 12px`,
+            borderRadius: `3px`,
+            boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+            fontSize: `14px`,
+            outline: `none`,
+            textOverflow: `ellipses`,
+          }}
+        />
+
+        <Button bsStyle="primary" className="start-button" onClick={props.toggleModal}>
+          Create New Issue
+        </Button>
+        
+      </div>
     </SearchBox>
     {props.markers.map((marker, index) =>
       <Marker key={index} position={marker.position} />
     )}
   </GoogleMap>
+  <IssueModal toggleModal={props.toggleModal}/>
+  </div>
 );
 
 
