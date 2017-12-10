@@ -1,15 +1,15 @@
 const library = (function () {
 
 
-  const INFURA_TOKEN = process.env.INFURA_TOKEN;
+  const INFURA_TOKEN = process.env.INFURA_ACCESS_TOKEN;
 
   // TODO: replace with actual contract address
-  const CONTRACT_ADDR = '0xe0b79b3d705cd09435475904bf54520929eae4e8';
+  const CONTRACT_ADDR = '0x6135004c5b2b44493779ce86d6739f57dde674e0';
   // TODO: replace with ropsten (test net).
   const WEB3_PROVIDER = `https://ropsten.infura.io/${INFURA_TOKEN}`
   console.log('provider', WEB3_PROVIDER);
   // TODO: replace with actual compiled contract abi.
-  const CONTRACT_ABI = "contracts/contracts.json";
+  const CONTRACT_ABI = "VocalToken.json";
 
   const fs = require("fs");
   const Web3 = require('web3'); // https://www.npmjs.com/package/web3

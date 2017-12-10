@@ -26,13 +26,13 @@ const library = (function () {
             `values(${issue.user_id}, ${issue.description}, ${issue.title}, ${issue.time})`;
     }
 
-    function addVocalQuery(userId, amount) {
+    // function addVocalQuery(userId, amount) {
         
-    }
+    // }
 
-    function updateAddressQuery(userId, newAddress) {
+    // function updateAddressQuery(userId, newAddress) {
 
-    }
+    // }
 
     // point 1 is sw corner, point 2 is ne corner.
     function getIssuesQuery(lat1, lng1, lat2, lng2) {
