@@ -1,9 +1,13 @@
 const library = (function () {
 
+
+  const INFURA_TOKEN = process.env.INFURA_TOKEN;
+
   // TODO: replace with actual contract address
   const CONTRACT_ADDR = '0xe0b79b3d705cd09435475904bf54520929eae4e8';
   // TODO: replace with ropsten (test net).
-  const WEB3_PROVIDER = "http://localhost:8545";
+  const WEB3_PROVIDER = `https://ropsten.infura.io/${INFURA_TOKEN}`
+  console.log('provider', WEB3_PROVIDER);
   // TODO: replace with actual compiled contract abi.
   const CONTRACT_ABI = "contracts/contracts.json";
 
@@ -14,7 +18,7 @@ const library = (function () {
   // http://localhost:8545
   // For geth VPS server + SSH tunneling see
   // https://gist.github.com/miohtama/ce612b35415e74268ff243af645048f4
-  const web3 = new Web3();
+  let web3 = new Web3();
 
   // https://tokenmarket.net/blog/creating-ethereum-smart-contract-transactions-in-client-side-javascript/
   if (typeof web3 !== 'undefined') {

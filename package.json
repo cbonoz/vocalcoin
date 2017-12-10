@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "react-vis": "^1.7.10",
-    "truffle-hdwallet-provider": "0.0.3"
-  }
-}
