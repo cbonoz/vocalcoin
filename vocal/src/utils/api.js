@@ -33,6 +33,18 @@ const library = (function () {
         });
     }
 
+    function postUserQuery(user) {
+        const url = `${BASE_URL}/api/user`;
+        return axios.post(url, {
+            userId: user.userId,
+            email: user.email,
+            username: user.email.split('@')[0]
+        }).then(response => {
+            const data = response.data;
+            return data;
+        });
+    }
+
     function getIssueDetails(issueId) {
         const url = `${BASE_URL}/api/issue/${issueId}`;
         return axios.get(url).then(response => response.data);
@@ -110,6 +122,7 @@ const library = (function () {
         postVote: postVote,
         postIssue: postIssue,
         postAddress: postAddress,
+        postUserQuery: postUserQuery,
         getIssueDetails: getIssueDetails,
         getIssuesForRegion: getIssuesForRegion,
         getIssuesForUser: getIssuesForUser,

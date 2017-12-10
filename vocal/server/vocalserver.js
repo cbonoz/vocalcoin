@@ -35,6 +35,7 @@ const PORT = 9007;
 
 const app = express();
 const server = require('http').createServer(app);
+const io = require('socket.io')(server, { origins: '*:*'});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -64,7 +65,7 @@ app.get('/api/hello', (req, res) => {
 
 /* Map endpoints */
 
-api.post('/api/issues/region', (req, res) => {
+app.post('/api/issues/region', (req, res) => {
     const body = req.body;
     const lat1 = body.lat1;
     const lat2 = body.lat2;
@@ -152,6 +153,41 @@ app.get('/api/balance', (req, res) => {
         }
         // pool.end()
         return res.json(result.rows);
+    });
+});
+
+app.post('/api/user', (req, res) => {
+    const body = req.body;
+    const userId = body.userId;
+    
+    const query = vocal.getUserQuery(userId);
+    pool.query(query, (err, result) => {
+        console.log('get user', err, count, result)
+        if (err) {
+            console.error('get user error', err);
+            return res.status(500).json(err);
+        }
+        const rows = result.rows;
+        if (rows instanceof Array && rows[0]) {
+            return res.json(rows[0]);
+        } else {
+            const username = body.username;
+            const email = body.email;
+            const account = contract.web3.eth.accounts.create();
+            const address = account.address;
+            const userQuery = vocal.insertUserQuery(userId, email, address, username);
+            pool.query(userQuery, (err, result) => {
+                if (err) {
+                    console.error('create user error', err);
+                    return res.status(500).json(err);
+                }
+                console.log('inserted new user', JSON.stringify(user));
+                
+                return res.json(result); 
+            });
+        }
+
+        // pool.end()
     });
 });
 

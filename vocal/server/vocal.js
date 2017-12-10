@@ -22,17 +22,18 @@ const library = (function () {
     }
 
     function insertIssueQuery(issue) {
-        return `INSERT INTO issues(user_id, description, title, time) ` +
-            `values(${issue.user_id}, ${issue.description}, ${issue.title}, ${issue.time})`;
+        return `INSERT INTO issues(user_id, description, title, lat, lng, time) ` +
+            `values(${issue.user_id}, ${issue.description}, ${issue.title}, ${issue.lat}, ${issue.lng}, ${issue.time})`;
     }
 
-    // function addVocalQuery(userId, amount) {
-        
-    // }
+    function getUserQuery(userId) {
+        return `SELECT * FROM users where ID='${userId}`;
+    }
 
-    // function updateAddressQuery(userId, newAddress) {
-
-    // }
+    function insertUserQuery(userId, email, address, username) {
+        return `INSERT INTO users(ID, email, address, username) ` +
+            `values(${userId}, ${email}, ${address}, ${username})`;
+    }
 
     // point 1 is sw corner, point 2 is ne corner.
     function getIssuesQuery(lat1, lng1, lat2, lng2) {
@@ -45,13 +46,13 @@ const library = (function () {
 
     return {
         getRandom: getRandom,
+        getUserQuery: getUserQuery,
         getIssuesQuery: getIssuesQuery,
         calculateVocalCredit: calculateVocalCredit,
         insertIssueQuery: insertIssueQuery,
         insertEventQuery: insertEventQuery,
+        insertUserQuery: insertUserQuery,
         insertVoteQuery: insertVoteQuery,
-        addVocalQuery: addVocalQuery,
-        updateAddressQuery: updateAddressQuery,
         formatDateTimeMs: formatDateTimeMs
     }
 

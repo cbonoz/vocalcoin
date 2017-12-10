@@ -8,6 +8,8 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './components/Home';
 
+import api from './utils/api';
+
 import {
   BrowserRouter as Router,
   Redirect,
@@ -26,23 +28,23 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-vis/dist/style.css';
 
-function PrivateRoute({component: Component, authed, ...rest}) {
+function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
     <Route
       {...rest}
       render={(props) => authed === true
         ? <Component {...props} />
-        : <Redirect to={{ pathname: '/', state: { from: props.location } }} />}/>
+        : <Redirect to={{ pathname: '/', state: { from: props.location } }} />} />
   );
 }
 
-function PublicRoute({component: Component, authed, ...rest}) {
+function PublicRoute({ component: Component, authed, ...rest }) {
   return (
     <Route
       {...rest}
       render={(props) => authed === false
         ? <Component {...props} />
-        : <Redirect to='/map' />}/>
+        : <Redirect to='/map' />} />
   );
 }
 
@@ -57,15 +59,27 @@ class App extends Component {
   }
 
   componentDidMount() {
+    const self = this;
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
       if (user) {
-        if (!this.state.authed) { // show if there is a change in state.
-          toast(<div><b>Welcome: {user.displayName}</b></div>);
-        }
-        this.setState({
-          authed: true,
-          loading: false,
-        })
+        console.log('user:', JSON.stringify(user));
+        const userId = user.userId;
+        api.postUserQuery(user).then((data) => {
+          console.log('retrieved user data', data);
+
+          if (!self.state.authed) { // show if there is a change in state.
+            toast(<div><b>Welcome: {user.displayName}</b></div>);
+          }
+
+          self.setState({authed: true, loading: false});
+        }).catch((err) => {
+          console.error('error retrieving userId', err);
+
+          toast(<div><b>Error getting address: {err}</b></div>);
+          self.setState({authed: false, loading: false
+          });
+        });
+
       } else {
         if (this.state.authed) {
           toast(<div><b>Logged out, come again soon.</b></div>);
@@ -87,19 +101,19 @@ class App extends Component {
       <div className="App">
         <Router>
           <div>
-            <Header authed={this.state.authed}/>
+            <Header authed={this.state.authed} />
             <Switch>
               <Route authed={this.state.authed} path="/whitepaper" component={WhitePaper} />
-              <Route authed={this.state.authed} path="/faq" component={FAQ}/>
+              <Route authed={this.state.authed} path="/faq" component={FAQ} />
               <PublicRoute authed={this.state.authed} exact path="/" component={Home} />
-              <PrivateRoute authed={this.state.authed} path="/dashboard" component={Dashboard}/>
-              <PrivateRoute authed={this.state.authed} path="/map" component={MapPage}/>
+              <PrivateRoute authed={this.state.authed} path="/dashboard" component={Dashboard} />
+              <PrivateRoute authed={this.state.authed} path="/map" component={MapPage} />
               <Route authed={this.state.authed} render={() => <h1 className="centered">Page not found</h1>} />
             </Switch>
             <Footer />
           </div>
         </Router>
-        <ToastContainer position={toast.POSITION.BOTTOM_RIGHT}/>
+        <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
       </div>
     );
   }
