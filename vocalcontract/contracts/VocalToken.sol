@@ -45,8 +45,13 @@ contract TokenERC20 is owned {
      * Initializes contract with initial supply tokens to the creator of the contract
      */
     function TokenERC20(uint256 initialSupply, string tokenName, string tokenSymbol) public {
+        initialSupply = 100000000;                                // Added initial value so
         totalSupply = initialSupply * 10 ** uint256(decimals);  // Update total supply with the decimal amount
         balanceOf[msg.sender] = totalSupply;                // Give the creator all initial tokens
+
+        name = "VocalCoin";
+        decimals = 18;
+        symbol = "VOCL";
         name = tokenName;                                   // Set the name for display purposes
         symbol = tokenSymbol;                               // Set the symbol for display purposes
     }
