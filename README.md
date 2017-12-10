@@ -20,3 +20,6 @@ cd vocal/vocalcontract
 truffle compile
 truffle migrate --network ropsten
 ```
+
+## Vocal Contract Address:
+0x6135004c5b2b44493779ce86d6739f57dde674e0
