@@ -3,7 +3,7 @@ import { Navbar, NavItem, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import vocal from '../assets/vocal_trans_black.png';
-import LoginModal from './login/LoginModal';
+import LoginModal from './modals/LoginModal';
 import { firebaseAuth } from '../utils/fire';
 import firebase from 'firebase';
 

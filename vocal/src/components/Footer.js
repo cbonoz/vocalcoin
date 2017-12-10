@@ -24,6 +24,7 @@ export default class Footer extends Component {
                     <div className="footer-left">
 
                         <h3><img src={vocal} className="footer-image" /></h3>
+                        <p className="footer-slogan">Distributed Political Currency</p>
 
                         <p className="footer-links">
                             <a href="/">Home</a>&nbsp;-&nbsp;

@@ -3,7 +3,7 @@ import { Jumbotron, Button, Row, Col, ListGroup, ListGroupItem } from 'react-boo
 import { Link } from 'react-router-dom';
 import ReactRotatingText from 'react-rotating-text';
 import HeaderBox from './data/HeaderBox';
-import SocketFeed from './SocketFeed';
+// import SocketFeed from './SocketFeed';
 import YouTube from 'react-youtube';
 
 import HelpSteps from './HelpSteps';

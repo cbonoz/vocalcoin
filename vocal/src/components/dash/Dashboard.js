@@ -1,48 +1,70 @@
 import React, { Component } from 'react'
-import { Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
+import Issues from './Issues';
+import Help from './Help';
+import AccountHistory from './AccountHistory';
+import Sidebar from './Sidebar';
 
 import { firebaseAuth } from '../../utils/fire';
-
-import AccountHistory from './AccountHistory';
-import UpdateAddress from './UpdateAddress';
-
-import vocal from '../../assets/vocal_trans_black.png';
 
 export default class Dashboard extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            currentUser: null
+            currentUser: null,
+            currentPage: 0
         };
+
+        this._renderCurrentPage = this._renderCurrentPage.bind(this);
+        this.updateCurrentPage = this.updateCurrentPage.bind(this);
+    }
+
+    componentDidMount() {
+        const self = this;
+        this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
+            self.setState({ currentUser: user });
+        })
+    }
+
+    componentWillUnmount() {
+        this.removeListener();
+    }
+
+    updateCurrentPage(currentPage) {
+        this.setState({ currentPage: currentPage });
+    }
+
+    _renderCurrentPage() {
+        const self = this;
+        switch (self.state.currentPage) {
+            case 0:
+                return <AccountHistory currentUser={self.state.currentUser} />
+            case 1:
+                return <Issues currentUser={self.state.currentUser} />
+            case 2:
+                return <Help currentUser={self.state.currentUser} />
+            default: // 0
+                return <AccountHistory currentUser={self.state.currentUser} />
+        }
     }
 
     render() {
         const self = this;
         return (
-            <div className="dashboard-content centered">
-                <img src={vocal} className="centered dashboard-image" />
-                {/* <p class="italic">Dashboard</p> */}
-                {self.state.currentUser && <p className="email-subtitle">{self.state.currentUser.email}</p>}
-                <Row>
-                    <Col xs={12} md={12}>
-                        <ListGroup>
-                            <ListGroupItem header={'User Dashboard'} bsStyle="success" />
-                            <ListGroupItem>
-                                <AccountHistory currentUser={self.state.currentUser} />
-                            </ListGroupItem>
-                        </ListGroup>
-                    </Col>
-                    <Col xsHidden md={1} />
-                </Row>
-                <Row>
-                    <Col xs={12} md={12}>
-                        <ListGroupItem header={'Manage Deposit Address'} bsStyle="danger" />
-                        <ListGroupItem>
-                            <UpdateAddress currentUser={self.state.currentUser} />
-                        </ListGroupItem>
-                    </Col>
-                </Row>
+            <div>
+                <div className='dashboard-container'>
+                    <Row>
+                        <Col xs={12} md={3}>
+                            <Sidebar currentPage={this.state.currentPage} updateCurrentPage={this.updateCurrentPage} />
+                        </Col>
+                        <Col xs={12} md={9}>
+                            <div className="full-height">
+                                {self._renderCurrentPage()}
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
             </div>
         )
     }

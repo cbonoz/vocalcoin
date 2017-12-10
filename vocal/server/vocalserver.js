@@ -64,8 +64,24 @@ app.get('/api/hello', (req, res) => {
 
 /* Map endpoints */
 
-api.get('/api/issues/region', (req, res) => {
+api.post('/api/issues/region', (req, res) => {
+    const body = req.body;
+    const lat1 = body.lat1;
+    const lat2 = body.lat2;
+    const lng1 = body.lng1;
+    const lng2 = body.lng2;
 
+    const query = vocal.getIssuesQuery(lat1, lng1, lat2, lng2);
+
+    pool.query(query, (err, result) => {
+        console.log('issues', err, count, result)
+        if (err) {
+            console.error('issues', err);
+            return res.status(500).json(err);
+        }
+        // Return the rows that lie within the bounds of the map view.
+        return res.json(result.rows);
+    });
 });
 
 app.post('/api/vote', (req, res) => {
@@ -76,7 +92,7 @@ app.post('/api/vote', (req, res) => {
     pool.query(query, (err, result) => {
         console.log('postVote', err, count, result)
         if (err) {
-            console.error('balance error', err);
+            console.error('postVote error', err);
             return res.status(500).json(err);
         }
         // pool.end()
@@ -92,7 +108,7 @@ app.post('/api/issue', (req, res) => {
     pool.query(query, (err, result) => {
         console.log('postIssue', err, count, result)
         if (err) {
-            console.error('balance error', err);
+            console.error('postIssue error', err);
             return res.status(500).json(err);
         }
         // pool.end()
@@ -172,7 +188,6 @@ app.post('/api/address/update', (req, res) => {
     const query = vocal.updateAddressQuery(userId, address)
     // TODO: update this to change the registered public eth address of the give user (indicated by their userId).
     return res.json(true);
-
 });
 
 // TODO: query the blockchain for the transactions submitted by the given userId (using the address lookup).
