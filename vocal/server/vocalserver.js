@@ -85,6 +85,8 @@ app.post('/api/issues/region', (req, res) => {
     });
 });
 
+/* Start of Blockchain routes */
+
 app.post('/api/vote', (req, res) => {
     const body = req.body;
     const vote = body.vote;
@@ -239,6 +241,8 @@ app.get('/api/transactions', (req, res) => {
         return res.json(result.rows);
     });
 });
+
+/* End of Blockchain routes */
 
 // Socket IO handlers //
 
