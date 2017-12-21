@@ -71,13 +71,11 @@ class App extends Component {
             toast(<div><b>Welcome: {user.displayName}</b></div>);
           }
 
-          self.setState({authed: true, loading: false});
+          self.setState({ authed: true, loading: false });
         }).catch((err) => {
           console.error('error retrieving userId', err);
-
-          toast(<div><b>Error getting address: {err}</b></div>);
-          self.setState({authed: false, loading: false
-          });
+          const errorAuthed = true;
+          self.setState({ authed: errorAuthed, loading: false });
         });
 
       } else {

@@ -110,48 +110,30 @@ export default class LoginForm extends Component {
     const self = this;
     return (
       <div className="login-form">
-          <Form>
+        <Form>
+          <div className="login-form-field-name">Email:</div>
+          <FormGroup className="login-form-group">
+            <FormControl placeholder="email" type="text" value={self.state.email} onChange={self.handleEmailChange} />
+          </FormGroup>
+          <div className="login-form-field-name">Password:</div>
+          <FormGroup className="login-form-group">
+            <FormControl placeholder="password" type="password" value={self.state.password} onChange={self.handlePasswordChange} />
+          </FormGroup>
+
+          {self.state.isRegister && <div className="repeat-password">
+            <div className="login-form-field-name">Repeat Password:</div>
             <FormGroup className="login-form-group">
-            <Row>
-              <Col componentClass={ControlLabel} sm={1} md={2}>
-                Email:
-              </Col>
-              <Col sm={10} md={8}>
-                <FormControl placeholder="email" type="text" value={self.state.email} onChange={self.handleEmailChange} />
-              </Col>
-              <Col sm={1} md={2} />
-              </Row>
+              <FormControl placeholder="password" type="password" value={self.state.repeatPassword} onChange={self.handleRepeatPasswordChange} />
             </FormGroup>
-            <FormGroup className="login-form-group">
-              <Col xsHidden md={1} />
-              <Col componentClass={ControlLabel} sm={2} md={2}>
-                Password:
-          </Col>
-              <Col sm={10} md={8}>
-                <FormControl placeholder="password" type="password" value={self.state.password} onChange={self.handlePasswordChange} />
-              </Col>
-              <Col xsHidden md={1} />
-            </FormGroup>
-            {/* {!self.state.isRegister && <div className="login-form-group"></div>} */}
-            {self.state.isRegister && <div className="repeat-password">
-              <FormGroup className="login-form-group">
-                <Col xsHidden md={1} />
-                <Col componentClass={ControlLabel} sm={2} md={2}>
-                  Repeat Password:
-            </Col>
-                <Col sm={10} md={8}>
-                  <FormControl placeholder="password" type="password" value={self.state.repeatPassword} onChange={self.handleRepeatPasswordChange} />
-                </Col>
-                <Col xsHidden md={1} />
-              </FormGroup>
-            </div>}
-            <FormGroup className="login-form-group">
-              <Button bsSize="large" bsStyle={self.state.loginButtonStyle} className="login-button" onClick={self.handleLogin}>{self.state.loginButtonText}</Button>
-              <Checkbox onChange={self.handleCheckboxChange} checked={self.state.isRegister}>Register</Checkbox>
-              {/* <Button bsSize="large" bsStyle="danger" className="login-button" onClick={self.handleRegister}>Register</Button> */}
-            </FormGroup>
-            {self.state.error && <p className="error-text centered red italics medium">{self.state.error}</p>}
-          </Form>
+          </div>}
+
+          <FormGroup className="login-form-group">
+            <Button bsSize="large" bsStyle={self.state.loginButtonStyle} className="login-button" onClick={self.handleLogin}>{self.state.loginButtonText}</Button>
+            <Checkbox onChange={self.handleCheckboxChange} checked={self.state.isRegister}>Register</Checkbox>
+          </FormGroup>
+          
+          {self.state.error && <p className="error-text centered red italics medium">{self.state.error}</p>}
+        </Form>
       </div>
     );
   }

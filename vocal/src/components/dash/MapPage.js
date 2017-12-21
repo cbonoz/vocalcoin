@@ -14,6 +14,7 @@ import {
 
 import _ from "lodash";
 import { compose, withProps, lifecycle } from "recompose";
+import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
 import { toast } from 'react-toastify';
 
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox";
@@ -34,6 +35,7 @@ const MapWithASearchBox = compose(
         bounds: null,
         error: null,
         showModal: false,
+        enableRefreshButton: false,
         center: {
           lat: 41.9, lng: -87.624
         },
@@ -48,23 +50,29 @@ const MapWithASearchBox = compose(
         onBoundsChanged: () => {
           const self = this;
           const currBounds = refs.map.getBounds();
-          this.setState({
+          self.setState({
             center: refs.map.getCenter(),
-            bounds: currBounds
+            bounds: currBounds,
+            enableRefreshButton: true
           });
+          
+          // console.log(`New bounds: ${JSON.stringify(currBounds)}`);
+        },
+        getIssuesForRegion: () => {
+          const self = this;
+          self.setState({enableRefreshButton: false});
+          const currBounds = refs.map.getBounds();
           const sw_lat = currBounds.getSouthWest().lat();
           const sw_lon = currBounds.getSouthWest().lng();
           const ne_lat = currBounds.getNorthEast().lat();
           const ne_lon = currBounds.getNorthEast().lng();
-          console.log(`New bounds: ${JSON.stringify(currBounds)}`);
-
           api.getIssuesForRegion(sw_lat, sw_lon, ne_lat, ne_lon).then((data) => {
             const issues = data.issues;
             self.setState( {issues: issues, error: null} );
           }).catch((err) => {
             const issues = [];
+            toast(<div><b>Error retrieving issues: Server Offline</b></div>);
             self.setState( {issues: issues, error: err} );
-            // toast(<div><b>There was a problem fulfilling your request: {err}</b></div>);
           });
         },
         onSearchBoxMounted: ref => {
@@ -130,17 +138,20 @@ const MapWithASearchBox = compose(
           }}
         />
 
-        <Button bsStyle="primary" className="start-button" onClick={props.toggleModal}>
+        <Button bsStyle="success" className="start-button" onClick={props.toggleModal}>
           Create New Issue
         </Button>
+        {<Button disabled={!props.enableRefreshButton} bsStyle="danger" className="start-button" onClick={props.getIssuesForRegion}>
+          Redo Search in Area
+        </Button>}
         
       </div>
     </SearchBox>
     {props.markers.map((marker, index) =>
       <Marker key={index} position={marker.position} />
     )}
-  </GoogleMap>
-  <IssueModal toggleModal={props.toggleModal}/>
+    </GoogleMap>
+    <IssueModal toggleModal={props.toggleModal} showModal={props.showModal}/>
   </div>
 );
 
