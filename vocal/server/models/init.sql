@@ -28,7 +28,7 @@ CREATE TABLE votes (
   lng float(7),
   time BIGINT,
   message VARCHAR,
-  agree BOOLEAN NOT NULL
+  agree INT NOT NULL
 );
 
 /* For socket io */

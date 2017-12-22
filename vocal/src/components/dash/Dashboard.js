@@ -38,11 +38,11 @@ export default class Dashboard extends Component {
     _renderCurrentPage() {
         const self = this;
         switch (self.state.currentPage) {
+            // case 0:
+            //     return <AccountHistory currentUser={self.state.currentUser} />
             case 0:
-                return <AccountHistory currentUser={self.state.currentUser} />
-            case 1:
                 return <Issues currentUser={self.state.currentUser} />
-            case 2:
+            case 1:
                 return <Help currentUser={self.state.currentUser} />
             default: // 0
                 return <AccountHistory currentUser={self.state.currentUser} />

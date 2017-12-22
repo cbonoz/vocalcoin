@@ -9,7 +9,7 @@ export default class Sidebar extends Component {
 
     render() {
         const pageList = [
-            'Account History',
+            // 'Account History',
             'Your Issues',
             'Help'
         ];

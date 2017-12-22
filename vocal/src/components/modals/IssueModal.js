@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Modal, Popover, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Button, Modal, Popover, Tooltip, OverlayTrigger, ControlLabel, Form, FormGroup, FormControl } from 'react-bootstrap';
 import api from '../../utils/api';
 
 import { getIssueDetails, postVote } from '../../utils/api';
@@ -10,41 +10,67 @@ export default class IssueModal extends Component {
 
     constructor(props) {
         super(props)
+
+        console.log('currentUser', this.props.currentUser);
+
         this.state = {
-            loading: false,
+            postIssueEnabled: true,
             error: false,
+            issueTitle: '',
+            issueDescription: '',
         };
 
         this._createIssueFromForm = this._createIssueFromForm.bind(this);
         this.postIssue = this.postIssue.bind(this);
-
+        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+        this.handleTitleChange = this.handleTitleChange.bind(this);
     }
 
-    _createIssueFromForm(form) {
-        return {};
+    handleDescriptionChange(e) {
+        this.setState({ issueDescription: e.target.value });
     }
 
-    componentWillMount() {
-        // TODO: invoke web request (if necessary) to retrieve the details for the selected issue id.
+    handleTitleChange(e) {
+        this.setState({ issueTitle: e.target.value });
+    }
+
+    _createIssueFromForm() {
+        const self = this;
+        const issueAuthorEmail = self.props.currentUser.email;
+        const issueAuthorId = self.props.currentUser.id;
+
+        const issueTitle = self.state.issueTitle;
+        const issueDescription = self.state.issueDescription;
+
+        const center = JSON.parse(JSON.stringify(self.props.center));
+        const issueLat = center.lat;
+        const issueLng = center.lng;
+
+        const issue = {
+            title: issueTitle,
+            userId: issueAuthorId,
+            userEmail: issueAuthorEmail,
+            description: issueDescription,
+            lat: issueLat,
+            lng: issueLng
+        };
+        console.log('issue', JSON.stringify(issue));
+        return issue;
     }
 
     postIssue() {
         const self = this;
-        self.setState({loading: true});
-        // TODO: grab fields from form and post to server.
-        const form = null;
-        const issue = self._createIssueFromForm(form)
+        self.setState({ postIssueEnabled: false });
+        const issue = self._createIssueFromForm()
 
         api.postIssue(issue).then((res) => {
-            self.setState({loading: false, error: null});
+            self.setState({ postIssueEnabled: true, error: null });
             console.log('postIssue: ' + res);
-            // TODO: alert user that issue created and close the modal.
-
         }).catch((err) => {
-            self.setState({loading: false, error: err});
+            self.setState({ postIssueEnabled: true, error: err });
         });
     }
-    
+
     render() {
         const self = this;
         const issue = self.props.issue;
@@ -59,21 +85,65 @@ export default class IssueModal extends Component {
                 wow.
             </Tooltip>
         );
+
+        const center = JSON.parse(JSON.stringify(self.props.center));
+        const lat = parseFloat(center['lat']).toFixed(2);
+        const lng = parseFloat(center['lng']).toFixed(2);
+
+        const currentUser = self.props.currentUser;
+        let userName = '';
+        if (currentUser) {
+            userName = currentUser.email.split('@')[0];
+        }
+
         return (
             <div>
-                <Modal show={this.props.showModal} onHide={this.props.toggleModal}>
+                <Modal show={this.props.showIssueModal} onHide={this.props.toggleIssueModal}>
                     <Modal.Header closeButton>
                         <Modal.Title className="centered">Create New Issue</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <hr />
-                        {/* Overflowing text vertically will automatically scroll */}
                         <div className="centered">
-                            {/* TODO: Add form to create new issue and post to server. */}
+                            <form>
+
+                                <FormGroup bsSize="large" controlId="formBasicText" className="issue-form-group">
+                                    <ControlLabel>Issue Title:</ControlLabel>
+                                    <FormControl
+                                        type="text"
+                                        value={this.state.issueTitle}
+                                        placeholder="Ex: Do you support Donald Trump?"
+                                        onChange={this.handleTitleChange}/>
+                                    <FormControl.Feedback />
+                                </FormGroup>
+
+                                <FormGroup controlId="formBasicText" className="issue-form-group">
+                                    <ControlLabel>Issue Description:</ControlLabel>
+                                    <FormControl
+                                        rows="6"
+                                        type="textarea"
+                                        value={this.state.issueDescription}
+                                        placeholder="Ex: Vote Yes or No if you generally support or disapprove of Trump's office."
+                                        onChange={this.handleDescriptionChange}/>
+                                    <FormControl.Feedback />
+                                </FormGroup>
+
+                                <FormGroup>
+                                    <hr/>
+                                    <p>Issue location will be your current map center location: i.e.</p>
+                                    <p><b>Latitude: </b>{lat}, <b>Longitude: </b>{lng}</p>
+                                    <p>and will appear with the user handle: <b>{userName}</b></p>
+                                </FormGroup>
+
+                                <Button bsStyle="success" onClick={self.postIssue} disabled={!self.state.postIssueEnabled}>
+                                    Create Issue
+                                </Button>
+
+                            </form>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.props.toggleModal}>Close</Button>
+                        <Button onClick={this.props.toggleIssueModal}>Cancel</Button>
                     </Modal.Footer>
                 </Modal>
 

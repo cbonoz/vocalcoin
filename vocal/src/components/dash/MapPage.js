@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
-import {Button} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import IssueModal from './../modals/IssueModal';
+import VoteModal from './../modals/VoteModal';
 import Geolocation from "react-geolocation";
 import maputil from '../../utils/maputil';
 import api from '../../utils/api';
+import helper from '../../utils/helper';
+
+import { firebaseAuth } from '../../utils/fire';
 
 import {
   withScriptjs,
@@ -18,6 +22,8 @@ import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/re
 import { toast } from 'react-toastify';
 
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox";
+import { MarkerClusterer } from "react-google-maps/lib/components/addons/MarkerClusterer";
+
 const google = window.google
 
 const MapWithASearchBox = compose(
@@ -34,18 +40,25 @@ const MapWithASearchBox = compose(
       this.setState({
         bounds: null,
         error: null,
-        showModal: false,
+        showIssueModal: false,
+        showVoteModal: false,
+        currentIssue: {},
         enableRefreshButton: false,
         center: {
           lat: 41.9, lng: -87.624
         },
         markers: [],
+        issues: [],
         onMapMounted: ref => {
           refs.map = ref;
         },
-        toggleModal: () => {
-          const isOpen = this.state.showModal;
-          this.setState({showModal: !isOpen})
+        toggleVoteModal: () => {
+          const isOpen = this.state.showVoteModal;
+          this.setState({ showVoteModal: !isOpen })
+        },
+        toggleIssueModal: () => {
+          const isOpen = this.state.showIssueModal;
+          this.setState({ showIssueModal: !isOpen })
         },
         onBoundsChanged: () => {
           const self = this;
@@ -55,12 +68,12 @@ const MapWithASearchBox = compose(
             bounds: currBounds,
             enableRefreshButton: true
           });
-          
+
           // console.log(`New bounds: ${JSON.stringify(currBounds)}`);
         },
         getIssuesForRegion: () => {
           const self = this;
-          self.setState({enableRefreshButton: false});
+          self.setState({ enableRefreshButton: false });
           const currBounds = refs.map.getBounds();
           const sw_lat = currBounds.getSouthWest().lat();
           const sw_lon = currBounds.getSouthWest().lng();
@@ -68,12 +81,17 @@ const MapWithASearchBox = compose(
           const ne_lon = currBounds.getNorthEast().lng();
           api.getIssuesForRegion(sw_lat, sw_lon, ne_lat, ne_lon).then((data) => {
             const issues = data.issues;
-            self.setState( {issues: issues, error: null} );
+            self.setState({ issues: issues, error: null });
           }).catch((err) => {
             const issues = [];
             toast(<div><b>Error retrieving issues: Server Offline</b></div>);
-            self.setState( {issues: issues, error: err} );
+            self.setState({ issues: issues, error: err });
           });
+        },
+        showVoteModal: (issue) => {
+          const self = this;
+          // Open a dialog for the issue in response to a user marker click.
+          self.setState({currentIssue: issue, showVoteModal: true});
         },
         onSearchBoxMounted: ref => {
           refs.searchBox = ref;
@@ -93,6 +111,7 @@ const MapWithASearchBox = compose(
           const nextMarkers = places.map(place => ({
             position: place.geometry.location,
           }));
+
           const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
 
           this.setState({
@@ -108,60 +127,115 @@ const MapWithASearchBox = compose(
   withGoogleMap
 )(props =>
   <div>
-  <GoogleMap
-    ref={props.onMapMounted}
-    defaultZoom={15}
-    center={props.center}
-    onBoundsChanged={props.onBoundsChanged}
-  >
-    <SearchBox
-      ref={props.onSearchBoxMounted}
-      bounds={props.bounds}
-      controlPosition={google.maps.ControlPosition.TOP_LEFT}
-      onPlacesChanged={props.onPlacesChanged}>
-      <div>
-        <input
-          type="text"
-          placeholder="Jump to a Location"
-          style={{
-            boxSizing: `border-box`,
-            border: `1px solid transparent`,
-            width: `240px`,
-            height: `32px`,
-            marginTop: `27px`,
-            padding: `0 12px`,
-            borderRadius: `3px`,
-            boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-            fontSize: `14px`,
-            outline: `none`,
-            textOverflow: `ellipses`,
-          }}
-        />
+    <GoogleMap
+      ref={props.onMapMounted}
+      defaultZoom={15}
+      center={props.center}
+      onBoundsChanged={props.onBoundsChanged}
+    >
+      <SearchBox
+        ref={props.onSearchBoxMounted}
+        bounds={props.bounds}
+        controlPosition={google.maps.ControlPosition.TOP_LEFT}
+        onPlacesChanged={props.onPlacesChanged}>
+        <div>
+          <input
+            type="text"
+            placeholder="Jump to a Location"
+            style={{
+              boxSizing: `border-box`,
+              border: `1px solid transparent`,
+              width: `240px`,
+              height: `32px`,
+              marginTop: `27px`,
+              padding: `0 12px`,
+              borderRadius: `3px`,
+              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+              fontSize: `14px`,
+              outline: `none`,
+              textOverflow: `ellipses`,
+            }}
+          />
 
-        <Button bsStyle="success" className="start-button" onClick={props.toggleModal}>
-          Create New Issue
+          <Button bsStyle="success" className="start-button" onClick={props.toggleIssueModal}>
+            Create New Issue
         </Button>
-        {<Button disabled={!props.enableRefreshButton} bsStyle="danger" className="start-button" onClick={props.getIssuesForRegion}>
-          Redo Search in Area
+          {<Button disabled={!props.enableRefreshButton} bsStyle="danger" className="start-button" onClick={props.getIssuesForRegion}>
+            Redo Search in Area
         </Button>}
-        
-      </div>
-    </SearchBox>
-    {props.markers.map((marker, index) =>
-      <Marker key={index} position={marker.position} />
-    )}
-    </GoogleMap>
-    <IssueModal toggleModal={props.toggleModal} showModal={props.showModal}/>
-  </div>
-);
 
+        </div>
+      </SearchBox>
+
+      <MarkerClusterer
+        onClick={props.onMarkerClustererClick}
+        averageCenter
+        enableRetinaIcons
+        gridSize={60}>
+        {props.markers.map((marker, index) =>
+          <Marker
+            key={index}
+            position={marker.position} />
+        )}
+        {props.issues.map((issue, index) => {
+
+          const position = {lat: issue.lat, lng: issue.lng};
+
+          // TODO: determine if DblClick should have difference behavior from single.
+          return (<Marker
+            label={issue.id}
+            onClick={props.showVoteModal(issue)}
+            onDblClick={props.showVoteModal(issue)}
+            key={index}
+            position={position} />
+          )
+        })}
+      </MarkerClusterer>
+      <IssueModal
+        currentUser={props.currentUser}
+        center={props.center}
+        toggleIssueModal={props.toggleIssueModal}
+        showIssueModal={props.showIssueModal} />
+      {/* <VoteModal
+        currentUser={props.currentUser}
+        issue={props.currentIssue}
+        center={props.center}
+        toggleVoteModal={props.toggleVoteModal}
+        showVoteModal={props.showVoteModal} /> */}
+    </GoogleMap>
+  </div>
+  );
 
 // TODO: retrieve markers near user location programmatically
 export default class MapPage extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentUser: null
+    }
+  }
+
+
+  componentDidMount() {
+    const self = this;
+    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
+      self.setState({ currentUser: user });
+    })
+  }
+
+  componentWillUnmount() {
+    this.removeListener();
+  }
+
+  componentWillMount() {
+    console.log('map user', JSON.stringify(this.props));
+  }
+
   render() {
     return (
       <div>
-        <MapWithASearchBox />
+        <MapWithASearchBox currentUser={this.state.currentUser} />
       </div>
     )
   }

@@ -8,7 +8,12 @@ const library = (function () {
         return `${date.toDateString()} ${date.toLocaleTimeString()}`;
     }
 
+    function capitalize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
     return {
+        capitalize: capitalize,
         getRandom: getRandom,
         formatDateTimeMs: formatDateTimeMs
     }

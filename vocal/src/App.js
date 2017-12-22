@@ -55,6 +55,7 @@ class App extends Component {
     this.state = {
       authed: false,
       loading: true,
+      currentUser: null
     };
   }
 
@@ -71,11 +72,11 @@ class App extends Component {
             toast(<div><b>Welcome: {user.displayName}</b></div>);
           }
 
-          self.setState({ authed: true, loading: false });
+          self.setState({ authed: true, loading: false, currentUser: user });
         }).catch((err) => {
           console.error('error retrieving userId', err);
           const errorAuthed = true;
-          self.setState({ authed: errorAuthed, loading: false });
+          self.setState({ authed: errorAuthed, loading: false, currentUser: user });
         });
 
       } else {
@@ -84,7 +85,8 @@ class App extends Component {
         }
         this.setState({
           authed: false,
-          loading: false
+          loading: false,
+          currentUser: user
         })
       }
     })
@@ -105,7 +107,7 @@ class App extends Component {
               <Route authed={this.state.authed} path="/faq" component={FAQ} />
               <PublicRoute authed={this.state.authed} exact path="/" component={Home} />
               <PrivateRoute authed={this.state.authed} path="/dashboard" component={Dashboard} />
-              <PrivateRoute authed={this.state.authed} path="/map" component={MapPage} />
+              <PrivateRoute currentUser={this.state.currentUser} authed={this.state.authed} path="/map" component={MapPage} />
               <Route authed={this.state.authed} render={() => <h1 className="centered">Page not found</h1>} />
             </Switch>
             <Footer />
