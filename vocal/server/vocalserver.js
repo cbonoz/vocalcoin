@@ -24,6 +24,7 @@ const vocalContract = contract.vocalContract;
 const dbUser = process.env.ADMIN_DB_USER;
 const dbPass = process.env.ADMIN_DB_PASS;
 const dbName = 'vocal';
+// const connectionString = process.env.VOCAL_DATABASE_URL || `postgres://${dbUser}:${dbPass}@localhost:5432/${dbName}`;
 const connectionString = process.env.VOCAL_DATABASE_URL || `postgres://${dbUser}:${dbPass}@localhost:5432/${dbName}`;
 console.log('connectionString', connectionString);
 
@@ -75,7 +76,7 @@ app.post('/api/issues/region', (req, res) => {
     const query = vocal.getIssuesQuery(lat1, lng1, lat2, lng2);
 
     pool.query(query, (err, result) => {
-        console.log('issues', err, count, result)
+        console.log('issues', err, count, result);
         if (err) {
             console.error('issues', err);
             return res.status(500).json(err);
@@ -93,7 +94,8 @@ app.post('/api/vote', (req, res) => {
     const query = vocal.insertVoteQuery(vote);
 
     pool.query(query, (err, result) => {
-        console.log('postVote', err, count, result)
+        // console.log('postVote', err, count, result)
+        console.log('postVote', err, result);
         if (err) {
             console.error('postVote error', err);
             return res.status(500).json(err);
