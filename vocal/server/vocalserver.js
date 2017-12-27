@@ -101,7 +101,15 @@ app.post('/api/issues/region', (req, res) => {
     });
 });
 
-/* Start of Blockchain routes */
+/**
+ * Start of Blockchain Routes.
+ *
+ * The below routes check for http bearer tokens. If one does not exist in the request,
+ * access will be denied.
+ *
+ * Example curl command to test routes:
+ * curl -v -H "Authorization: Bearer 123456789" -X POST http://127.0.0.1:9007/api/vote
+ */
 
 app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
@@ -259,7 +267,9 @@ app.get('/api/transactions', passport.authenticate('bearer', { session: false })
     });
 });
 
-/* End of Blockchain routes */
+/**
+ * End of Blockchain Routes
+ */
 
 // Socket IO handlers //
 
