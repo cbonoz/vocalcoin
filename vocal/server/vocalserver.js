@@ -1,6 +1,7 @@
 'use strict';
 // Server code for vocal project.
 // Author: Chris Buonocore (2017)
+// Co-Author: Anup Vasudevan (2017)
 // License: Apache License 2.0
 
 const axios = require('axios');
@@ -11,6 +12,20 @@ const http = require('http');
 const https = require('https');
 const pg = require('pg');
 const path = require('path');
+
+// Passport for middleware HTTP bearer authentication strategy for the blockchain routes
+var passport = require('passport');
+const Strategy = require('passport-http-bearer').Strategy;
+var db = require('./db');
+
+passport.use(new Strategy(
+    function(token, cb) {
+        db.users.findByToken(token, function(err, user) {
+            if (err) { return cb(err); }
+            if (!user) { return cb(null, false); }
+            return cb(null, user);
+        });
+    }));
 
 // Variable and Server Setup //
 const prod = false;
@@ -88,7 +103,7 @@ app.post('/api/issues/region', (req, res) => {
 
 /* Start of Blockchain routes */
 
-app.post('/api/vote', (req, res) => {
+app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const vote = body.vote;
     const query = vocal.insertVoteQuery(vote);

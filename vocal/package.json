@@ -6,6 +6,8 @@
     "axios": "^0.17.0",
     "firebase": "^4.6.2",
     "glamor": "^2.20.40",
+    "passport": "^0.4.0",
+    "passport-http-bearer": "^1.0.1",
     "react": "^16.1.1",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.1.1",
