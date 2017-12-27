@@ -14,6 +14,7 @@ TODO: this may be better suited as a lambda function.
 
 ### Useful Links
 * https://tokenmarket.net/blog/creating-ethereum-smart-contract-transactions-in-client-side-javascript/
+https://github.com/ConsenSys/eth-lightwallet
 
 
 ### Common errors:
