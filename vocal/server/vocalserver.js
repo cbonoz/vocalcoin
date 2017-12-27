@@ -120,7 +120,7 @@ app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req,
     });
 });
 
-app.post('/api/issue', (req, res) => {
+app.post('/api/issue', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const issue = body.issue;
     const query = vocal.insertIssueQuery(issue);
@@ -136,7 +136,7 @@ app.post('/api/issue', (req, res) => {
     });
 });
 
-app.post('/api/vocal/add', (req, res) => {
+app.post('/api/vocal/add', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const userId = body.userId;
     if (!userId) {
@@ -161,7 +161,7 @@ app.post('/api/vocal/add', (req, res) => {
 
 // TODO: each request below should do an address lookup (based on the past in userId) to find the appropriate address to credit or find the balance for.
 // TODO: this request queries the BLOCKCHAIN for the current balance.
-app.get('/api/balance', (req, res) => {
+app.get('/api/balance', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
     // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
     pool.query(`SELECT * FROM balance where userId='${userId}'ORDER BY time DESC limit 1`, (err, result) => {
@@ -175,7 +175,7 @@ app.get('/api/balance', (req, res) => {
     });
 });
 
-app.post('/api/user', (req, res) => {
+app.post('/api/user', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const userId = body.userId;
     
@@ -211,7 +211,7 @@ app.post('/api/user', (req, res) => {
 });
 
 // Check if the given userId param exists in the DB and contains a non-null address.
-app.get('/api/address', (req, res) => {
+app.get('/api/address', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
     pool.query(`SELECT * FROM users where userId='${userId}'`, (err, result) => {
         console.log('verify address', err, count, result)
@@ -235,7 +235,7 @@ app.get('/api/address', (req, res) => {
     });
 });
 
-app.post('/api/address/update', (req, res) => {
+app.post('/api/address/update', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const userId = body.userId;
     const address = body.address;
@@ -246,7 +246,7 @@ app.post('/api/address/update', (req, res) => {
 });
 
 // TODO: query the blockchain for the transactions submitted by the given userId (using the address lookup).
-app.get('/api/transactions', (req, res) => {
+app.get('/api/transactions', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
     pool.query(`SELECT * FROM transactions where userId='${userId}'`, (err, result) => {
         console.log('transactions', err, count, result)
