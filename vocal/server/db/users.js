@@ -1,5 +1,6 @@
+// TODO: Handle bearer tokens more securely - maybe in postgres db or as environment variable
 var records = [
-    { id: 1, username: 'jack', token: '123456789', displayName: 'Jack', emails: [ { value: 'jack@example.com' } ] }
+    { id: 1, username: 'jack', token: process.env.VOCAL_BEARER_TOKEN, displayName: 'Jack', emails: [ { value: 'jack@example.com' } ] }
     , { id: 2, username: 'jill', token: 'abcdefghi', displayName: 'Jill', emails: [ { value: 'jill@example.com' } ] }
 ];
 
