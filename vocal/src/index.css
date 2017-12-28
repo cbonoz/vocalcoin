@@ -70,6 +70,11 @@ body {
   padding-bottom: 2px;
 }
 
+.modal-image {
+  height: 36px;
+  margin-bottom: 15px;
+}
+
 .footer-slogan {
   font-family:  serif;
   margin-left: 2px;
@@ -125,8 +130,17 @@ body {
 }
 
 .error-text {
+  margin: 0 auto;
+  text-align: center; 
   padding: 10px;
-  margin: 10px !important;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.modal-header {
+  color: gray;
+  font-size: 24px;
+  margin: 5px;
 }
 
 .search-subtitle-text {

@@ -4,7 +4,7 @@ import api from '../../utils/api';
 
 import { getIssueDetails, postVote } from '../../utils/api';
 
-import vocal from '../../assets/vocal_square_trans.png';
+import vocal from '../../assets/vocal_title.png';
 
 export default class IssueModal extends Component {
 
@@ -15,7 +15,7 @@ export default class IssueModal extends Component {
 
         this.state = {
             postIssueEnabled: true,
-            error: false,
+            error: null,
             issueTitle: '',
             issueDescription: '',
         };
@@ -64,11 +64,11 @@ export default class IssueModal extends Component {
 
     postIssue() {
         const self = this;
-        self.setState({ postIssueEnabled: false });
+        self.setState({ postIssueEnabled: false, error: null });
         const issue = self._createIssueFromForm()
 
         api.postIssue(issue).then((res) => {
-            self.setState({ postIssueEnabled: true, error: null });
+            self.setState({ postIssueEnabled: true });
             console.log('postIssue: ' + res);
         }).catch((err) => {
             self.setState({ postIssueEnabled: true, error: err });
@@ -111,6 +111,7 @@ export default class IssueModal extends Component {
                     <Modal.Body>
                         <hr />
                         <div className="centered">
+                            <img src={vocal} className="centered modal-image" />
                             <form>
 
                                 <FormGroup bsSize="large" controlId="formBasicText" className="issue-form-group">
@@ -145,6 +146,8 @@ export default class IssueModal extends Component {
                                 <Button bsStyle="success" onClick={self.postIssue} disabled={!self.state.postIssueEnabled}>
                                     Create Issue
                                 </Button>
+
+                                {self.state.error && <div className="error-text">{self.state.error}</div>}
 
                             </form>
                         </div>

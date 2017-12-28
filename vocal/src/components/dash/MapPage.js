@@ -209,12 +209,12 @@ const MapWithASearchBox = compose(
         center={props.center}
         toggleIssueModal={props.toggleIssueModal}
         showIssueModal={props.showIssueModal} />
-      {/* <VoteModal
+      <VoteModal
         currentUser={props.currentUser}
         issue={props.currentIssue}
         center={props.center}
         toggleVoteModal={props.toggleVoteModal}
-        showVoteModal={props.showVoteModal} /> */}
+        showVoteModal={props.showVoteModal} />
     </GoogleMap>
   </div>
   );

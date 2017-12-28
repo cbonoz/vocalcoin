@@ -122,17 +122,35 @@ app.post('/api/issues/region', (req, res) => {
 app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const vote = body.vote;
-    const query = vocal.insertVoteQuery(vote);
+    const checkVoteQuery = vocal.checkVoteQuery(vote);
 
-    pool.query(query, (err, result) => {
+    pool.query(checkVoteQuery, (err, result) => {
         // console.log('postVote', err, count, result)
         console.log('postVote', err, result);
         if (err) {
             console.error('postVote error', err);
-            return res.status(500).json(err);
+            return res.status(500).json({"error": err});
         }
-        // pool.end()
-        return res.json(result.rows);
+
+        if (result.rows.length > 0) {
+            // if we already have a vote for this user and issue, return.
+            const errorMessage = "user already voted on this issue";
+            console.error(errorMessage)
+            return res.status(200).json({"error": errorMessage);
+        }
+
+        // Ok. Insert the vote into the DB.
+        const voteQuery = vocal.insertVoteQuery(vote);
+        pool.query(voteQuery, (err, result) => {
+            // console.log('postVote', err, count, result)
+            console.log('postVote', err, result);
+            if (err) {
+                console.error('postVote error', err);
+                return res.status(500).json(err);
+            }
+            // pool.end()
+            return res.json(result.rows);
+        });
     });
 });
 

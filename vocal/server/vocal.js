@@ -21,6 +21,10 @@ const library = (function () {
             `values(${vote.issue_id}, ${vote.user_id}, ${vote.lat}, ${vote.lng}, ${vote.time}, ${vote.message}, ${vote.agree})`;
     }
 
+    function checkVoteQuery(vote) {
+        return `SELECT * from votes where issue_id='${vote.issue_id}' and user_id='${vote.user_id}'`;
+    }
+
     function insertIssueQuery(issue) {
         return `INSERT INTO issues(user_id, description, title, lat, lng, place, active, time) ` +
             `values(${issue.user_id}, ${issue.description}, ${issue.title}, ${issue.lat}, ${issue.lng}, ${issue.place}, ${issue.active}, ${issue.time})`;
@@ -53,6 +57,7 @@ const library = (function () {
     }
 
     return {
+        checkVoteQuery: checkVoteQuery,
         getRandom: getRandom,
         getUserQuery: getUserQuery,
         getIssuesForRegionQuery: getIssuesForRegionQuery,
