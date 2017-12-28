@@ -44,6 +44,7 @@ const MapWithASearchBox = compose(
         showVoteModal: false,
         currentIssue: {},
         enableRefreshButton: false,
+        lastLocation: null,
         center: {
           lat: 41.9, lng: -87.624
         },
@@ -68,6 +69,7 @@ const MapWithASearchBox = compose(
             bounds: currBounds,
             enableRefreshButton: true
           });
+            // lastLocation: "Map moved since last search"
 
           // console.log(`New bounds: ${JSON.stringify(currBounds)}`);
         },
@@ -113,10 +115,20 @@ const MapWithASearchBox = compose(
           }));
 
           const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
+          let nextLocation = null;
+
+          places.map((place) => {
+              if (place.geometry.location === nextCenter) {
+                nextLocation = place.name;
+              }
+          });
+
+          console.log('nextLocation', JSON.stringify(nextLocation));
 
           this.setState({
             center: nextCenter,
             markers: nextMarkers,
+            lastLocation: nextLocation
           });
           // refs.map.fitBounds(bounds);
         },
@@ -181,7 +193,7 @@ const MapWithASearchBox = compose(
 
           const position = {lat: issue.lat, lng: issue.lng};
 
-          // TODO: determine if DblClick should have difference behavior from single.
+          // TODO: determine if DblClick should have different behavior from single.
           return (<Marker
             label={issue.id}
             onClick={props.showVoteModal(issue)}
@@ -193,6 +205,7 @@ const MapWithASearchBox = compose(
       </MarkerClusterer>
       <IssueModal
         currentUser={props.currentUser}
+        lastLocation={props.lastLocation}
         center={props.center}
         toggleIssueModal={props.toggleIssueModal}
         showIssueModal={props.showIssueModal} />

@@ -90,6 +90,8 @@ export default class IssueModal extends Component {
         const lat = parseFloat(center['lat']).toFixed(2);
         const lng = parseFloat(center['lng']).toFixed(2);
 
+        const lastLocation = self.props.lastLocation;
+
         const currentUser = self.props.currentUser;
         let userName = '';
         if (currentUser) {
@@ -131,7 +133,8 @@ export default class IssueModal extends Component {
                                 <FormGroup>
                                     <hr/>
                                     <p>Issue location will be your current map center location: i.e.</p>
-                                    <p><b>Latitude: </b>{lat}, <b>Longitude: </b>{lng}</p>
+                                    <p><b>Latitude:&nbsp;</b>{lat}, <b>Longitude: </b>{lng}</p>
+                                    <p><b>Last Location:&nbsp;</b>{lastLocation}</p>
                                     <p>and will appear with the user handle: <b>{userName}</b></p>
                                 </FormGroup>
 
