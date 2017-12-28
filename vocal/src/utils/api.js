@@ -10,6 +10,15 @@ const library = (function () {
     // const socket = require('socket.io-client')(BASE_URL);
     const socket = null;
 
+    const getHeaders = () => {
+        const token = localStorage.getItem("tok");
+        const headers = {
+            headers: { Authorization: "Bearer " + token }
+        };
+        console.log('getHeaders', headers);
+        return headers;
+    }
+
     const getRandom = (items) => {
         return items[Math.floor(Math.random()*items.length)];
     }
@@ -27,17 +36,16 @@ const library = (function () {
             lat2: lat2,
             lng1: lng1,
             lng2: lng2
-        }).then(response => {
+        }, getHeaders()).then(response => {
             const data = response.data;
             return data;
         });
     }
 
     function postUserQuery(user) {
-        const url = `${BASE_URL}/api/user`;
+        const url = `${BASE_URL}/api/signin`;
         return axios.post(url, {
             userId: user.userId,
-            email: user.email,
             username: user.email.split('@')[0]
         }).then(response => {
             const data = response.data;
@@ -47,24 +55,24 @@ const library = (function () {
 
     function getIssueDetails(issueId) {
         const url = `${BASE_URL}/api/issue/${issueId}`;
-        return axios.get(url).then(response => response.data);
+        return axios.get(url, getHeaders()).then(response => response.data);
     }
 
     function getIssuesForUser(userId) {
         const url = `${BASE_URL}/api/issues/${userId}`;
-        return axios.get(url).then(response => response.data);
+        return axios.get(url, getHeaders()).then(response => response.data);
     }
 
     function getVotesForIssue(issuesId) {
         const url = `${BASE_URL}/api/votes/${issuesId}`;
-        return axios.get(url).then(response => response.data);
+        return axios.get(url, getHeaders()).then(response => response.data);
     }
 
     function postVocal(userId) {
         const url = `${BASE_URL}/api/vocal/add`;
         return axios.post(url, {
             userId: userId
-        }).then(response => {
+        }, getHeaders()).then(response => {
             const data = response.data;
             return data;
         });
@@ -75,7 +83,7 @@ const library = (function () {
         return axios.post(url, {
             userId: userId,
             issue: issue,
-        }).then(response => {
+        }, getHeaders()).then(response => {
             const data = response.data;
             const eventName = "New Issue added: " + JSON.stringify(data);
             socket.emit('action', { name: eventName, time: Date.now() }, (data) => {
@@ -90,7 +98,7 @@ const library = (function () {
         return axios.post(url, {
             userId: userId,
             vote: vote
-        }).then(response => {
+        }, getHeaders()).then(response => {
             const data = response.data;
             const eventName = "New Vote added: " + JSON.stringify(data);
             socket.emit('action', { name: eventName, time: Date.now() }, (data) => {

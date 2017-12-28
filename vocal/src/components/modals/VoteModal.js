@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, ButtonGroup, ButtonToolbar, ToggleButton, ToggleButtonGroup, Modal, Popover, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Button, ButtonGroup, ButtonToolbar, ToggleButton, ToggleButtonGroup, Modal, Popover, Tooltip, OverlayTrigger, FormGroup } from 'react-bootstrap';
 
 import { getVoteDetails, postVote } from '../../utils/api';
 import api from '../../utils/api';
@@ -20,6 +20,7 @@ export default class VoteModal extends Component {
 
         this._createVoteFromForm = this._createVoteFromForm.bind(this);
         this.handleVoteChange = this.handleVoteChange.bind(this);
+        this.handleVoteMessageChange = this.handleVoteMessageChange.bind(this);
         this.postVote = this.postVote.bind(this);
     }
 
@@ -27,6 +28,10 @@ export default class VoteModal extends Component {
         const self = this;
         console.info(selectedVotes);
         self.setState({voteAgree: selectedVotes});
+    }
+
+    handleVoteMessageChange(e) {
+        this.setState({ voteMessage: e.target.value });
     }
 
     _createVoteFromForm() {
@@ -91,17 +96,31 @@ export default class VoteModal extends Component {
                                     return <p>{helper.capitalize(key)}: <b>{issue[key]}</b></p>
                                 })}
 
-                                <ButtonToolbar>
-                                    <ToggleButtonGroup
-                                        type="radio"
-                                        name="voteOptions"
-                                        defaultValue={1}
-                                        onChange={this.handleVoteChange}>
-                                        <ToggleButton value={1}>Agree</ToggleButton>
-                                        <ToggleButton value={-1}>Disagree</ToggleButton>
-                                        <ToggleButton value={0}>Neutral</ToggleButton>
-                                    </ToggleButtonGroup>
-                                </ButtonToolbar>
+                                <FormGroup controlId="formRadioButton" className="vote-form-group">
+                                    <ButtonToolbar>
+                                        <ToggleButtonGroup
+                                            type="radio"
+                                            name="voteOptions"
+                                            defaultValue={1}
+                                            onChange={this.handleVoteChange}>
+                                            <ToggleButton value={1}>Agree</ToggleButton>
+                                            <ToggleButton value={-1}>Disagree</ToggleButton>
+                                            <ToggleButton value={0}>Neutral</ToggleButton>
+                                        </ToggleButtonGroup>
+                                    </ButtonToolbar>
+                                </FormGroup>
+
+                                <FormGroup controlId="formBasicText" className="vote-form-group">
+                                    <ControlLabel>Additional Comments</ControlLabel>
+                                    <FormControl
+                                        rows="6"
+                                        type="textarea"
+                                        value={this.state.voteMessage}
+                                        placeholder="Ex: I agree, we should also add a new children hospital wing to the downtown metro area."
+                                        onChange={this.handleDescriptionChange}/>
+                                    <FormControl.Feedback />
+                                </FormGroup>
+
 
                                 <Button bsStyle="success" onClick={self.postVote} disabled={!self.state.postVoteEnabled}>
                                     Cast Vote

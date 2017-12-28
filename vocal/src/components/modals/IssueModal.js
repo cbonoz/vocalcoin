@@ -42,6 +42,8 @@ export default class IssueModal extends Component {
         const issueTitle = self.state.issueTitle;
         const issueDescription = self.state.issueDescription;
 
+        const place = self.props.lastLocation;
+
         const center = JSON.parse(JSON.stringify(self.props.center));
         const issueLat = center.lat;
         const issueLng = center.lng;
@@ -52,7 +54,9 @@ export default class IssueModal extends Component {
             userEmail: issueAuthorEmail,
             description: issueDescription,
             lat: issueLat,
-            lng: issueLng
+            lng: issueLng,
+            place: place,
+            active: true
         };
         console.log('issue', JSON.stringify(issue));
         return issue;

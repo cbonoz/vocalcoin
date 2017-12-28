@@ -15,7 +15,8 @@ CREATE TABLE issues (
   title VARCHAR NOT NULL,
   lat float(7),
   lng float(7),
-  location VARCHAR,
+  place VARCHAR,
+  active BOOLEAN,
   time BIGINT
 );
 

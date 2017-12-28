@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "181951805420",
+    "firebase_url": "https://vocalcoin-69799.firebaseio.com",
+    "project_id": "vocalcoin-69799",
+    "storage_bucket": "vocalcoin-69799.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181951805420:android:85a6022113908573",
+        "android_client_info": {
+          "package_name": "com.vocal.www.vocal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181951805420-1is2rqfe1bb4bn5ifssdom916pjrsj5e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa1rXpy2NLVMioUQ0h1n1_0vfuzLzf-N0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

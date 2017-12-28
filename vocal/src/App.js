@@ -68,6 +68,8 @@ class App extends Component {
         api.postUserQuery(user).then((data) => {
           console.log('retrieved user data', data);
 
+          localStorage.setItem("tok", data["token"]);
+
           if (!self.state.authed) { // show if there is a change in state.
             toast(<div><b>Welcome: {user.displayName}</b></div>);
           }

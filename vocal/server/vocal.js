@@ -22,8 +22,8 @@ const library = (function () {
     }
 
     function insertIssueQuery(issue) {
-        return `INSERT INTO issues(user_id, description, title, lat, lng, time) ` +
-            `values(${issue.user_id}, ${issue.description}, ${issue.title}, ${issue.lat}, ${issue.lng}, ${issue.time})`;
+        return `INSERT INTO issues(user_id, description, title, lat, lng, place, active, time) ` +
+            `values(${issue.user_id}, ${issue.description}, ${issue.title}, ${issue.lat}, ${issue.lng}, ${issue.place}, ${issue.active}, ${issue.time})`;
     }
 
     function getUserQuery(userId) {

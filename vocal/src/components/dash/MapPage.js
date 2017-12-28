@@ -195,7 +195,7 @@ const MapWithASearchBox = compose(
 
           // TODO: determine if DblClick should have different behavior from single.
           return (<Marker
-            label={issue.id}
+            label={issue.title}
             onClick={props.showVoteModal(issue)}
             onDblClick={props.showVoteModal(issue)}
             key={index}

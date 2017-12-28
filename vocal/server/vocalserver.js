@@ -12,6 +12,14 @@ const http = require('http');
 const https = require('https');
 const pg = require('pg');
 const path = require('path');
+const admin = require('firebase-admin')
+
+const serviceAccount = require("./db/vocalfb.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://vocalcoin-69799.firebaseio.com"
+});
 
 // Passport for middleware HTTP bearer authentication strategy for the blockchain routes
 var passport = require('passport');
@@ -128,36 +136,6 @@ app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req,
     });
 });
 
-app.get('/api/issues', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const userId = req.params.userId;
-    const query = vocal.getIssuesForUserQuery(userId);
-    pool.query(query, (err, result) => {
-        console.log('getIssues', err, count, result)
-
-        if (err) {
-            console.error('getIssues error', err);
-            return res.status(500).json(err);
-        }
-        // pool.end()
-        return res.json(result.rows);
-    });
-});
-
-app.get('/api/votes', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const userId = req.params.issueId;
-    const query = vocal.getVotesForIssueQuery(issueId);
-
-    pool.query(query, (err, result) => {
-        console.log('getVotes', err, count, result)
-        if (err) {
-            console.error('getVotes error', err);
-            return res.status(500).json(err);
-        }
-        // pool.end()
-        return res.json(result.rows);
-    });
-});
-
 app.post('/api/issue', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const issue = body.issue;
@@ -195,21 +173,53 @@ app.post('/api/vocal/add', passport.authenticate('bearer', { session: false }), 
     });
 });
 
-/* Query methods */
+/* Dashboard routes */
 
-// TODO: each request below should do an address lookup (based on the past in userId) to find the appropriate address to credit or find the balance for.
-// TODO: this request queries the BLOCKCHAIN for the current balance.
-app.get('/api/balance', passport.authenticate('bearer', { session: false }), (req, res) => {
+app.get('/api/issues', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
-    // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
-    pool.query(`SELECT * FROM balance where userId='${userId}'ORDER BY time DESC limit 1`, (err, result) => {
-        console.log('balance', err, count, result)
+    const query = vocal.getIssuesForUserQuery(userId);
+    pool.query(query, (err, result) => {
+        console.log('getIssues', err, count, result)
+
         if (err) {
-            console.error('balance error', err);
+            console.error('getIssues error', err);
             return res.status(500).json(err);
         }
         // pool.end()
         return res.json(result.rows);
+    });
+});
+
+app.get('/api/votes', passport.authenticate('bearer', { session: false }), (req, res) => {
+    const userId = req.params.issueId;
+    const query = vocal.getVotesForIssueQuery(issueId);
+
+    pool.query(query, (err, result) => {
+        console.log('getVotes', err, count, result)
+        if (err) {
+            console.error('getVotes error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
+    });
+});
+
+/* Auth routes */
+
+app.post('/api/signin', (req, res) => {
+    const body = req.body;
+    const userId = body.userId;
+
+    admin.auth().createCustomToken(userId).then(function(customToken) {
+        // Send token back to client.
+        console.log(userId, customToken);
+        db.users.assignToken(userId, customToken);
+        return res.json({"token": customToken});
+    })
+    .catch(function(error) {
+        console.error("Error creating custom token:", error);
+        return res.json({"error": error});
     });
 });
 
@@ -245,6 +255,24 @@ app.post('/api/user', passport.authenticate('bearer', { session: false }), (req,
         }
 
         // pool.end()
+    });
+});
+
+/* Query methods */
+
+// TODO: each request below should do an address lookup (based on the past in userId) to find the appropriate address to credit or find the balance for.
+// TODO: this request queries the BLOCKCHAIN for the current balance.
+app.get('/api/balance', passport.authenticate('bearer', { session: false }), (req, res) => {
+    const userId = req.params.userId;
+    // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
+    pool.query(`SELECT * FROM balance where userId='${userId}'ORDER BY time DESC limit 1`, (err, result) => {
+        console.log('balance', err, count, result)
+        if (err) {
+            console.error('balance error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
     });
 });
 
