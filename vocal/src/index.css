@@ -162,6 +162,24 @@ body {
   margin: 10px;
 } 
 
+.issue-row {
+  cursor: pointer;
+  border-bottom: 1px solid black;
+  padding: 10px;
+}
+
+.emph {
+  font-weight: bold;
+  /* font-style: italic; */
+}
+
+.vote-row {
+  padding: 2px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border: 1px dotted black;
+}
+
 .user-stats-header {
   margin: 30px;
 }
@@ -305,7 +323,7 @@ body {
   font-size: 16px;
   line-height: 24px;
   padding: 15px;
-  min-height: 280px;
+  min-height: 350px;
 }
 
 .clear {

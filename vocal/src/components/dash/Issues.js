@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Issue from './Issue';
 import api from '../../utils/api';
 
 export default class Issues extends Component {
@@ -8,25 +9,37 @@ export default class Issues extends Component {
         this.state = {
             issues: [],
             loading: false,
+            err: null,
             currentUser: this.props.currentUser
         }
     }
-    
+
     componentWillMount() {
         const self = this;
-        self.setState( {loading: true});
-        const user = this.state.currentUser;
-        api.getIssuesForUser(user).then((data => {
-            const yourIssues = data.data;
-            self.setState( {loading: true, issues: yourIssues} );
-        }));
+        if (!self.state.loading) {
+            self.setState({ loading: true, err: null });
+            const user = this.state.currentUser;
+            api.getIssuesForUser(user).then((data) => {
+                const yourIssues = data.data;
+                self.setState({ loading: true, issues: yourIssues });
+            }).catch((err) => {
+                self.setState( {loading: false, err: err});
+            });
+        }
     }
-    
+
     render() {
+        const self = this;
+        const issues = self.state.issues;
+
         return (
             <div>
-                {/* TODO: allow the user to manage and view his or her created issues from this page */}
-                
+                {self.state.err && <div className="error-text">
+                    {JSON.stringify(self.state.err)}
+                </div>}
+                {issues.map((issue) => {
+                    return <Issue issue={issue} />
+                })}
             </div>
         )
     }

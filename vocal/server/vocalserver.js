@@ -88,7 +88,7 @@ app.post('/api/issues/region', (req, res) => {
     const lng1 = body.lng1;
     const lng2 = body.lng2;
 
-    const query = vocal.getIssuesQuery(lat1, lng1, lat2, lng2);
+    const query = vocal.getIssuesForRegionQuery(lat1, lng1, lat2, lng2);
 
     pool.query(query, (err, result) => {
         console.log('issues', err, count, result);
@@ -121,6 +121,36 @@ app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req,
         console.log('postVote', err, result);
         if (err) {
             console.error('postVote error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
+    });
+});
+
+app.get('/api/issues', passport.authenticate('bearer', { session: false }), (req, res) => {
+    const userId = req.params.userId;
+    const query = vocal.getIssuesForUserQuery(userId);
+    pool.query(query, (err, result) => {
+        console.log('getIssues', err, count, result)
+
+        if (err) {
+            console.error('getIssues error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
+    });
+});
+
+app.get('/api/votes', passport.authenticate('bearer', { session: false }), (req, res) => {
+    const userId = req.params.issueId;
+    const query = vocal.getVotesForIssueQuery(issueId);
+
+    pool.query(query, (err, result) => {
+        console.log('getVotes', err, count, result)
+        if (err) {
+            console.error('getVotes error', err);
             return res.status(500).json(err);
         }
         // pool.end()

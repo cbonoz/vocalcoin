@@ -51,7 +51,12 @@ const library = (function () {
     }
 
     function getIssuesForUser(userId) {
-        const url = `${BASE_URL}/api/issues/user/${userId}`;
+        const url = `${BASE_URL}/api/issues/${userId}`;
+        return axios.get(url).then(response => response.data);
+    }
+
+    function getVotesForIssue(issuesId) {
+        const url = `${BASE_URL}/api/votes/${issuesId}`;
         return axios.get(url).then(response => response.data);
     }
 
@@ -126,6 +131,7 @@ const library = (function () {
         getIssueDetails: getIssueDetails,
         getIssuesForRegion: getIssuesForRegion,
         getIssuesForUser: getIssuesForUser,
+        getVotesForIssue: getVotesForIssue,
         getSocketEvents: getSocketEvents,
         getRandom: getRandom,
         getTransactionHistory: getTransactionHistory,

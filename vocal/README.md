@@ -2,7 +2,7 @@
 # Vocal Website code
 ---
 
-Vocal is a coin for promoting social change and civic engagement
+Vocal is a currency platform for promoting social change and civic engagement.
 
 
 ### How it works:

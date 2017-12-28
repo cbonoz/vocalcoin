@@ -227,11 +227,7 @@ export default class MapPage extends Component {
   componentWillUnmount() {
     this.removeListener();
   }
-
-  componentWillMount() {
-    console.log('map user', JSON.stringify(this.props));
-  }
-
+  
   render() {
     return (
       <div>

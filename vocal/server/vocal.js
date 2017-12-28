@@ -35,8 +35,16 @@ const library = (function () {
             `values(${userId}, ${email}, ${address}, ${username})`;
     }
 
-    // point 1 is sw corner, point 2 is ne corner.
-    function getIssuesQuery(lat1, lng1, lat2, lng2) {
+    function getIssuesForUserQuery(userId) {
+        return `SELECT * from issues where user_id='${userId}'`;
+    }
+
+    function getVotesForIssueQuery(issueId) {
+        return `SELECT * from votes where issue_id='${issueId}'`;
+    }
+
+    // lat1, lng1 is SW corner, lat2,lng2 is NE corner.
+    function getIssuesForRegionQuery(lat1, lng1, lat2, lng2) {
         return `SELECT * from issues where lat > ${lat1} and lat < ${lat2} and lng > ${lng1} and lng < ${lng2}`;
     }
 
@@ -47,7 +55,9 @@ const library = (function () {
     return {
         getRandom: getRandom,
         getUserQuery: getUserQuery,
-        getIssuesQuery: getIssuesQuery,
+        getIssuesForRegionQuery: getIssuesForRegionQuery,
+        getIssuesForUserQuery: getIssuesForUserQuery,
+        getVotesForIssueQuery: getVotesForIssueQuery,
         calculateVocalCredit: calculateVocalCredit,
         insertIssueQuery: insertIssueQuery,
         insertEventQuery: insertEventQuery,
