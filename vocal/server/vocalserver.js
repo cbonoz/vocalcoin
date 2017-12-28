@@ -15,6 +15,7 @@ const path = require('path');
 const admin = require('firebase-admin')
 
 const serviceAccount = require("./db/vocalfb.json");
+const wallet = require('lightwallet/lightwallet');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

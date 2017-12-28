@@ -8,7 +8,7 @@ const library = (function () {
   // TODO: replace with actual contract address
   const CONTRACT_ADDR = '0x6135004c5b2b44493779ce86d6739f57dde674e0';
   // TODO: replace with ropsten (test net).
-  const INFURA_PROVIDER = `https://ropsten.infura.io/${INFURA_TOKEN}`
+  const INFURA_PROVIDER = `https://ropsten.infura.io/${INFURA_TOKEN}`;
   console.log('provider', INFURA_PROVIDER);
   // TODO: replace with actual compiled contract abi.
   // const CONTRACT_ABI = "./VocalToken.json";
