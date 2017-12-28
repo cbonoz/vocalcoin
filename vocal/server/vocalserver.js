@@ -15,7 +15,7 @@ const path = require('path');
 const admin = require('firebase-admin')
 
 const serviceAccount = require("./db/vocalfb.json");
-const wallet = require('lightwallet/lightwallet');
+// const wallet = require('lightwallet/lightwallet');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -137,7 +137,7 @@ app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req,
             // if we already have a vote for this user and issue, return.
             const errorMessage = "user already voted on this issue";
             console.error(errorMessage)
-            return res.status(200).json({"error": errorMessage);
+            return res.status(200).json({"error": errorMessage});
         }
 
         // Ok. Insert the vote into the DB.

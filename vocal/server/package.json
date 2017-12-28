@@ -18,13 +18,14 @@
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
+    "eth-lightwallet": "^3.0.0",
     "express": "^4.16.2",
     "firebase-admin": "^5.6.0",
+    "hooked-web3-provider": "christianlundkvist/hooked-web3-provider#updates_web3_14",
     "pg": "^7.4.0",
     "socket.io": "^2.0.4",
     "truffle-hdwallet-provider": "0.0.3",
     "web3": "0.20.2",
-    "web3-eth-accounts": "^1.0.0-beta.26",
-    "hooked-web3-provider": "christianlundkvist/hooked-web3-provider#updates_web3_14"
+    "web3-eth-accounts": "^1.0.0-beta.26"
   }
 }
