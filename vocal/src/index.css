@@ -75,6 +75,13 @@ body {
   padding-bottom: 2px;
 }
 
+.radio-form-input {
+  text-align: center;
+  margin: 0 auto;
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+
 .modal-image {
   height: 36px;
   margin-bottom: 25px !important;

@@ -37,9 +37,11 @@ export default class Issue extends Component {
         const votes = self.state.votes;
         return (
             <div>
-                <div className="issue-row" onClick={self.onIssueClick(issue)}>
+                <div className="issue-row" onClick={() => self.onIssueClick(issue)}>
                     <div className="issue-text">
-                        {JSON.stringify(issue)}
+                        <p className="emph">{issue.title}</p>
+                        <p>{issue.description}</p>
+                        <p>Created: {helper.formatDateTimeMs(issue.time)}</p>
                     </div>
 
                     {!votes.length && <div className="no-votes">No Votes yet.</div>}
@@ -47,14 +49,14 @@ export default class Issue extends Component {
                         {JSON.stringify(self.state.err)}
                     </div>}
                     {votes.length && <div className="vote-score">Net Score: {helper.getAgreeScoreFromVotes(votes)}</div>}
-                    {votes.map((vote) => {
-                        <div className="vote-row">
-                            {JSON.stringify(vote)}
-                            {/* <ul>
+                    {votes.map((vote, index) => {
+                        <div className="vote-row" key={index}>
+                            {/* {JSON.stringify(vote)} */}
+                            <ul>
                                 <li>Vote: {helper.convertAgreeToText(vote.agree)}</li>
                                 <li>Comment: {vote.message)}</li>
                                 <li>Time: {helper.formatDateTimeMs(vote.time)}</li>
-                            </ul> */}
+                            </ul>
                         </div>
                     })}
                 </div>

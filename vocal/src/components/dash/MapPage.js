@@ -62,8 +62,8 @@ const MapWithASearchBox = compose(
           refs.map = ref;
         },
         triggerVoteModal: (issue) => {
-          this.setState( {currentIssue: issue});
-          this.toggleVoteModal();
+          const isOpen = this.state.showVoteModal;
+          this.setState( {currentIssue: issue, showVoteModal: !isOpen});
         },
         toggleVoteModal: () => {
           const isOpen = this.state.showVoteModal;
@@ -94,12 +94,11 @@ const MapWithASearchBox = compose(
           const ne_lat = currBounds.getNorthEast().lat();
           const ne_lon = currBounds.getNorthEast().lng();
           api.getIssuesForRegion(sw_lat, sw_lon, ne_lat, ne_lon).then((data) => {
-            const issues = data.issues;
+            const issues = data;
             self.setState({ issues: issues, error: null });
           }).catch((err) => {
-            const issues = [];
             toast(<div><b>Error retrieving issues: Server Offline</b></div>);
-            self.setState({ issues: issues, error: err });
+            self.setState({ issues: [], error: err });
           });
         },
         onSearchBoxMounted: ref => {
@@ -202,10 +201,10 @@ const MapWithASearchBox = compose(
 
           // TODO: determine if DblClick should have different behavior from single.
           return (<Marker
-            label={issue.title}
-            onClick={props.triggerVoteModal(issue)}
-            onDblClick={props.triggerVoteModal(issue)}
             key={index}
+            label={issue.title}
+            onClick={() => props.triggerVoteModal(issue)}
+            onDblClick={() => props.triggerVoteModal(issue)}
             position={position} />
           )
         })}

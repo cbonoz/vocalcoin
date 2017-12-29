@@ -103,7 +103,7 @@ app.post('/api/issues/region', (req, res) => {
     const query = vocal.getIssuesForRegionQuery(lat1, lng1, lat2, lng2);
 
     pool.query(query, (err, result) => {
-        console.log('issues', err, count, result);
+        console.log('issues', err, result);
         if (err) {
             console.error('issues', err);
             return res.status(500).json(err);
@@ -125,11 +125,12 @@ app.post('/api/issues/region', (req, res) => {
 
 app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
-    const vote = body.vote;
+    const vote = JSON.parse(body.vote);
+    
     const checkVoteQuery = vocal.checkVoteQuery(vote);
-
     pool.query(checkVoteQuery, (err, result) => {
-        console.log('postVote', err, result);
+        console.log('check vote', checkVoteQuery);
+        console.log('checkVote', err, result);
         if (err) {
             console.error('postVote error', err);
             return res.status(500).json({"error": err});
@@ -144,6 +145,7 @@ app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req,
 
         // Ok. Insert the vote into the DB.
         const voteQuery = vocal.insertVoteQuery(vote);
+        console.log('insert vote', voteQuery);
         pool.query(voteQuery, (err, result) => {
             console.log('postVote', err, result);
             if (err) {
@@ -158,11 +160,12 @@ app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req,
 
 app.post('/api/issue', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
-    const issue = body.issue;
+    const issue = JSON.parse(body.issue);
     const query = vocal.insertIssueQuery(issue);
+    console.log('insert issue', query);
 
     pool.query(query, (err, result) => {
-        console.log('postIssue', err, count, result)
+        console.log('postIssue', err, result)
         if (err) {
             console.error('postIssue error', err);
             return res.status(500).json(err);
@@ -183,7 +186,7 @@ app.post('/api/vocal/add', passport.authenticate('bearer', { session: false }), 
     const query = vocal.addVocalQuery(userId, amount);
 
     pool.query(query, (err, result) => {
-        console.log('vocal add', err, count, result)
+        console.log('vocal add', err, result)
         if (err) {
             console.error('vocal add error', err);
             return res.status(500).json(err);
@@ -199,7 +202,7 @@ app.get('/api/issues/:userId', passport.authenticate('bearer', { session: false 
     const userId = req.params.userId;
     const query = vocal.getIssuesForUserQuery(userId);
     pool.query(query, (err, result) => {
-        console.log('getIssues', err, count, result)
+        console.log('getIssues', err, result)
 
         if (err) {
             console.error('getIssues error', err);
@@ -215,7 +218,7 @@ app.get('/api/votes/:issueId', passport.authenticate('bearer', { session: false 
     const query = vocal.getVotesForIssueIdQuery(issueId);
 
     pool.query(query, (err, result) => {
-        console.log('getVotes', err, count, result)
+        console.log('getVotes', err, result)
         if (err) {
             console.error('getVotes error', err);
             return res.status(500).json(err);
@@ -250,7 +253,7 @@ app.post('/api/user', passport.authenticate('bearer', { session: false }), (req,
     
     const query = vocal.getUserQuery(userId);
     pool.query(query, (err, result) => {
-        console.log('get user', err, count, result)
+        console.log('get user', err, result)
         if (err) {
             console.error('get user error', err);
             return res.status(500).json(err);
@@ -294,7 +297,7 @@ app.get('/api/balance/:userId', passport.authenticate('bearer', { session: false
 app.get('/api/address/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
     pool.query(`SELECT * FROM users where userId='${userId}'`, (err, result) => {
-        console.log('verify address', err, count, result)
+        console.log('verify address', err, result)
         if (err) {
             console.error('verify address', err);
             return res.status(500).json(err);
@@ -329,7 +332,7 @@ app.post('/api/address/update', passport.authenticate('bearer', { session: false
 app.get('/api/transactions/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
     pool.query(`SELECT * FROM transactions where userId='${userId}'`, (err, result) => {
-        console.log('transactions', err, count, result)
+        console.log('transactions', err, result)
         if (err) {
             console.error('transactions error', err);
             return res.status(500).json(err);

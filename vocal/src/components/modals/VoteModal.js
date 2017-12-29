@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Button, ButtonGroup, ButtonToolbar, ControlLabel, FormControl, FormGroup, ToggleButton, ToggleButtonGroup, Modal, Popover, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-import { getVoteDetails, postVote } from '../../utils/api';
 import api from '../../utils/api';
 import helper from '../../utils/helper';
+
+import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
+import { toast } from 'react-toastify';
 
 import vocal from '../../assets/vocal_title.png';
 
@@ -25,7 +27,7 @@ export default class VoteModal extends Component {
         this.postVote = this.postVote.bind(this);
     }
 
-    handleVoteChange = (selectedVotes) => {
+    handleVoteChange(selectedVotes) {
         const self = this;
         console.info(selectedVotes);
         self.setState({voteAgree: selectedVotes});
@@ -52,10 +54,10 @@ export default class VoteModal extends Component {
             agree: voteAgree,
             message: voteMessage,
             issueId: issue.ID,
-            userEmail: currentUser.email,
             userId: currentUser.uid,
             lat: voteLat,
-            lng: voteLng
+            lng: voteLng,
+            time: Date.now()
         };
 
         console.log('vote', JSON.stringify(vote));
@@ -70,6 +72,8 @@ export default class VoteModal extends Component {
         api.postVote(vote).then((res) => {
             self.setState({ postVoteEnabled: true });
             console.log('postVote: ' + res);
+            toast(<div><b>Vote Cast!</b></div>);
+            self.props.toggleVoteModal();
             // TODO: alert vote that vote was cast and close the modal.
 
         }).catch((err) => {
@@ -85,31 +89,32 @@ export default class VoteModal extends Component {
             <div>
                 <Modal show={self.props.showVoteModal} onHide={self.props.toggleVoteModal}>
                     <Modal.Header closeButton>
-                        <Modal.Title className="centered">Vote on {issue && issue.title}</Modal.Title>
+                        <Modal.Title className="centered">Vote on: <b>{issue && issue.title}</b></Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <hr />
-                        <div className="centered">
+                        <div>
                             <img src={vocal} className="centered modal-image" />
                             <form>
 
-                                <h3 className="centered modal-header">Issue Information:</h3>
+                                <h3 className="centered modal-header">Issue:</h3>
 
-                                {Object.keys(issue).map((key) => {
-                                    return <p>{helper.capitalize(key)}: <b>{issue[key]}</b></p>
-                                })}
+                                <p>Issue: <b>{issue.title}</b></p>
+                                <p>Description: <b>{issue.description}</b></p>
+                                <p>Affects location: <b>{issue.place}</b></p>
+                                <p>Created: <b>{helper.formatDateTimeMs(issue.time)}</b></p>
 
-                                <h3 className="centered modal-header">Your Vote:</h3>
+                                <h5 className="centered modal-header">Your Vote:</h5>
 
                                 <FormGroup controlId="formRadioButton" className="vote-form-group centered">
                                     <ControlLabel>Vote</ControlLabel>
-                                    <ButtonToolbar className="centered">
+                                    <ButtonToolbar className="centered radio-form-input">
                                         <ToggleButtonGroup 
                                             className="centered"
                                             type="radio"
                                             name="voteOptions"
                                             defaultValue={1}
-                                            onChange={this.handleVoteChange}>
+                                            onChange={self.handleVoteChange}>
                                             <ToggleButton value={1}>Agree</ToggleButton>
                                             <ToggleButton value={-1}>Disagree</ToggleButton>
                                             <ToggleButton value={0}>Neutral</ToggleButton>
@@ -122,9 +127,9 @@ export default class VoteModal extends Component {
                                     <FormControl
                                         rows="6"
                                         type="textarea"
-                                        value={this.state.voteMessage}
+                                        value={self.state.voteMessage}
                                         placeholder="Ex: I agree, we should also add a new children hospital wing to the downtown metro area."
-                                        onChange={this.handleDescriptionChange}/>
+                                        onChange={self.handleVoteMessageChange}/>
                                     <FormControl.Feedback />
                                 </FormGroup>
 

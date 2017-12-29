@@ -9,8 +9,7 @@ CREATE DATABASE vocal;
 -- A votable topic that can be voted on via an entry in the table below
 CREATE TABLE issues (
   ID SERIAL PRIMARY KEY,
-  user_id SERIAL NOT NULL,
-  user_email VARCHAR NOT NULL,
+  user_id VARCHAR NOT NULL,
   description VARCHAR,
   title VARCHAR NOT NULL,
   lat float(7),
@@ -24,13 +23,12 @@ CREATE TABLE issues (
 CREATE TABLE votes (
   ID SERIAL PRIMARY KEY,
   issue_id SERIAL REFERENCES issues(ID),
-  user_id SERIAL,
-  user_email VARCHAR,
+  user_id VARCHAR NOT NULL,
   lat float(7),
   lng float(7),
-  time BIGINT,
   message VARCHAR,
-  agree INT NOT NULL
+  agree INT NOT NULL,
+  time BIGINT
 );
 
 /* For socket io */

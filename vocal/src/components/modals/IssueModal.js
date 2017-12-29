@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { Button, Modal, Popover, Tooltip, OverlayTrigger, ControlLabel, Form, FormGroup, FormControl } from 'react-bootstrap';
 import api from '../../utils/api';
 
-import { getIssueDetails, postVote } from '../../utils/api';
+import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
+import { toast } from 'react-toastify';
 
 import vocal from '../../assets/vocal_title.png';
 
@@ -34,8 +35,7 @@ export default class IssueModal extends Component {
 
     _createIssueFromForm() {
         const self = this;
-        const issueAuthorEmail = self.props.currentUser.email;
-        const issueAuthorId = self.props.currentUser.uid;
+        const currentUser = self.props.currentUser;
 
         const issueTitle = self.state.issueTitle;
         const issueDescription = self.state.issueDescription;
@@ -48,13 +48,13 @@ export default class IssueModal extends Component {
 
         const issue = {
             title: issueTitle,
-            userId: issueAuthorId,
-            userEmail: issueAuthorEmail,
+            userId: currentUser.uid,
             description: issueDescription,
             lat: issueLat,
             lng: issueLng,
             place: place,
-            active: true
+            active: true,
+            time: Date.now()
         };
         console.log('issue', JSON.stringify(issue));
         return issue;
@@ -68,6 +68,8 @@ export default class IssueModal extends Component {
         api.postIssue(issue).then((res) => {
             self.setState({ postIssueEnabled: true });
             console.log('postIssue: ' + res);
+            toast(<div><b>Issue Created!</b></div>);
+            self.props.toggleIssueModal();
         }).catch((err) => {
             self.setState({ postIssueEnabled: true, error: err.statusText });
         });

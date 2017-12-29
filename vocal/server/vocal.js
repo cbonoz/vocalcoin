@@ -18,7 +18,7 @@ const library = (function () {
 
     function insertVoteQuery(vote) {
         return `INSERT INTO votes(issue_id, user_id, lat, lng, time, message, agree) ` +
-            `values(${vote.issue_id}, ${vote.userId}, ${vote.lat}, ${vote.lng}, ${vote.time}, ${vote.message}, ${vote.agree})`;
+            `values('${vote.issueId}', '${vote.userId}', ${vote.lat}, ${vote.lng}, ${vote.time}, '${vote.message}', ${vote.agree})`;
     }
 
     function checkVoteQuery(vote) {
@@ -27,7 +27,11 @@ const library = (function () {
 
     function insertIssueQuery(issue) {
         return `INSERT INTO issues(user_id, description, title, lat, lng, place, active, time) ` +
-            `values(${issue.userId}, ${issue.description}, ${issue.title}, ${issue.lat}, ${issue.lng}, ${issue.place}, ${issue.active}, ${issue.time})`;
+            `values('${issue.userId}', '${issue.description}', '${issue.title}', ${issue.lat}, ${issue.lng}, '${issue.place}', ${issue.active}, ${issue.time})`;
+    }
+
+    function toggleActiveForIssueId(issueId) {
+        return `UPDATE issues SET active = NOT active WHERE issue_id='${issueId}'`;
     }
 
     function getUserQuery(userId) {
@@ -36,7 +40,7 @@ const library = (function () {
 
     function insertUserQuery(userId, email, address, username) {
         return `INSERT INTO users(ID, email, address, username) ` +
-            `values(${userId}, ${email}, ${address}, ${username})`;
+            `values('${userId}', '${email}', '${address}', '${username})'`;
     }
 
     function getIssuesForUserQuery(userId) {
@@ -53,7 +57,7 @@ const library = (function () {
     }
 
     function insertEventQuery(name, time) {
-        return `INSERT INTO events(name, time) values(${event.name}, ${event.time})`;
+        return `INSERT INTO events(name, time) values('${event.name}', ${event.time})`;
     }
 
     return {
@@ -68,6 +72,7 @@ const library = (function () {
         insertEventQuery: insertEventQuery,
         insertUserQuery: insertUserQuery,
         insertVoteQuery: insertVoteQuery,
+        toggleActiveForIssueId: toggleActiveForIssueId,
         formatDateTimeMs: formatDateTimeMs
     }
 

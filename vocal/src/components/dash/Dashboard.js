@@ -15,19 +15,38 @@ export default class Dashboard extends Component {
         this.state = {
             currentUser: null,
             currentPage: 0,
+            loading: false,
+            err: null,
+            issues: [],
             balance: 'Loading...'
         };
 
         this._renderCurrentPage = this._renderCurrentPage.bind(this);
         this._updateBalance = this._updateBalance.bind(this);
+        this._updateIssues = this._updateIssues.bind(this);
         this.updateCurrentPage = this.updateCurrentPage.bind(this);
     }
 
     componentDidMount() {
         const self = this;
-        this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
+        self.removeListener = firebaseAuth().onAuthStateChanged((user) => {
             self.setState({ currentUser: user });
+            self._updateIssues();
         })
+    }
+
+    _updateIssues() {
+        const self = this;
+        if (!self.state.loading) {
+            self.setState({ loading: true, err: null });
+            const userId = self.state.currentUser.uid;
+            api.getIssuesForUserId(userId).then((data) => {
+                const yourIssues = data;
+                self.setState({ loading: true, issues: yourIssues });
+            }).catch((err) => {
+                self.setState( {issues: [], loading: false, err: err.statusText });
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -40,7 +59,11 @@ export default class Dashboard extends Component {
 
     _updateBalance() {
         const self = this;
-        const userId = self.state.currentUser.uid;
+        const currentUser = self.state.currentUser;
+        if (!currentUser) {
+            return;
+        }
+        const userId = currentUser.uid;
         api.getBalance(userId).then((res) => {
             self.setState({ balance: res });
             console.log('getBalance: ' + res);
@@ -57,7 +80,7 @@ export default class Dashboard extends Component {
             //     return <AccountHistory currentUser={self.state.currentUser} />
             case 0:
                 self._updateBalance();
-                return <Issues currentUser={self.state.currentUser} balance={self.state.balance} />
+                return <Issues issues={self.state.issues} currentUser={self.state.currentUser} balance={self.state.balance} />
             case 1:
                 return <Help currentUser={self.state.currentUser} />
             default: // 0

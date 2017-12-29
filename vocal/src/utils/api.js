@@ -66,6 +66,7 @@ const library = (function () {
         const url = `${BASE_URL}/api/votes/${issueId}`;
         return axios.get(url, getHeaders()).then(response => response.data);
     }
+
     function postVocal(userId) {
         const url = `${BASE_URL}/api/vocal/add`;
         return axios.post(url, {
@@ -76,11 +77,15 @@ const library = (function () {
         });
     }
 
-    function postIssue(userId, issue) {
+    function getToggleActiveForIssueId(issueId) {
+        const url = `${BASE_URL}/api/issue/toggle/${issueId}`;
+        return axios.get(url, getHeaders()).then(response => response.data); 
+    }
+
+    function postIssue(issue) {
         const url = `${BASE_URL}/api/issue`;
         return axios.post(url, {
-            userId: userId,
-            issue: issue,
+            issue: JSON.stringify(issue)
         }, getHeaders()).then(response => {
             const data = response.data;
             const eventName = "New Issue added: " + JSON.stringify(data);
@@ -91,11 +96,10 @@ const library = (function () {
         });
     }
 
-    function postVote(userId, vote) {
+    function postVote(vote) {
         const url = `${BASE_URL}/api/vote`;
         return axios.post(url, {
-            userId: userId,
-            vote: vote
+            vote: JSON.stringify(vote)
         }, getHeaders()).then(response => {
             const data = response.data;
             const eventName = "New Vote added: " + JSON.stringify(data);
@@ -142,6 +146,7 @@ const library = (function () {
         getBalance: getBalance,
         getIssuesForRegion: getIssuesForRegion,
         getIssuesForUserId: getIssuesForUserId,
+        getToggleActiveForIssueId: getToggleActiveForIssueId,
         getVotesForIssueId: getVotesForIssueId,
         getSocketEvents: getSocketEvents,
         getRandom: getRandom,
