@@ -20,8 +20,8 @@ export default class Home extends Component {
         this.state = {
             title: 'The Future is Vocal' ,
             // slogan: 'Vocal is a currency platform that puts the advertising experience back in the hands of users.',
-            // slogan: 'Vocal is a currency platform for encouraging civic engagement',
-            slogan: "Vocal is a cryptocurrency platform promoting social change and civic engagement",
+            // slogan: 'Vocal is a currency platform for promoting civic engagement',
+            slogan: "Vocal is a cryptocurrency platform for promoting social change and civic engagement.",
             words: ['building', 'sharing', 'discovering'],
             blocks: [],
             authed: this.props.authed
@@ -67,12 +67,12 @@ export default class Home extends Component {
                                             <div className="centered">
                                                 <p className="centered large bold">What are you waiting for?<br /></p>
                                                 <Button bsStyle="primary" className="start-button" onClick={() => { window.location = "/faq"}}>
-                                                    Learn More
-                                                    &nbsp;<i className="centered clear fa fa-paper-plane " aria-hidden="true"></i>
+                                                    See our FAQ
+                                                    &nbsp;<i className="centered clear fa fa-refresh fa-spin" aria-hidden="true"></i>
                                                 </Button>
-                                                <Link to="/faq">
+                                                {/* <Link to="/faq">
                                                     <p className="home-learn-more medium facebook-blue"><b>See our FAQ</b></p>
-                                                </Link>
+                                                </Link> */}
                                             </div>
                                         </span>
                                     </div>
