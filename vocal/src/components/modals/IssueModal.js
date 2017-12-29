@@ -10,9 +10,6 @@ export default class IssueModal extends Component {
 
     constructor(props) {
         super(props)
-
-        console.log('currentUser', this.props.currentUser);
-
         this.state = {
             postIssueEnabled: true,
             error: null,

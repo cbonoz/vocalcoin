@@ -4,9 +4,8 @@ const library = (function () {
     const PORT = 9007;
     const MAX_EVENTS = 8;
 
-    // const BASE_URL = "https://www.vocalcoin.com"
-    // TODO: add https
-    const BASE_URL = `https://vocalcoin.com:${PORT}`;
+    const BASE_URL = "https://www.vocalcoin.com"
+    // const BASE_URL = `https://www.vocalcoin.com:${PORT}`;
     // const socket = require('socket.io-client')(BASE_URL);
     const socket = null;
 

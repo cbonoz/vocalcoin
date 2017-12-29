@@ -65,8 +65,11 @@ const io = require('socket.io')(server, { origins: '*:*'});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// TODO: use reduced cors in production.
 const whitelist = ['https://vocalcoin.com', 'https://www.vocalcoin.com'];
 app.use(cors({ origin: whitelist }));
+
+app.use(cors());
 
 // Test Ethereum Network (INFURAnet)
 const infuraTestNet = "https://infuranet.infura.io/";

@@ -49,10 +49,15 @@ body {
 }
 
 .login-form-group, .issue-form-group, .vote-form-group {
-  padding: 20px;
+  padding: 4px;
   text-align: center;
   margin: 0 auto;
-  max-width: 400px;
+  max-width: 350px;
+}
+
+.issue-form-group, .vote-form-group {
+  padding: 8px;
+  max-width: 500px;
 }
 
 .sync-result-box {
