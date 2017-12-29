@@ -54,7 +54,7 @@ export default class Issue extends Component {
                             {/* {JSON.stringify(vote)} */}
                             <ul>
                                 <li>Vote: {helper.convertAgreeToText(vote.agree)}</li>
-                                <li>Comment: {vote.message)}</li>
+                                <li>Comment: {vote.message}</li>
                                 <li>Time: {helper.formatDateTimeMs(vote.time)}</li>
                             </ul>
                         </div>

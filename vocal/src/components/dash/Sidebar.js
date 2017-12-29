@@ -1,20 +1,25 @@
 import React, { Component } from 'react'
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import api from '../../utils/api';
 
 export default class Sidebar extends Component {
+
+    constructor(props) {
+        super(props);
+    }
 
     _activePage(page) {
         return this.props.currentPage === page;
     }
 
     render() {
+        const self = this;
         const pageList = [
             // 'Account History',
             'Your Issues',
             'Help'
         ];
 
-        const self = this;
         return (
             <div className="sidebar-container">
                 <ListGroup>
@@ -26,6 +31,8 @@ export default class Sidebar extends Component {
                         </ListGroupItem>)
                     })}
                 </ListGroup>
+
+                <div className="your-balance">Account Balance: <span className="emph">{self.props.balance}</span></div>
             </div>
         )
     }

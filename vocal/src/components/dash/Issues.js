@@ -25,7 +25,6 @@ export default class Issues extends Component {
                 <ListGroup>
                     <ListGroupItem className={"sidebar-item"} header={"Vocal Control Panel"} bsStyle="info" />
 
-                    <div className="your-balance">Your Balance: <b>{self.props.balance}</b> vocal</div>
                     {self.state.err && <div className="error-text">
                         {JSON.stringify(self.state.err)}
                     </div>}

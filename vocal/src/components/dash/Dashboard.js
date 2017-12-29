@@ -22,8 +22,8 @@ export default class Dashboard extends Component {
         };
 
         this._renderCurrentPage = this._renderCurrentPage.bind(this);
-        this._updateBalance = this._updateBalance.bind(this);
         this._updateIssues = this._updateIssues.bind(this);
+        this._updateBalance = this._updateBalance.bind(this);
         this.updateCurrentPage = this.updateCurrentPage.bind(this);
     }
 
@@ -32,6 +32,7 @@ export default class Dashboard extends Component {
         self.removeListener = firebaseAuth().onAuthStateChanged((user) => {
             self.setState({ currentUser: user });
             self._updateIssues();
+            self._updateBalance();
         })
     }
 
@@ -65,7 +66,7 @@ export default class Dashboard extends Component {
         }
         const userId = currentUser.uid;
         api.getBalance(userId).then((res) => {
-            self.setState({ balance: res });
+            self.setState({ balance: res + " vocal" });
             console.log('getBalance: ' + res);
         }).catch((err) => {
             console.error('getBalance error', JSON.stringify(err));
@@ -79,7 +80,6 @@ export default class Dashboard extends Component {
             // case 0:
             //     return <AccountHistory currentUser={self.state.currentUser} />
             case 0:
-                self._updateBalance();
                 return <Issues issues={self.state.issues} currentUser={self.state.currentUser} balance={self.state.balance} />
             case 1:
                 return <Help currentUser={self.state.currentUser} />
@@ -90,12 +90,14 @@ export default class Dashboard extends Component {
 
     render() {
         const self = this;
+        const currentUser = self.state.currentUser;
+
         return (
             <div>
                 <div className='dashboard-container'>
                     <Row>
                         <Col xs={12} md={3}>
-                            <Sidebar currentPage={this.state.currentPage} updateCurrentPage={this.updateCurrentPage} />
+                            <Sidebar balance={self.state.balance} currentPage={this.state.currentPage} updateCurrentPage={this.updateCurrentPage} />
                         </Col>
                         <Col xs={12} md={9}>
                             <div className="full-height">
