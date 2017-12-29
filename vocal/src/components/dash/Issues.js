@@ -18,8 +18,8 @@ export default class Issues extends Component {
         const self = this;
         if (!self.state.loading) {
             self.setState({ loading: true, err: null });
-            const user = this.state.currentUser;
-            api.getIssuesForUser(user).then((data) => {
+            const userId = this.state.currentUser.uid;
+            api.getIssuesForUserId(userId).then((data) => {
                 const yourIssues = data.data;
                 self.setState({ loading: true, issues: yourIssues });
             }).catch((err) => {
@@ -34,6 +34,7 @@ export default class Issues extends Component {
 
         return (
             <div>
+                <div className="your-balance">Your Balance: <b>{self.props.balance}</b> vocal</div>
                 {self.state.err && <div className="error-text">
                     {JSON.stringify(self.state.err)}
                 </div>}

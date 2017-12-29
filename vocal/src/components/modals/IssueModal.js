@@ -11,6 +11,7 @@ export default class IssueModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            vocalBalance: -1,
             postIssueEnabled: true,
             error: null,
             issueTitle: '',
@@ -68,7 +69,7 @@ export default class IssueModal extends Component {
             self.setState({ postIssueEnabled: true });
             console.log('postIssue: ' + res);
         }).catch((err) => {
-            self.setState({ postIssueEnabled: true, error: err });
+            self.setState({ postIssueEnabled: true, error: err.statusText });
         });
     }
 
@@ -134,13 +135,14 @@ export default class IssueModal extends Component {
 
                                 <FormGroup>
                                     <hr/>
-                                    <p>Issue location will be your current map center location: i.e.</p>
-                                    <p><b>Latitude:&nbsp;</b>{lat}, <b>Longitude: </b>{lng}</p>
-                                    <p><b>Last Location:&nbsp;</b>{lastLocation}</p>
-                                    <p>and will appear with the user handle: <b>{userName}</b></p>
+                                    <p>Issue location will be your map location: i.e.</p>
+                                    {/* <p><b>Latitude:&nbsp;</b>{lat}, <b>Longitude: </b>{lng}</p> */}
+                                    {lastLocation && <p><b>Last Location:&nbsp;</b>{lastLocation}</p>}
+                                    {!lastLocation && <p className="error-text">Navigate/Search on the map to select your issue location</p>}
+                                    {/* <p>and will appear with the user handle: <b>{userName}</b></p> */}
                                 </FormGroup>
 
-                                <Button bsStyle="success" onClick={self.postIssue} disabled={!self.state.postIssueEnabled}>
+                                <Button bsStyle="success" onClick={self.postIssue} disabled={!self.state.postIssueEnabled && lastLocation}>
                                     Create Issue
                                 </Button>
 

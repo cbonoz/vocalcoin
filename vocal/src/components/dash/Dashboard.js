@@ -6,6 +6,7 @@ import AccountHistory from './AccountHistory';
 import Sidebar from './Sidebar';
 
 import { firebaseAuth } from '../../utils/fire';
+import api from '../../utils/api';
 
 export default class Dashboard extends Component {
 
@@ -13,10 +14,12 @@ export default class Dashboard extends Component {
         super(props);
         this.state = {
             currentUser: null,
-            currentPage: 0
+            currentPage: 0,
+            balance: 'Loading...'
         };
 
         this._renderCurrentPage = this._renderCurrentPage.bind(this);
+        this._updateBalance = this._updateBalance.bind(this);
         this.updateCurrentPage = this.updateCurrentPage.bind(this);
     }
 
@@ -35,13 +38,26 @@ export default class Dashboard extends Component {
         this.setState({ currentPage: currentPage });
     }
 
+    _updateBalance() {
+        const self = this;
+        const userId = self.state.currentUser.uid;
+        api.getBalance(userId).then((res) => {
+            self.setState({ balance: res });
+            console.log('getBalance: ' + res);
+        }).catch((err) => {
+            console.error('getBalance error', JSON.stringify(err));
+            self.setState({ balance: "Temporary error retrieving balance" });
+        });
+    }
+
     _renderCurrentPage() {
         const self = this;
         switch (self.state.currentPage) {
             // case 0:
             //     return <AccountHistory currentUser={self.state.currentUser} />
             case 0:
-                return <Issues currentUser={self.state.currentUser} />
+                self._updateBalance();
+                return <Issues currentUser={self.state.currentUser} balance={self.state.balance} />
             case 1:
                 return <Help currentUser={self.state.currentUser} />
             default: // 0

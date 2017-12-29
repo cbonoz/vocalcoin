@@ -22,7 +22,7 @@ export default class Issue extends Component {
         if (!self.state.loading) {
             self.setState({ loading: true, err: null });
             const user = this.state.currentUser;
-            api.getVotesForIssue(issue.ID).then((data) => {
+            api.getVotesForIssueId(issue.ID).then((data) => {
                 const issueVotes = data.data;
                 self.setState({ loading: true, votes: issueVotes });
             }).catch((err) => {

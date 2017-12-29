@@ -56,7 +56,7 @@ body {
 }
 
 .issue-form-group, .vote-form-group {
-  padding: 8px;
+  padding: px;
   max-width: 500px;
 }
 
@@ -135,6 +135,8 @@ body {
 }
 
 .error-text {
+  color: red;
+  font-style: italic;
   margin: 0 auto;
   text-align: center; 
   padding: 10px;

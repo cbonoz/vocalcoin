@@ -73,7 +73,7 @@ export default class VoteModal extends Component {
             // TODO: alert vote that vote was cast and close the modal.
 
         }).catch((err) => {
-            self.setState({ postVoteEnabled: true, error: err });
+            self.setState({ postVoteEnabled: true, error: err.statusText });
         });
     }
 

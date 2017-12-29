@@ -18,16 +18,16 @@ const library = (function () {
 
     function insertVoteQuery(vote) {
         return `INSERT INTO votes(issue_id, user_id, lat, lng, time, message, agree) ` +
-            `values(${vote.issue_id}, ${vote.user_id}, ${vote.lat}, ${vote.lng}, ${vote.time}, ${vote.message}, ${vote.agree})`;
+            `values(${vote.issue_id}, ${vote.userId}, ${vote.lat}, ${vote.lng}, ${vote.time}, ${vote.message}, ${vote.agree})`;
     }
 
     function checkVoteQuery(vote) {
-        return `SELECT * from votes where issue_id='${vote.issue_id}' and user_id='${vote.user_id}'`;
+        return `SELECT * from votes where issue_id='${vote.issueId}' and user_id='${vote.userId}'`;
     }
 
     function insertIssueQuery(issue) {
         return `INSERT INTO issues(user_id, description, title, lat, lng, place, active, time) ` +
-            `values(${issue.user_id}, ${issue.description}, ${issue.title}, ${issue.lat}, ${issue.lng}, ${issue.place}, ${issue.active}, ${issue.time})`;
+            `values(${issue.userId}, ${issue.description}, ${issue.title}, ${issue.lat}, ${issue.lng}, ${issue.place}, ${issue.active}, ${issue.time})`;
     }
 
     function getUserQuery(userId) {
@@ -43,7 +43,7 @@ const library = (function () {
         return `SELECT * from issues where user_id='${userId}'`;
     }
 
-    function getVotesForIssueQuery(issueId) {
+    function getVotesForIssueIdQuery(issueId) {
         return `SELECT * from votes where issue_id='${issueId}'`;
     }
 
@@ -62,7 +62,7 @@ const library = (function () {
         getUserQuery: getUserQuery,
         getIssuesForRegionQuery: getIssuesForRegionQuery,
         getIssuesForUserQuery: getIssuesForUserQuery,
-        getVotesForIssueQuery: getVotesForIssueQuery,
+        getVotesForIssueIdQuery: getVotesForIssueIdQuery,
         calculateVocalCredit: calculateVocalCredit,
         insertIssueQuery: insertIssueQuery,
         insertEventQuery: insertEventQuery,

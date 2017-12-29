@@ -195,7 +195,7 @@ app.post('/api/vocal/add', passport.authenticate('bearer', { session: false }), 
 
 /* Dashboard routes */
 
-app.get('/api/issues', passport.authenticate('bearer', { session: false }), (req, res) => {
+app.get('/api/issues/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
     const query = vocal.getIssuesForUserQuery(userId);
     pool.query(query, (err, result) => {
@@ -210,9 +210,9 @@ app.get('/api/issues', passport.authenticate('bearer', { session: false }), (req
     });
 });
 
-app.get('/api/votes', passport.authenticate('bearer', { session: false }), (req, res) => {
+app.get('/api/votes/:issueId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.issueId;
-    const query = vocal.getVotesForIssueQuery(issueId);
+    const query = vocal.getVotesForIssueIdQuery(issueId);
 
     pool.query(query, (err, result) => {
         console.log('getVotes', err, count, result)
@@ -229,6 +229,7 @@ app.get('/api/votes', passport.authenticate('bearer', { session: false }), (req,
 
 app.post('/api/signin', (req, res) => {
     const body = req.body;
+    console.log(body);
     const userId = body.userId;
 
     admin.auth().createCustomToken(userId).then(function(customToken) {
@@ -282,22 +283,15 @@ app.post('/api/user', passport.authenticate('bearer', { session: false }), (req,
 
 // TODO: each request below should do an address lookup (based on the past in userId) to find the appropriate address to credit or find the balance for.
 // TODO: this request queries the BLOCKCHAIN for the current balance.
-app.get('/api/balance', passport.authenticate('bearer', { session: false }), (req, res) => {
+app.get('/api/balance/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
     // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
-    pool.query(`SELECT * FROM balance where userId='${userId}'ORDER BY time DESC limit 1`, (err, result) => {
-        console.log('balance', err, count, result)
-        if (err) {
-            console.error('balance error', err);
-            return res.status(500).json(err);
-        }
-        // pool.end()
-        return res.json(result.rows);
-    });
+    const balance = -1;
+    return res.json(balance);
 });
 
 // Check if the given userId param exists in the DB and contains a non-null address.
-app.get('/api/address', passport.authenticate('bearer', { session: false }), (req, res) => {
+app.get('/api/address/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
     pool.query(`SELECT * FROM users where userId='${userId}'`, (err, result) => {
         console.log('verify address', err, count, result)
@@ -332,7 +326,7 @@ app.post('/api/address/update', passport.authenticate('bearer', { session: false
 });
 
 // TODO: query the blockchain for the transactions submitted by the given userId (using the address lookup).
-app.get('/api/transactions', passport.authenticate('bearer', { session: false }), (req, res) => {
+app.get('/api/transactions/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
     pool.query(`SELECT * FROM transactions where userId='${userId}'`, (err, result) => {
         console.log('transactions', err, count, result)

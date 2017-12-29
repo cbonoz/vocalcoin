@@ -44,7 +44,7 @@ const library = (function () {
     function postUserQuery(user) {
         const url = `${BASE_URL}/api/signin`;
         return axios.post(url, {
-            userId: user.userId,
+            userId: user.uid,
             username: user.email.split('@')[0]
         }).then(response => {
             const data = response.data;
@@ -52,21 +52,20 @@ const library = (function () {
         });
     }
 
-    function getIssueDetails(issueId) {
-        const url = `${BASE_URL}/api/issue/${issueId}`;
-        return axios.get(url, getHeaders()).then(response => response.data);
-    }
+    // function getIssueDetails(issueId) {
+    //     const url = `${BASE_URL}/api/issue/${issueId}`;
+    //     return axios.get(url, getHeaders()).then(response => response.data);
+    // }
 
-    function getIssuesForUser(userId) {
+    function getIssuesForUserId(userId) {
         const url = `${BASE_URL}/api/issues/${userId}`;
         return axios.get(url, getHeaders()).then(response => response.data);
     }
 
-    function getVotesForIssue(issuesId) {
-        const url = `${BASE_URL}/api/votes/${issuesId}`;
+    function getVotesForIssueId(issueId) {
+        const url = `${BASE_URL}/api/votes/${issueId}`;
         return axios.get(url, getHeaders()).then(response => response.data);
     }
-
     function postVocal(userId) {
         const url = `${BASE_URL}/api/vocal/add`;
         return axios.post(url, {
@@ -115,10 +114,15 @@ const library = (function () {
         return axios.get(url).then(response => response.data);
     }
 
+    function getBalance(userId) {
+        const url = `${BASE_URL}/api/balance/${userId}`;
+        return axios.get(url, getHeaders()).then(response => response.data); 
+    }
+
     // TODO: return axios promises for the requests below.
 
     function getTransactionHistory(user) {
-        const userId = user.userId;
+        const userId = user.uid;
         return null;
     }
 
@@ -135,10 +139,10 @@ const library = (function () {
         postIssue: postIssue,
         postAddress: postAddress,
         postUserQuery: postUserQuery,
-        getIssueDetails: getIssueDetails,
+        getBalance: getBalance,
         getIssuesForRegion: getIssuesForRegion,
-        getIssuesForUser: getIssuesForUser,
-        getVotesForIssue: getVotesForIssue,
+        getIssuesForUserId: getIssuesForUserId,
+        getVotesForIssueId: getVotesForIssueId,
         getSocketEvents: getSocketEvents,
         getRandom: getRandom,
         getTransactionHistory: getTransactionHistory,
