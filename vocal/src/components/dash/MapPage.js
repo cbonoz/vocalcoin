@@ -53,6 +53,10 @@ const MapWithASearchBox = compose(
         onMapMounted: ref => {
           refs.map = ref;
         },
+        triggerVoteModal: (issue) => {
+          this.setState( {currentIssue: issue});
+          this.toggleVoteModal();
+        },
         toggleVoteModal: () => {
           const isOpen = this.state.showVoteModal;
           this.setState({ showVoteModal: !isOpen })
@@ -89,11 +93,6 @@ const MapWithASearchBox = compose(
             toast(<div><b>Error retrieving issues: Server Offline</b></div>);
             self.setState({ issues: issues, error: err });
           });
-        },
-        showVoteModal: (issue) => {
-          const self = this;
-          // Open a dialog for the issue in response to a user marker click.
-          self.setState({currentIssue: issue, showVoteModal: true});
         },
         onSearchBoxMounted: ref => {
           refs.searchBox = ref;
@@ -196,8 +195,8 @@ const MapWithASearchBox = compose(
           // TODO: determine if DblClick should have different behavior from single.
           return (<Marker
             label={issue.title}
-            onClick={props.showVoteModal(issue)}
-            onDblClick={props.showVoteModal(issue)}
+            onClick={props.triggerVoteModal(issue)}
+            onDblClick={props.triggerVoteModal(issue)}
             key={index}
             position={position} />
           )

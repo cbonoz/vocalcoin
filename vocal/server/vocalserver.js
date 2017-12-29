@@ -126,7 +126,6 @@ app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req,
     const checkVoteQuery = vocal.checkVoteQuery(vote);
 
     pool.query(checkVoteQuery, (err, result) => {
-        // console.log('postVote', err, count, result)
         console.log('postVote', err, result);
         if (err) {
             console.error('postVote error', err);
@@ -143,7 +142,6 @@ app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req,
         // Ok. Insert the vote into the DB.
         const voteQuery = vocal.insertVoteQuery(vote);
         pool.query(voteQuery, (err, result) => {
-            // console.log('postVote', err, count, result)
             console.log('postVote', err, result);
             if (err) {
                 console.error('postVote error', err);
