@@ -35,7 +35,7 @@ export default class IssueModal extends Component {
     _createIssueFromForm() {
         const self = this;
         const issueAuthorEmail = self.props.currentUser.email;
-        const issueAuthorId = self.props.currentUser.id;
+        const issueAuthorId = self.props.currentUser.uid;
 
         const issueTitle = self.state.issueTitle;
         const issueDescription = self.state.issueDescription;
@@ -93,8 +93,8 @@ export default class IssueModal extends Component {
         const lng = parseFloat(center['lng']).toFixed(2);
 
         const lastLocation = self.props.lastLocation;
-
         const currentUser = self.props.currentUser;
+
         let userName = '';
         if (currentUser) {
             userName = currentUser.email.split('@')[0];
@@ -135,14 +135,13 @@ export default class IssueModal extends Component {
 
                                 <FormGroup>
                                     <hr/>
-                                    <p>Issue location will be your map location: i.e.</p>
-                                    {/* <p><b>Latitude:&nbsp;</b>{lat}, <b>Longitude: </b>{lng}</p> */}
-                                    {lastLocation && <p><b>Last Location:&nbsp;</b>{lastLocation}</p>}
+                                    <p>Issue location will be your current map location: i.e.</p>
+                                    {lastLocation && <p>Location: <b>&nbsp;{lastLocation} (lat: {lat}, lng: {lng})</b></p>}
                                     {!lastLocation && <p className="error-text">Navigate/Search on the map to select your issue location</p>}
                                     {/* <p>and will appear with the user handle: <b>{userName}</b></p> */}
                                 </FormGroup>
 
-                                <Button bsStyle="success" onClick={self.postIssue} disabled={!self.state.postIssueEnabled && lastLocation}>
+                                <Button bsStyle="success" onClick={self.postIssue} disabled={(!self.state.postIssueEnabled || !lastLocation)}>
                                     Create Issue
                                 </Button>
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button } from 'react-bootstrap';
 import IssueModal from './../modals/IssueModal';
 import VoteModal from './../modals/VoteModal';
-import Geolocation from "react-geolocation";
+import {geolocated} from 'react-geolocated';
 import maputil from '../../utils/maputil';
 import api from '../../utils/api';
 import helper from '../../utils/helper';
@@ -37,6 +37,14 @@ const MapWithASearchBox = compose(
     componentWillMount() {
       const refs = {}
 
+      console.log('coords', this.props.coords);
+      let latitude = 41.9;
+      let longitude = -87.624;
+      if (this.props.coords) {
+        latitude = this.props.coords.latitude;
+        longitude = this.props.coords.longitude;
+      }
+
       this.setState({
         bounds: null,
         error: null,
@@ -46,7 +54,7 @@ const MapWithASearchBox = compose(
         enableRefreshButton: false,
         lastLocation: null,
         center: {
-          lat: 41.9, lng: -87.624
+          lat: latitude, lng: longitude
         },
         markers: [],
         issues: [],
@@ -219,7 +227,7 @@ const MapWithASearchBox = compose(
   );
 
 // TODO: retrieve markers near user location programmatically
-export default class MapPage extends Component {
+class MapPage extends Component {
 
   constructor(props) {
     super(props)
@@ -248,3 +256,15 @@ export default class MapPage extends Component {
     )
   }
 }
+
+export default geolocated({
+  positionOptions: {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: Infinity,
+  },
+  userDecisionTimeout: null,
+  suppressLocationOnMount: false,
+  geolocationProvider: navigator.geolocation
+})(MapPage);
+

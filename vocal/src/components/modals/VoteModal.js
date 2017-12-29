@@ -51,9 +51,9 @@ export default class VoteModal extends Component {
         const vote = {
             agree: voteAgree,
             message: voteMessage,
-            issueId: issue.id,
+            issueId: issue.ID,
             userEmail: currentUser.email,
-            userId: currentUser.id,
+            userId: currentUser.uid,
             lat: voteLat,
             lng: voteLng
         };
