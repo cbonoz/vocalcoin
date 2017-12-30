@@ -41,7 +41,7 @@ const library = (function () {
     }
 
     function getUserQuery(userId) {
-        return `SELECT * FROM users where ID='${userId}`;
+        return `SELECT * FROM users where ID='${userId}'`;
     }
 
     function insertUserQuery(userId, email, address, username) {

@@ -33,7 +33,7 @@ export default class LoginForm extends Component {
   }
 
   handleAddressChange(event) {
-    this.setState({ password: event.target.value });
+    this.setState({ address: event.target.value });
   }
 
   handlePasswordChange(event) {

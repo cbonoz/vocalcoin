@@ -253,6 +253,8 @@ app.post('/api/signin', (req, res) => {
         pool.query(query, (err, result) => {
             console.log('get user', err, result)
 
+            // TODO: Fix the race condition here between getting the user and
+            // returning the auth token.
             if (err) {
                 console.error('get user error', err);
                 return res.status(500).json(err);
@@ -269,23 +271,22 @@ app.post('/api/signin', (req, res) => {
                         console.error('create user error', err);
                         return res.status(500).json(err);
                     }
-                    console.log('inserted new user', JSON.stringify(user));
+                    console.log('inserted new user', JSON.stringify(result));
                 });
             }
-        });
-    }
 
-    // Return the auth token.
-    admin.auth().createCustomToken(userId).then(function (customToken) {
-        // Send token back to client.
-        console.log(userId, customToken);
-        db.users.assignToken(userId, customToken);
-        return res.json({ "token": customToken });
-    })
-        .catch(function (error) {
-            console.error("Error creating custom token:", error);
-            return res.json({ "error": error });
-        });
+            // Return the auth token after the user is confirmed.
+            admin.auth().createCustomToken(userId).then((customToken) => {
+                    // Send token back to client.
+                    console.log(userId, customToken);
+                    db.users.assignToken(userId, customToken);
+                    return res.json({ "token": customToken });
+                }).catch((error) => {
+                    console.error("Error creating custom token:", error);
+                    return res.json(error);
+                });
+            });
+    }
 });
 
 /* Query methods */
@@ -314,7 +315,6 @@ app.get('/api/balance/:userId', passport.authenticate('bearer', { session: false
     } catch (err) {
         return res.json(err);
     }
-
 });
 
 app.get('/api/address/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
@@ -326,7 +326,6 @@ app.get('/api/address/:userId', passport.authenticate('bearer', { session: false
     } catch (err) {
         return res.json(err)
     }
-
 });
 
 // TODO: finish this.
