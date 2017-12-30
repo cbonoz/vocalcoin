@@ -8,6 +8,9 @@
 
 # production
 /build
+package-lock.json
+/vocal/package-lock.json
+/vocal/server/package-lock.json
 
 # misc
 .DS_Store

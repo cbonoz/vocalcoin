@@ -13,6 +13,7 @@ const library = (function () {
   // TODO: replace with actual compiled contract abi.
   // const CONTRACT_ABI = "./VocalToken.json";
   const CONTRACT_ABI = "./VocalToken.json";
+  // const CONTRACT_ABI = "vocal/server/VocalToken.json";
 
   const fs = require("fs");
   const Web3 = require('web3'); // https://www.npmjs.com/package/web3

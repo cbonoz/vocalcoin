@@ -11,6 +11,9 @@ smartcontracts/.idea/
 
 # dependencies
 node_modules/
+package-lock.json
+/vocal/package-lock.json
+/vocal/server/package-lock.json
 
 # Docker
 Dockerfile

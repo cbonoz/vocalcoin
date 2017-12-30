@@ -213,7 +213,7 @@ app.get('/api/issues/:userId', passport.authenticate('bearer', { session: false 
     });
 });
 
-pp.get('/api/hasvoted/:userId/:issueId', passport.authenticate('bearer', { session: false }), (req, res) => {
+app.get('/api/hasvoted/:userId/:issueId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
     const issueId = req.params.issueId;
     const checkVoteQuery = vocal.checkVoteQuery(userId, issueId);
@@ -356,6 +356,8 @@ app.get('/api/transactions/:userId', passport.authenticate('bearer', { session: 
         return res.json(result.rows);
     });
 });
+
+
 
 /**
  * End of Blockchain Routes
