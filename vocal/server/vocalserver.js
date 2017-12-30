@@ -106,7 +106,7 @@ app.post('/api/issues/region', (req, res) => {
         console.log('issues', err, result);
         if (err) {
             console.error('issues', err);
-            return res.status(500).json(err);
+            return vocal/modify;
         }
         // Return the rows that lie within the bounds of the map view.
         return res.json(result.rows);
@@ -123,56 +123,92 @@ app.post('/api/issues/region', (req, res) => {
  * curl -v -H "Authorization: Bearer 123456789" -X POST http://127.0.0.1:9007/api/vote
  */
 
+function getAddressAndExecute(userId, cb) {
+    const query = vocal.getAddress(userId);
+    pool.query(query, (err, result) => {
+        console.log('vocal address', err, result)
+        if (err || !result.rows) {
+            console.error('vocal address error', err);
+            throw err;
+        }
+        const address = result.rows[0]['address'];
+        console.log('got address', address);
+        cb(address);
+    });
+}
+
 app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const vote = JSON.parse(body.vote);
 
-    const checkVoteQuery = vocal.checkVoteQuery(vote.userId, vote.issueId);
+    const userId = vote.userId;
+    const issueId = vote.issueId;
+
+    const checkVoteQuery = vocal.checkVoteQuery(userId, issueId);
     pool.query(checkVoteQuery, (err, result) => {
         console.log('check vote', checkVoteQuery);
         console.log('checkVote', err, result);
         if (err) {
             console.error('postVote error', err);
-            return res.status(500).json({ "error": err });
+            return res.status(500).json(err);
         }
 
         if (result.rows.length > 0) {
             // if we already have a vote for this user and issue, return.
             const errorMessage = "user already voted on this issue";
             console.error(errorMessage)
-            return res.status(200).json({ "error": errorMessage });
+            return res.status(401).json({data: errorMessage});
         }
 
         // Ok. Insert the vote into the DB.
-        const voteQuery = vocal.insertVoteQuery(vote);
-        console.log('insert vote', voteQuery);
-        pool.query(voteQuery, (err, result) => {
-            console.log('postVote', err, result);
-            if (err) {
-                console.error('postVote error', err);
-                return res.status(500).json(err);
-            }
-            // pool.end()
-            return res.json(result.rows);
-        });
+        getAddressAndExecute(userId, (address) => {
+            // TODO: credit user with token here.
+
+            // Now add the vote.
+            const voteQuery = vocal.insertVoteQuery(vote);
+            pool.query(voteQuery, (err, result) => {
+                console.log('postVote', err, result);
+                if (err) {
+                    console.error('postVote error', err);
+                    return res.status(500).json(err);
+                }
+                // pool.end()
+                return res.json(result.rows);
+            });
+        })
+        
     });
 });
 
 app.post('/api/issue', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const issue = JSON.parse(body.issue);
-    const query = vocal.insertIssueQuery(issue);
-    console.log('insert issue', query);
+    const userId = issue.userId;
 
-    pool.query(query, (err, result) => {
-        console.log('postIssue', err, result)
-        if (err) {
-            console.error('postIssue error', err);
-            return res.status(500).json(err);
+    getAddressAndExecute(userId, (address) => {
+        const balanceFromBlockchain = contract.getBalance(address);
+        if (balanceFromBlockchain < vocal.ISSUE_COST) {
+            const errorMessage = `Insufficient balance (${balanceFromBlockchain}), require ${vocal.ISSUE_COST}`;
+            res.status(401).json({data: errorMessage})
+            return;
         }
-        // pool.end()
-        return res.json(result.rows);
-    });
+
+        // TODO: modify the user's balance (subtract ISSUE_COST) here.
+
+        // Now insert the new issue.
+        const query = vocal.insertIssueQuery(issue);
+        pool.query(query, (err, result) => {
+            console.log('postIssue', err, result)
+            if (err) {
+                console.error('postIssue error', err);
+                return res.status(500).json(err);
+            }
+            // pool.end()
+            return res.json(result.rows);
+        });
+    })
+
+    
 });
 
 app.post('/api/issue/delete', passport.authenticate('bearer', { session: false }), (req, res) => {
@@ -216,10 +252,12 @@ app.get('/api/hasvoted/:userId/:issueId', passport.authenticate('bearer', { sess
     pool.query(checkVoteQuery, (err, result) => {
         console.log('query', checkVoteQuery);
         console.log('has voted', err, result);
+
         if (err) {
             console.error('postVote error', err);
-            return res.status(500).json({ "error": err });
+            return res.status(500).json(err);
         }
+
         res.json(result.rows.length > 0);
     });
 });
@@ -268,8 +306,7 @@ app.post('/api/signin', (req, res) => {
                 const userQuery = vocal.insertUserQuery(userId, email, address, username);
                 pool.query(userQuery, (err, result) => {
                     if (err) {
-                        console.error('create user error', err);
-                        return res.status(500).json(err);
+                        console.error('create user error', err); return res.status(500).json(err);
                     }
                     console.log('inserted new user', JSON.stringify(result));
                 });
@@ -290,20 +327,6 @@ app.post('/api/signin', (req, res) => {
 });
 
 /* Query methods */
-
-function getAddressAndExecute(userId, cb) {
-    const query = vocal.getAddress(userId);
-    pool.query(query, (err, result) => {
-        console.log('vocal address', err, result)
-        if (err || !result.rows) {
-            console.error('vocal address error', err);
-            throw JSON.stringify(err);
-        }
-        const address = result.rows[0];
-        console.log('got address', address);
-        cb(address);
-    });
-}
 
 app.get('/api/balance/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
@@ -329,9 +352,13 @@ app.get('/api/address/:userId', passport.authenticate('bearer', { session: false
 });
 
 // TODO: finish this.
+<<<<<<< HEAD
 app.post('/api/vocal/add',
     // passport.authenticate('bearer', { session: false }),
     (req, res) => {
+=======
+app.post('/api/vocal/modify', passport.authenticate('bearer', { session: false }), (req, res) => {
+>>>>>>> update hasVoted logic, fix address retrieval
     const body = req.body;
     const userId = body.userId;
 
@@ -357,7 +384,7 @@ app.post('/api/address/update', passport.authenticate('bearer', { session: false
     pool.query(query, (err, result) => {
         console.log('update address', err, result)
         if (err) {
-            console.error('transactions error', err);
+            console.error('update address error', err);
             return res.status(500).json(err);
         }
         // pool.end()

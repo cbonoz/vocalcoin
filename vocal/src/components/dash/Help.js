@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import HelpSteps from './../HelpSteps';
 import api from './../../utils/api';
+import helper from './../../utils/helper';
 
 export default class Help extends Component {
 
@@ -25,7 +26,7 @@ export default class Help extends Component {
             console.log(JSON.stringify(data));
             self.setState({ loading: false, address: data });
         }).catch((err) => {
-            self.setState({ loading: false, err: err.statusText })
+            self.setState({ loading: false, err: err})
         });
     }
     
@@ -45,7 +46,7 @@ export default class Help extends Component {
                         <ListGroupItem>
                             <h3>Your Address:</h3><br/>
                             <b>{address}</b>
-                            {self.state.err && <p className="centered error-text">{self.state.err}</p>}
+                            {self.state.err && <p className="centered error-text">{helper.processError(self.state.err)}</p>}
                         </ListGroupItem>
 
                     </ListGroup>

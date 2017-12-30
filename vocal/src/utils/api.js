@@ -8,8 +8,7 @@ const library = (function () {
 
     const BASE_URL = "https://www.vocalcoin.com"
     // const BASE_URL = `https://www.vocalcoin.com:${PORT}`;
-    // const socket = require('socket.io-client')(BASE_URL);
-    const socket = null;
+    const socket = require('socket.io-client')(BASE_URL);
 
     const getHeaders = () => {
         const token = localStorage.getItem("tok");
@@ -71,7 +70,7 @@ const library = (function () {
     }
 
     function postVocal(userId) {
-        const url = `${BASE_URL}/api/vocal/add`;
+        const url = `${BASE_URL}/api/vocal/modify`;
         return axios.post(url, {
             userId: userId
         }, getHeaders()).then(response => {

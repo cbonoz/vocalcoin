@@ -2,6 +2,7 @@ const library = (function () {
     const escape = require('pg-escape');
 
     const REWARD_VALUE = 5;
+    const ISSUE_COST = 50;
 
     const getRandom = (items) => {
         return items[Math.floor(Math.random()*items.length)];
@@ -90,7 +91,8 @@ const library = (function () {
         insertVoteQuery: insertVoteQuery,
         updateAddressQuery: updateAddressQuery,
         toggleActiveForIssueId: toggleActiveForIssueId,
-        formatDateTimeMs: formatDateTimeMs
+        formatDateTimeMs: formatDateTimeMs,
+        ISSUE_COST: ISSUE_COST
     }
 
 })();

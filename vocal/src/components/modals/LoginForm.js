@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Checkbox, Form, Popover, OverlayTrigger, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap';
 import { createUser, signInUser } from './../../utils/fire';
+import helper from './../../utils/helper';
 
 export default class LoginForm extends Component {
   constructor(props) {
@@ -178,7 +179,7 @@ export default class LoginForm extends Component {
             <Checkbox onChange={self.handleCheckboxChange} checked={self.state.isRegister}>Register</Checkbox>
           </FormGroup>
           
-          {self.state.error && <p className="error-text centered red italics medium">{self.state.error}</p>}
+          {self.state.error && <p className="error-text centered red italics medium">{helper.processError(self.state.error)}</p>}
         </Form>
       </div>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Modal, Popover, Tooltip, OverlayTrigger, ControlLabel, Form, FormGroup, FormControl } from 'react-bootstrap';
 import api from '../../utils/api';
+import helper from '../../utils/helper';
 
 import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
 import { toast } from 'react-toastify';
@@ -71,14 +72,14 @@ export default class IssueModal extends Component {
             toast(<div><b>Issue Created!</b></div>);
             self.props.toggleIssueModal();
         }).catch((err) => {
-            self.setState({ postIssueEnabled: true, error: err.statusText });
+            self.setState({ postIssueEnabled: true, error: err});
         });
     }
 
     render() {
         const self = this;
         const issue = self.props.issue;
-        
+
         const center = JSON.parse(JSON.stringify(self.props.center));
         const lat = parseFloat(center['lat']).toFixed(2);
         const lng = parseFloat(center['lng']).toFixed(2);
@@ -136,7 +137,7 @@ export default class IssueModal extends Component {
                                     Create Issue&nbsp;{!self.state.postIssueEnabled && <i className="centered clear fa fa-refresh fa-spin" aria-hidden="true"></i>}
                                 </Button>
 
-                                {self.state.error && <div className="error-text">{self.state.error}</div>}
+                                {self.state.error && <div className="error-text">{helper.processError(self.state.error)}</div>}
                             </form>
                         </div>
                     </Modal.Body>

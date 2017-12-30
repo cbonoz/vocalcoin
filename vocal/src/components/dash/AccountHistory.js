@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from 'react-vis';
 
 import api from './../../utils/api';
+import helper from './../../utils/helper';
 import { firebaseAuth } from '../../utils/fire';
 
 export default class AccountHistory extends Component {
@@ -68,7 +69,7 @@ export default class AccountHistory extends Component {
                 {self.state.loading && <div className="loading-spinner"></div>}
                 {(!self.state.loading && self.state.error) &&
                     <div className="history-error error-text red">
-                        {self.state.error}
+                        {helper.processError(self.state.error)}
                     </div>
                 }
             </div>

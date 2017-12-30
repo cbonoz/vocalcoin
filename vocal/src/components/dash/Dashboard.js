@@ -50,7 +50,7 @@ export default class Dashboard extends Component {
                 const yourIssues = data;
                 self.setState({ loading: true, issues: yourIssues });
             }).catch((err) => {
-                self.setState( {issues: [], loading: false, err: err.statusText });
+                self.setState( {issues: [], loading: false, err: err});
             });
         }
     }
@@ -82,7 +82,7 @@ export default class Dashboard extends Component {
             // case 0:
             //     return <AccountHistory currentUser={self.state.currentUser} />
             case 0:
-                return <Issues updateIssues={() => self.updateIssues} issues={self.state.issues} currentUser={self.state.currentUser} balance={self.state.balance} />
+                return <Issues loading={self.state.loading} updateIssues={() => self.updateIssues} issues={self.state.issues} currentUser={self.state.currentUser} balance={self.state.balance} />
             case 1:
                 return <Help currentUser={self.state.currentUser} />
             default: // 0

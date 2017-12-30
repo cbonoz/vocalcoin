@@ -8,11 +8,6 @@ export default class Issues extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            issues: [],
-            loading: false,
-            err: null
-        }
     }
 
     render() {
@@ -24,10 +19,13 @@ export default class Issues extends Component {
             <div>
                 <ListGroup>
                     <ListGroupItem className={"sidebar-item"} header={"Vocal Control Panel"} bsStyle="info" />
+                    <h5>Your Issues:</h5>
 
-                    {self.state.err && <div className="error-text">
-                        {JSON.stringify(self.state.err)}
+                    {!issues.length && <div>
+                        {self.props.loading && <p><b>Loading...</b></p>}
+                        {!self.props.loading && <p><b>No active Issues or Vote topics created yet, why not start one?</b></p>}
                     </div>}
+
                     {issues.map((issue, index) => {
                         return <Issue updateIssues={self.props.updateIssues} key={index} issue={issue} currentUser={currentUser} />
                     })}

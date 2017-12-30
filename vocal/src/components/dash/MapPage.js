@@ -55,6 +55,7 @@ const MapWithASearchBox = compose(
         currentIssue: {},
         enableRefreshButton: false,
         lastLocation: null,
+        hasVoted: false,
         lastCenter: null,
         center: {
           lat: latitude, lng: longitude
@@ -65,8 +66,24 @@ const MapWithASearchBox = compose(
           refs.map = ref;
         },
         triggerVoteModal: (issue) => {
+          const self = this;
           const isOpen = this.state.showVoteModal;
-          this.setState( {currentIssue: issue, showVoteModal: !isOpen});
+          self.setState( {currentIssue: issue, showVoteModal: !isOpen});
+          if (self.state.showVoteModal) {
+            const userId = self.props.currentUser.uid;
+            const issueId = issue.id;
+            console.log('check voted', userId, issueId);
+            
+            self.setState( {error: null});
+
+            api.getHasVoted(userId, issueId).then((res) => {
+                console.log('hasvoted', res)
+                self.setState({ hasVoted: res });
+
+            }).catch((err) => {
+                self.setState({ hasVoted: false, error: err });
+            });
+          }
         },
         toggleVoteModal: () => {
           const isOpen = this.state.showVoteModal;
@@ -87,7 +104,7 @@ const MapWithASearchBox = compose(
         },
         getIssuesForRegion: () => {
           const self = this;
-          self.setState({ enableRefreshButton: false });
+          self.setState({ enableRefreshButton: false, error: null });
           const currBounds = refs.map.getBounds();
           const sw_lat = currBounds.getSouthWest().lat();
           const sw_lon = currBounds.getSouthWest().lng();
@@ -240,6 +257,7 @@ const MapWithASearchBox = compose(
         showIssueModal={props.showIssueModal} />
 
       <VoteModal
+        hasVoted={props.hasVoted}
         currentUser={props.currentUser}
         issue={props.currentIssue}
         center={props.center}
