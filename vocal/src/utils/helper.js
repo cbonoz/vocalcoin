@@ -4,7 +4,7 @@ const library = (function () {
     }
 
     const formatDateTimeMs = (timeMs) => {
-        const date = new Date(timeMs);
+        const date = new Date(parseInt(timeMs));
         return `${date.toDateString()} ${date.toLocaleTimeString()}`;
     }
 
@@ -27,8 +27,11 @@ const library = (function () {
         }
     }
 
-    function capitalize(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+    function capitalize(str) {
+        if (str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+        return str;
     }
 
     return {

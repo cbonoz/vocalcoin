@@ -25,6 +25,7 @@
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
     "pg": "^7.4.0",
+    "pg-escape": "^0.2.0",
     "socket.io": "^2.0.4",
     "truffle-hdwallet-provider": "0.0.3",
     "web3": "0.20.2",

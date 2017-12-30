@@ -106,12 +106,12 @@ export default class IssueModal extends Component {
             <div>
                 <Modal show={this.props.showIssueModal} onHide={this.props.toggleIssueModal}>
                     <Modal.Header closeButton>
-                        <Modal.Title className="centered">Create New Issue</Modal.Title>
+                        <Modal.Title>Create New Issue</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <hr />
-                        <div className="centered">
-                            <img src={vocal} className="centered modal-image" />
+                        <div>
+                            <img src={vocal} className="modal-image" />
                             <form>
 
                                 <FormGroup bsSize="large" controlId="formBasicText" className="issue-form-group">
@@ -144,7 +144,7 @@ export default class IssueModal extends Component {
                                 </FormGroup>
 
                                 <Button bsStyle="success" onClick={self.postIssue} disabled={(!self.state.postIssueEnabled || !lastLocation)}>
-                                    Create Issue
+                                    Create Issue&nbsp;{!self.state.postIssueEnabled && <i className="centered clear fa fa-refresh fa-spin" aria-hidden="true"></i>}
                                 </Button>
 
                                 {self.state.error && <div className="error-text">{self.state.error}</div>}
@@ -153,7 +153,8 @@ export default class IssueModal extends Component {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.props.toggleIssueModal}>Cancel</Button>
+                        <Button onClick={this.props.toggleIssueModal}>Cancel
+                        </Button>
                     </Modal.Footer>
                 </Modal>
 

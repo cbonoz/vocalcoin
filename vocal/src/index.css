@@ -48,7 +48,7 @@ body {
   font-size: 16px;
 }
 
-.login-form-group, .issue-form-group, .vote-form-group {
+.login-form-group, .issue-form-group  {
   padding: 4px;
   text-align: center;
   margin: 0 auto;
@@ -56,12 +56,19 @@ body {
 }
 
 .issue-form-group, .vote-form-group {
-  padding: px;
+  padding: 5px;
+  margin-left: 20px;
   max-width: 500px;
 }
 
 .sync-result-box {
   padding: 5px;
+}
+
+.vote-item {
+  border: 1px dotted black;
+  padding: 10px;
+  margin: 10px;
 }
 
 .your-balance {
@@ -121,6 +128,13 @@ body {
 .refresh-button {
   margin: 25px;
   min-width: 250px
+}
+
+.vote-button {
+  font-size: 16px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin: 10px;
 }
 
 .group-padding {
@@ -440,6 +454,10 @@ d
   font-size: 20px;
   padding-bottom: 10px;
   color: white;
+}
+
+.issue-row-icon {
+  padding: 5px;
 }
 
 .home-box-number {

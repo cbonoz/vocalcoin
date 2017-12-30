@@ -71,7 +71,7 @@ class App extends Component {
           localStorage.setItem("tok", data["token"]);
 
           if (!self.state.authed) { // show if there is a change in state.
-            toast(<div><b>Welcome: {user.displayName || user.email.split('@')[0]}</b></div>);
+            toast(<div>Logged in: <b>{user.displayName || user.email.split('@')[0]}</b></div>);
           }
 
           self.setState({ authed: true, loading: false, currentUser: user });

@@ -10,23 +10,31 @@ export default class Issue extends Component {
             expanded: false,
             loading: false,
             err: null,
-            votes: []
+            votes: undefined
         }
 
-        this.onIssueClick = this.onIssueClick.bind(this)
+        this.fetchComments = this.fetchComments.bind(this)
+        this.deleteIssue = this.deleteIssue.bind(this);
     }
 
-    onIssueClick(issue) {
-        const self = this;  
-        console.log('clicked', issue);
+    // TODO: delete the issue from the server and list view here.
+    deleteIssue(issue) {
+        console.log('delete', issue.id);
+
+    }
+
+    fetchComments(issue) {
+        const self = this;
+        console.log('clicked', issue.id);
         if (!self.state.loading) {
             self.setState({ loading: true, err: null });
             const user = this.state.currentUser;
-            api.getVotesForIssueId(issue.ID).then((data) => {
-                const issueVotes = data.data;
+            api.getVotesForIssueId(issue.id).then((data) => {
+                const issueVotes = data;
+                console.log(JSON.stringify(issueVotes));
                 self.setState({ loading: true, votes: issueVotes });
             }).catch((err) => {
-                self.setState( {loading: false, err: err})
+                self.setState({ loading: false, err: err })
             });
         }
     }
@@ -37,28 +45,34 @@ export default class Issue extends Component {
         const votes = self.state.votes;
         return (
             <div>
-                <div className="issue-row" onClick={() => self.onIssueClick(issue)}>
-                    <div className="issue-text">
-                        <p className="emph">{issue.title}</p>
-                        <p>{issue.description}</p>
-                        <p>Created: {helper.formatDateTimeMs(issue.time)}</p>
-                    </div>
+                <div className="issue-row issue-text">
 
-                    {!votes.length && <div className="no-votes">No Votes yet.</div>}
+                    <span className="pull-right">
+                        <i onClick={() => self.fetchComments(issue)} className="issue-row-icon fa fa-3x fa-comments" aria-hidden="true"></i>
+                        {/* <i onClick={() => self.deleteIssue(issue)} className="issue-row-icon fa fa-3x fa-trash-o" aria-hidden="true"></i> */}
+                    </span>
+                    <h3 className="emph">
+                        Issue Title: <b>{issue.title}</b>
+
+                    </h3>
+                    <p className="centered">Issue Description: <b>{issue.description}</b></p>
+                    <p>Issue Created: <b>{helper.formatDateTimeMs(issue.time)}</b></p>
+
                     {self.state.err && <div className="error-text">
-                        {JSON.stringify(self.state.err)}
+                        {self.state.err.statusText}
                     </div>}
-                    {votes.length && <div className="vote-score">Net Score: {helper.getAgreeScoreFromVotes(votes)}</div>}
-                    {votes.map((vote, index) => {
-                        <div className="vote-row" key={index}>
-                            {/* {JSON.stringify(vote)} */}
-                            <ul>
-                                <li>Vote: {helper.convertAgreeToText(vote.agree)}</li>
-                                <li>Comment: {vote.message}</li>
-                                <li>Time: {helper.formatDateTimeMs(vote.time)}</li>
-                            </ul>
-                        </div>
-                    })}
+
+                    {(votes !== undefined && votes.length == 0) && <div>No Votes yet.</div>}
+                    {(votes !== undefined && votes.length > 0) && <div>
+                        <h5>Net Vote Score: {helper.getAgreeScoreFromVotes(votes)}</h5>
+                        {votes.map((vote, index) => {
+                            return (<div key={index} className="vote-item">
+                                <p>Vote: <b>{helper.convertAgreeToText(vote.agree)}</b></p>
+                                <p>Comment: {vote.message}</p>
+                                <p>Time: <b>{helper.formatDateTimeMs(vote.time)}</b></p>
+                            </div>);
+                        })}
+                    </div>}
                 </div>
             </div>
         )

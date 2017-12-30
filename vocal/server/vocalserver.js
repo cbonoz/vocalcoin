@@ -214,7 +214,7 @@ app.get('/api/issues/:userId', passport.authenticate('bearer', { session: false 
 });
 
 app.get('/api/votes/:issueId', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const userId = req.params.issueId;
+    const issueId = req.params.issueId;
     const query = vocal.getVotesForIssueIdQuery(issueId);
 
     pool.query(query, (err, result) => {

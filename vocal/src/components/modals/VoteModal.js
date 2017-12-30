@@ -41,6 +41,7 @@ export default class VoteModal extends Component {
         const self = this;
 
         const issue = self.props.issue;
+        console.log('create vote for issue', issue.id);
         const currentUser = self.props.currentUser;
 
         const voteAgree = self.state.voteAgree;
@@ -53,7 +54,7 @@ export default class VoteModal extends Component {
         const vote = {
             agree: voteAgree,
             message: voteMessage,
-            issueId: issue.ID,
+            issueId: issue.id,
             userId: currentUser.uid,
             lat: voteLat,
             lng: voteLng,
@@ -89,26 +90,26 @@ export default class VoteModal extends Component {
             <div>
                 <Modal show={self.props.showVoteModal} onHide={self.props.toggleVoteModal}>
                     <Modal.Header closeButton>
-                        <Modal.Title className="centered">Vote on: <b>{issue && issue.title}</b></Modal.Title>
+                        <Modal.Title className="">Vote on: <b>{issue && issue.title}</b></Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <hr />
                         <div>
-                            <img src={vocal} className="centered modal-image" />
+                            {/* <img src={vocal} className="modal-image" /> */}
                             <form>
+                                <h3 className="modal-header">Issue:</h3>
+                                <FormGroup className="vote-form-group">
+                                    <p>Issue: <b>{helper.capitalize(issue.title)}</b></p>
+                                    <p>Description: <b>{issue.description}</b></p>
+                                    <p>Affects location: <b>{helper.capitalize(issue.place)}</b></p>
+                                    <p>Created: <b>{helper.formatDateTimeMs(issue.time)}</b></p>
+                                </FormGroup>
 
-                                <h3 className="centered modal-header">Issue:</h3>
+                                <h5 className="modal-header">Your Vote:</h5>
 
-                                <p>Issue: <b>{issue.title}</b></p>
-                                <p>Description: <b>{issue.description}</b></p>
-                                <p>Affects location: <b>{issue.place}</b></p>
-                                <p>Created: <b>{helper.formatDateTimeMs(issue.time)}</b></p>
-
-                                <h5 className="centered modal-header">Your Vote:</h5>
-
-                                <FormGroup controlId="formRadioButton" className="vote-form-group centered">
-                                    <ControlLabel>Vote</ControlLabel>
-                                    <ButtonToolbar className="centered radio-form-input">
+                                <FormGroup controlId="formRadioButton" className="vote-form-group">
+                                    <ControlLabel>Vote: </ControlLabel>
+                                    <ButtonToolbar className="radio-form-input">
                                         <ToggleButtonGroup 
                                             className="centered"
                                             type="radio"
@@ -123,7 +124,7 @@ export default class VoteModal extends Component {
                                 </FormGroup>
 
                                 <FormGroup controlId="formBasicText" className="vote-form-group">
-                                    <ControlLabel>Additional Comments</ControlLabel>
+                                    <ControlLabel>Additional Comments: </ControlLabel>
                                     <FormControl
                                         rows="6"
                                         type="textarea"
@@ -134,8 +135,8 @@ export default class VoteModal extends Component {
                                 </FormGroup>
 
 
-                                <Button bsStyle="success" onClick={self.postVote} disabled={!self.state.postVoteEnabled}>
-                                    Cast Vote
+                                <Button className="vote-button" bsStyle="success" onClick={self.postVote} disabled={!self.state.postVoteEnabled}>
+                                    Cast Vote&nbsp;{!self.state.postVoteEnabled && <i className="centered clear fa fa-refresh fa-spin" aria-hidden="true"></i>}
                                 </Button>
 
                                 {self.state.error && <div className="error-text">{self.state.error}</div>}
@@ -144,7 +145,9 @@ export default class VoteModal extends Component {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.props.toggleVoteModal}>Close</Button>
+                        <Button onClick={this.props.toggleVoteModal}>
+                            Cancel
+                        </Button>
                     </Modal.Footer>
                 </Modal>
 

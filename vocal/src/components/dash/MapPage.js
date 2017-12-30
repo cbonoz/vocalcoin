@@ -24,6 +24,8 @@ import { toast } from 'react-toastify';
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox";
 import { MarkerClusterer } from "react-google-maps/lib/components/addons/MarkerClusterer";
 
+import { MarkerWithLabel } from "react-google-maps/lib/components/addons/MarkerWithLabel";
+
 const google = window.google
 
 const MapWithASearchBox = compose(
@@ -105,6 +107,7 @@ const MapWithASearchBox = compose(
           refs.searchBox = ref;
         },
         onPlacesChanged: () => {
+          const self = this;
           const places = refs.searchBox.getPlaces();
           const bounds = new google.maps.LatLngBounds();
 
@@ -136,6 +139,7 @@ const MapWithASearchBox = compose(
             markers: nextMarkers,
             lastLocation: nextLocation
           });
+          self.state.getIssuesForRegion();
           // refs.map.fitBounds(bounds);
         },
       })
@@ -149,8 +153,8 @@ const MapWithASearchBox = compose(
       ref={props.onMapMounted}
       defaultZoom={15}
       center={props.center}
-      onBoundsChanged={props.onBoundsChanged}
-    >
+      onBoundsChanged={props.onBoundsChanged}>
+
       <SearchBox
         ref={props.onSearchBoxMounted}
         bounds={props.bounds}
@@ -185,47 +189,61 @@ const MapWithASearchBox = compose(
         </div>
       </SearchBox>
 
+       {/* gridSize={60}> */}
       <MarkerClusterer
         onClick={props.onMarkerClustererClick}
         averageCenter
         enableRetinaIcons
-        gridSize={60}>
+        gridSize={120}>
+
+        {/* From places search */}
         {props.markers.map((marker, index) =>
           <Marker
             key={index}
             position={marker.position} />
         )}
+
+        {/* From issues in region */}
         {props.issues.map((issue, index) => {
-
           const position = {lat: issue.lat, lng: issue.lng};
-
+          const createdAt = helper.formatDateTimeMs(issue.time);
           // TODO: determine if DblClick should have different behavior from single.
-          return (<Marker
+          return (<MarkerWithLabel
             key={index}
-            label={issue.title}
+            position={position}
             onClick={() => props.triggerVoteModal(issue)}
             onDblClick={() => props.triggerVoteModal(issue)}
-            position={position} />
-          )
+            labelAnchor={new google.maps.Point(125, 80)}
+            labelStyle={{backgroundColor: "#e9e9e9", fontSize: "12px", 'padding-left': "8px", 'padding-right': "8px", width: "250px" }}>
+              {/* Label content */}
+              <div>
+                Issue:<br/><b>{helper.capitalize(issue.title)}</b><br/>
+                Started: <b>{createdAt}</b>
+              
+              </div>
+
+          </MarkerWithLabel>)
         })}
       </MarkerClusterer>
+
       <IssueModal
         currentUser={props.currentUser}
         lastLocation={props.lastLocation}
         center={props.center}
         toggleIssueModal={props.toggleIssueModal}
         showIssueModal={props.showIssueModal} />
+
       <VoteModal
         currentUser={props.currentUser}
         issue={props.currentIssue}
         center={props.center}
         toggleVoteModal={props.toggleVoteModal}
         showVoteModal={props.showVoteModal} />
+
     </GoogleMap>
   </div>
   );
 
-// TODO: retrieve markers near user location programmatically
 class MapPage extends Component {
 
   constructor(props) {
