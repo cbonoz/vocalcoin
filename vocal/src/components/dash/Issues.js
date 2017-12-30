@@ -29,7 +29,7 @@ export default class Issues extends Component {
                         {JSON.stringify(self.state.err)}
                     </div>}
                     {issues.map((issue, index) => {
-                        return <Issue key={index} issue={issue} currentUser={currentUser} />
+                        return <Issue updateIssues={self.props.updateIssues} key={index} issue={issue} currentUser={currentUser} />
                     })}
                 </ListGroup>
             </div>

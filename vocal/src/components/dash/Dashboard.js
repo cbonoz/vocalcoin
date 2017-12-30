@@ -22,7 +22,7 @@ export default class Dashboard extends Component {
         };
 
         this._renderCurrentPage = this._renderCurrentPage.bind(this);
-        this._updateIssues = this._updateIssues.bind(this);
+        this.updateIssues = this.updateIssues.bind(this);
         this._updateBalance = this._updateBalance.bind(this);
         this.updateCurrentPage = this.updateCurrentPage.bind(this);
     }
@@ -31,13 +31,14 @@ export default class Dashboard extends Component {
         const self = this;
         self.removeListener = firebaseAuth().onAuthStateChanged((user) => {
             self.setState({ currentUser: user });
-            self._updateIssues();
+            self.updateIssues();
             self._updateBalance();
         })
     }
 
-    _updateIssues() {
+    updateIssues() {
         const self = this;
+        console.log('updateIssues');
         if (!self.state.loading) {
             self.setState({ loading: true, err: null });
             const userId = self.state.currentUser.uid;
@@ -80,7 +81,7 @@ export default class Dashboard extends Component {
             // case 0:
             //     return <AccountHistory currentUser={self.state.currentUser} />
             case 0:
-                return <Issues issues={self.state.issues} currentUser={self.state.currentUser} balance={self.state.balance} />
+                return <Issues updateIssues={() => self.updateIssues} issues={self.state.issues} currentUser={self.state.currentUser} balance={self.state.balance} />
             case 1:
                 return <Help currentUser={self.state.currentUser} />
             default: // 0

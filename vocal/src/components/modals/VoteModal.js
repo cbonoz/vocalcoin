@@ -3,8 +3,8 @@ import { Button, ButtonGroup, ButtonToolbar, ControlLabel, FormControl, FormGrou
 
 import VoteStats from './VoteStats';
 
-import api from '../../utils/api';
-import helper from '../../utils/helper';
+import { getHasVoted, postVote } from './../../utils/api';
+import helper from './../../utils/helper';
 
 import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
 import { toast } from 'react-toastify';
@@ -38,14 +38,13 @@ export default class VoteModal extends Component {
         const userId = self.props.currentUser.uid;
         const issueId = self.props.issue.id;
 
-        api.getHasVoted(userId, issueId).then((res) => {
+        getHasVoted(userId, issueId).then((res) => {
             console.log('hasvoted', res)
             self.setState({ hasVoted: res });
 
         }).catch((err) => {
             self.setState({ hasVoted: false, error: err.statusText });
         });
-
     }
 
     handleVoteChange(selectedVotes) {
@@ -93,7 +92,7 @@ export default class VoteModal extends Component {
         self.setState({ postVoteEnabled: false, error: null });
         const vote = self._createVoteFromForm()
 
-        api.postVote(vote).then((res) => {
+        postVote(vote).then((res) => {
             self.setState({ postVoteEnabled: true, hasVoted: true });
             console.log('postVote: ' + res);
             toast(<div><b>Vote Cast!</b></div>);
@@ -109,6 +108,8 @@ export default class VoteModal extends Component {
         const self = this;
         const issue = self.props.issue;
         const currentUser = self.props.currentUser;
+
+        const hasVoted = self.state.hasVoted; 
 
         return (
             <div>

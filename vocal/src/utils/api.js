@@ -1,7 +1,7 @@
-import { getHashes } from 'crypto';
 
 const library = (function () {
     const axios = require('axios');
+    const crypto = require('crypto');
 
     const PORT = 9007;
     const MAX_EVENTS = 8;
@@ -16,7 +16,6 @@ const library = (function () {
         const headers = {
             headers: { Authorization: "Bearer " + token }
         };
-        console.log('getHeaders', headers);
         return headers;
     }
 
@@ -73,6 +72,17 @@ const library = (function () {
         const url = `${BASE_URL}/api/vocal/add`;
         return axios.post(url, {
             userId: userId
+        }, getHeaders()).then(response => {
+            const data = response.data;
+            return data;
+        });
+    }
+
+    function postDeleteIssue(userId, issueId) {
+        const url = `${BASE_URL}/api/issue/delete`;
+        return axios.post(url, {
+            userId: userId,
+            issueId: issueId
         }, getHeaders()).then(response => {
             const data = response.data;
             return data;

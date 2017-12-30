@@ -26,7 +26,6 @@ export default class AccountHistory extends Component {
         const self = this;
         this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
             self.setState({ currentUser: user });
-            console.log('user', JSON.stringify(user));
             self._getTransactionData();
         })
     }

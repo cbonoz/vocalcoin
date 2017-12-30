@@ -175,6 +175,23 @@ app.post('/api/issue', passport.authenticate('bearer', { session: false }), (req
     });
 });
 
+app.post('/api/issue/delete', passport.authenticate('bearer', { session: false }), (req, res) => {
+    const body = req.body;
+    const userId = body.userId;
+    const issueId = body.issueId;
+
+    const query = vocal.deleteIssueQuery(userId, issueId);
+
+    pool.query(query, (err, result) => {
+        console.log('delete issue', err, result)
+        if (err) {
+            console.error('delete issue error', err);
+            return res.status(500).json(err);
+        }
+        return res.json(result.rows);
+    });
+});
+
 app.post('/api/vocal/add', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const userId = body.userId;
@@ -213,7 +230,7 @@ app.get('/api/issues/:userId', passport.authenticate('bearer', { session: false 
     });
 });
 
-pp.get('/api/hasvoted/:userId/:issueId', passport.authenticate('bearer', { session: false }), (req, res) => {
+app.get('/api/hasvoted/:userId/:issueId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
     const issueId = req.params.issueId;
     const checkVoteQuery = vocal.checkVoteQuery(userId, issueId);

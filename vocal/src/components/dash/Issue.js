@@ -17,10 +17,23 @@ export default class Issue extends Component {
         this.deleteIssue = this.deleteIssue.bind(this);
     }
 
-    // TODO: delete the issue from the server and list view here.
     deleteIssue(issue) {
-        console.log('delete', issue.id);
+        const self = this;
+        self.setState({ loading: false });
+        const issueId = issue.id
+        console.log('delete', issueId);
 
+        const userId = self.props.currentUser.uid;
+
+        api.postDeleteIssue(userId, issueId).then((data) => {
+            console.log(JSON.stringify(data));
+            self.setState({ loading: false });
+            if (self.props.updateIssues) {
+                self.props.updateIssues();
+            }
+        }).catch((err) => {
+            self.setState({ loading: false, err: err })
+        });
     }
 
     fetchComments(issue) {
@@ -31,7 +44,7 @@ export default class Issue extends Component {
             api.getVotesForIssueId(issue.id).then((data) => {
                 const issueVotes = data;
                 console.log(JSON.stringify(issueVotes));
-                self.setState({ loading: true, votes: issueVotes });
+                self.setState({ loading: false, votes: issueVotes });
             }).catch((err) => {
                 self.setState({ loading: false, err: err })
             });
@@ -52,7 +65,7 @@ export default class Issue extends Component {
 
                     {isOwner && <span className="pull-right">
                         <i onClick={() => self.fetchComments(issue)} className="issue-row-icon fa fa-3x fa-comments" aria-hidden="true"></i>
-                        {/* <i onClick={() => self.deleteIssue(issue)} className="issue-row-icon fa fa-3x fa-trash-o" aria-hidden="true"></i> */}
+                        <i onClick={() => self.deleteIssue(issue)} className="issue-row-icon fa fa-3x fa-trash-o" aria-hidden="true"></i>
                     </span>}
 
                     <h3 className="pull-left">
