@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import api from '../../utils/api';
 import helper from '../../utils/helper';
 
+import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
+import { toast } from 'react-toastify';
+
 export default class Issue extends Component {
 
     constructor(props) {
@@ -28,6 +31,7 @@ export default class Issue extends Component {
         api.postDeleteIssue(userId, issueId).then((data) => {
             console.log(JSON.stringify(data));
             self.setState({ loading: false });
+            toast(<div><b>Deleted Issue</b></div>);
             if (self.props.updateIssues) {
                 self.props.updateIssues();
             }
