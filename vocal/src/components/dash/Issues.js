@@ -11,14 +11,14 @@ export default class Issues extends Component {
         this.state = {
             issues: [],
             loading: false,
-            err: null,
-            currentUser: this.props.currentUser
+            err: null
         }
     }
 
     render() {
         const self = this;
         const issues = self.props.issues;
+        const currentUser = self.props.currentUser;
 
         return (
             <div>
@@ -29,7 +29,7 @@ export default class Issues extends Component {
                         {JSON.stringify(self.state.err)}
                     </div>}
                     {issues.map((issue, index) => {
-                        return <Issue key={index} issue={issue} />
+                        return <Issue key={index} issue={issue} currentUser={currentUser} />
                     })}
                 </ListGroup>
             </div>

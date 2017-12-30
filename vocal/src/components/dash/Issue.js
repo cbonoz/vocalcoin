@@ -28,7 +28,6 @@ export default class Issue extends Component {
         console.log('clicked', issue.id);
         if (!self.state.loading) {
             self.setState({ loading: true, err: null });
-            const user = this.state.currentUser;
             api.getVotesForIssueId(issue.id).then((data) => {
                 const issueVotes = data;
                 console.log(JSON.stringify(issueVotes));
@@ -42,15 +41,20 @@ export default class Issue extends Component {
     render() {
         const self = this;
         const issue = self.props.issue;
+        const currentUser = self.props.currentUser;
         const votes = self.state.votes;
+
+        const isOwner = issue.userId === currentUser.uid;
+
         return (
             <div>
                 <div className="issue-row issue-text">
 
-                    <span className="pull-right">
+                    {isOwner && <span className="pull-right">
                         <i onClick={() => self.fetchComments(issue)} className="issue-row-icon fa fa-3x fa-comments" aria-hidden="true"></i>
                         {/* <i onClick={() => self.deleteIssue(issue)} className="issue-row-icon fa fa-3x fa-trash-o" aria-hidden="true"></i> */}
-                    </span>
+                    </span>}
+
                     <h3 className="pull-left">
                         Issue: <b>{issue.title}</b>
 
@@ -61,6 +65,8 @@ export default class Issue extends Component {
                     {self.state.err && <div className="error-text">
                         {self.state.err.statusText}
                     </div>}
+
+                    {(votes === undefined) && <p><b>Click to Fetch Votes.</b></p>}
 
                     {(votes !== undefined && votes.length == 0) && <div>No Votes yet.</div>}
                     {(votes !== undefined && votes.length > 0) && <div>

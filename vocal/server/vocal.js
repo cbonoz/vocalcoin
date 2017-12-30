@@ -22,8 +22,8 @@ const library = (function () {
             `values('${vote.issueId}', '${vote.userId}', ${vote.lat}, ${vote.lng}, ${vote.time}, ${escape.literal(vote.message)}, ${vote.agree})`;
     }
 
-    function checkVoteQuery(vote) {
-        return `SELECT * from votes where issue_id='${vote.issueId}' and user_id='${vote.userId}'`;
+    function checkVoteQuery(userId, issueId) {
+        return `SELECT * from votes where user_id='${userId}' and issue_id='${issueId}' limit 1`;
     }
 
     function insertIssueQuery(issue) {

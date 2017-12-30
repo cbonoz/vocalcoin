@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Button, ButtonGroup, ButtonToolbar, ControlLabel, FormControl, FormGroup, ToggleButton, ToggleButtonGroup, Modal, Popover, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
+import VoteStats from './VoteStats';
+
 import api from '../../utils/api';
 import helper from '../../utils/helper';
 
@@ -15,6 +17,7 @@ export default class VoteModal extends Component {
         super(props)
         this.state = {
             postVoteEnabled: true,
+            hasVoted: false,
             issue: this.props.issue,
             error: null,
             voteAgree: 1, // defaults to agree
@@ -22,9 +25,27 @@ export default class VoteModal extends Component {
         };
 
         this._createVoteFromForm = this._createVoteFromForm.bind(this);
+        this.checkIfVoted = this.checkIfVoted.bind(this);
         this.handleVoteChange = this.handleVoteChange.bind(this);
         this.handleVoteMessageChange = this.handleVoteMessageChange.bind(this);
         this.postVote = this.postVote.bind(this);
+
+        this.checkIfVoted();
+    }
+
+    checkIfVoted() {
+        const self = this;
+        const userId = self.props.currentUser.uid;
+        const issueId = self.props.issue.id;
+
+        api.getHasVoted(userId, issueId).then((res) => {
+            console.log('hasvoted', res)
+            self.setState({ hasVoted: res });
+
+        }).catch((err) => {
+            self.setState({ hasVoted: false, error: err.statusText });
+        });
+
     }
 
     handleVoteChange(selectedVotes) {
@@ -65,13 +86,15 @@ export default class VoteModal extends Component {
         return vote;
     }
 
+
+
     postVote() {
         const self = this;
         self.setState({ postVoteEnabled: false, error: null });
         const vote = self._createVoteFromForm()
 
         api.postVote(vote).then((res) => {
-            self.setState({ postVoteEnabled: true });
+            self.setState({ postVoteEnabled: true, hasVoted: true });
             console.log('postVote: ' + res);
             toast(<div><b>Vote Cast!</b></div>);
             self.props.toggleVoteModal();
@@ -85,6 +108,7 @@ export default class VoteModal extends Component {
     render() {
         const self = this;
         const issue = self.props.issue;
+        const currentUser = self.props.currentUser;
 
         return (
             <div>
@@ -96,7 +120,7 @@ export default class VoteModal extends Component {
                         <hr />
                         <div>
                             {/* <img src={vocal} className="modal-image" /> */}
-                            <form>
+                            {!hasVoted && <form>
                                 <h3 className="modal-header">Issue:</h3>
                                 <FormGroup className="vote-form-group">
                                     <p>Issue: <b>{helper.capitalize(issue.title)}</b></p>
@@ -139,9 +163,11 @@ export default class VoteModal extends Component {
                                     Cast Vote&nbsp;{!self.state.postVoteEnabled && <i className="centered clear fa fa-refresh fa-spin" aria-hidden="true"></i>}
                                 </Button>
 
+                                {!self.state.error && <p className="centered">See other votes after submitting yours!</p>}
                                 {self.state.error && <div className="error-text">{self.state.error}</div>}
 
-                            </form>
+                            </form>}
+                            {hasVoted && <VoteStats currentUser={currentUser} issue={issue}/>}
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

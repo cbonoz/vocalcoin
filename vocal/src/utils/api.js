@@ -1,3 +1,5 @@
+import { getHashes } from 'crypto';
+
 const library = (function () {
     const axios = require('axios');
 
@@ -117,6 +119,10 @@ const library = (function () {
         const url = `${BASE_URL}/api/events/${count}`;
         return axios.get(url).then(response => response.data);
     }
+    function getHasVoted(userId, issueId) {
+        const url = `${BASE_URL}/api/hasvoted/${userId}/${issueId}`;
+        return axios.get(url, getHeaders()).then(response => response.data); 
+    }
 
     function getBalance(userId) {
         const url = `${BASE_URL}/api/balance/${userId}`;
@@ -144,6 +150,7 @@ const library = (function () {
         postAddress: postAddress,
         postUserQuery: postUserQuery,
         getBalance: getBalance,
+        getHasVoted: getHasVoted,
         getIssuesForRegion: getIssuesForRegion,
         getIssuesForUserId: getIssuesForUserId,
         getToggleActiveForIssueId: getToggleActiveForIssueId,

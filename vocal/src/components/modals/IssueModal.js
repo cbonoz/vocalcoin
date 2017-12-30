@@ -112,8 +112,8 @@ export default class IssueModal extends Component {
                         <hr />
                         <div>
                             <img src={vocal} className="modal-image" />
-                            <form>
 
+                            <form>
                                 <FormGroup bsSize="large" controlId="formBasicText" className="issue-form-group">
                                     <ControlLabel>Issue Title:</ControlLabel>
                                     <FormControl
@@ -148,7 +148,6 @@ export default class IssueModal extends Component {
                                 </Button>
 
                                 {self.state.error && <div className="error-text">{self.state.error}</div>}
-
                             </form>
                         </div>
                     </Modal.Body>

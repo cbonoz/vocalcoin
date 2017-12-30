@@ -127,7 +127,7 @@ app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req,
     const body = req.body;
     const vote = JSON.parse(body.vote);
     
-    const checkVoteQuery = vocal.checkVoteQuery(vote);
+    const checkVoteQuery = vocal.checkVoteQuery(vote.userId, vote.issueId);
     pool.query(checkVoteQuery, (err, result) => {
         console.log('check vote', checkVoteQuery);
         console.log('checkVote', err, result);
@@ -212,6 +212,21 @@ app.get('/api/issues/:userId', passport.authenticate('bearer', { session: false 
         return res.json(result.rows);
     });
 });
+
+pp.get('/api/hasvoted/:userId/:issueId', passport.authenticate('bearer', { session: false }), (req, res) => {
+    const userId = req.params.userId;
+    const issueId = req.params.issueId;
+    const checkVoteQuery = vocal.checkVoteQuery(userId, issueId);
+    pool.query(checkVoteQuery, (err, result) => {
+        console.log('query', checkVoteQuery);
+        console.log('has voted', err, result);
+        if (err) {
+            console.error('postVote error', err);
+            return res.status(500).json({"error": err});
+        }
+        res.json(result.rows.length > 0);
+});
+
 
 app.get('/api/votes/:issueId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const issueId = req.params.issueId;
