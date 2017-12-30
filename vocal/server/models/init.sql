@@ -39,7 +39,7 @@ CREATE TABLE events (
 );
 
 CREATE TABLE users (
-  ID SERIAL PRIMARY KEY,
+  ID VARCHAR PRIMARY KEY,
   email VARCHAR NOT NULL,
   address VARCHAR,
   username VARCHAR

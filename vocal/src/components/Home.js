@@ -68,7 +68,7 @@ export default class Home extends Component {
                                                 <p className="centered large bold">What are you waiting for?<br /></p>
                                                 <Button bsStyle="primary" className="start-button" onClick={() => { window.location = "/faq"}}>
                                                     See our FAQ
-                                                    &nbsp;<i className="centered clear fa fa-refresh fa-spin" aria-hidden="true"></i>
+                                                    {/* &nbsp;<i className="centered clear fa fa-refresh fa-spin" aria-hidden="true"></i> */}
                                                 </Button>
                                                 {/* <Link to="/faq">
                                                     <p className="home-learn-more medium facebook-blue"><b>See our FAQ</b></p>

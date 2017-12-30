@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Checkbox, Form, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap';
+import { Button, Checkbox, Form, Popover, OverlayTrigger, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap';
 import { createUser, signInUser } from './../../utils/fire';
 
 export default class LoginForm extends Component {
@@ -9,6 +9,7 @@ export default class LoginForm extends Component {
       email: '',
       password: '',
       repeatPassword: '',
+      address: '',
       error: '',
       isRegister: false,
       loginButtonStyle: "success",
@@ -18,6 +19,7 @@ export default class LoginForm extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleRepeatPasswordChange = this.handleRepeatPasswordChange.bind(this);
+    this.handleAddressChange = this.handleAddressChange.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -28,6 +30,10 @@ export default class LoginForm extends Component {
 
   handleEmailChange(event) {
     this.setState({ email: event.target.value });
+  }
+
+  handleAddressChange(event) {
+    this.setState({ password: event.target.value });
   }
 
   handlePasswordChange(event) {
@@ -65,13 +71,26 @@ export default class LoginForm extends Component {
     const email = self.state.email;
     const password = self.state.password;
     const repeatPassword = self.state.repeatPassword;
+    const address = self.state.address;
+
     if (password !== repeatPassword) {
       self.setState({ error: "Passwords do not match." });
       return;
     }
 
-    createUser(email, password)
-      .then(function (res) {
+    if (!password) {
+      self.setState( {error: "Password must not be empty"})
+      return;
+    }
+
+    if (!address) {
+      self.setState( {error: "Address must not be empty"})
+      return;
+    }
+
+    localStorage.setItem("address", address);
+
+    createUser(email, password).then(function (res) {
         self.props.onLogin();
       })
       .catch(function (error) {
@@ -108,6 +127,16 @@ export default class LoginForm extends Component {
 
   render() {
     const self = this;
+
+    const popover = (
+      <Popover id="modal-popover" title="Getting an Address">
+        <p>Sign up for a wallet at https://www.myetherwallet.com/, or use an existing eth wallet if you have one</p>
+        <p>Remember your password and seed when signing up for one. If you lose your password, <b>your coins may be lost</b>.</p>
+        <p>Your address should start with <b>0x</b> followed by a mix of letters and numbers.</p>
+        <p>The wallet address is used receive <b>Vocal</b> coins for participation on the platform.</p>
+      </Popover>
+  );
+  
     return (
       <div className="login-form">
         <Form>
@@ -120,11 +149,28 @@ export default class LoginForm extends Component {
             <FormControl placeholder="password" type="password" value={self.state.password} onChange={self.handlePasswordChange} />
           </FormGroup>
 
-          {self.state.isRegister && <div className="repeat-password">
-            <div className="login-form-field-name">Repeat Password:</div>
-            <FormGroup className="login-form-group">
-              <FormControl placeholder="password" type="password" value={self.state.repeatPassword} onChange={self.handleRepeatPasswordChange} />
-            </FormGroup>
+          {self.state.isRegister && <div className="register-form">
+            <div className="repeat-password">
+              <div className="login-form-field-name">Repeat Password:</div>
+              <FormGroup className="login-form-group">
+                <FormControl placeholder="password" type="password" value={self.state.repeatPassword} onChange={self.handleRepeatPasswordChange} />
+              </FormGroup>
+            </div>
+
+            <hr/>
+
+            <div className="address">
+              <div className="login-form-field-name">
+                Enter your public Ethereum Address:&nbsp;
+                <OverlayTrigger trigger={['hover', 'focus']} placement="left" overlay={popover}>
+                  <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                </OverlayTrigger>
+              </div>
+              <FormGroup className="login-form-group">
+                <FormControl placeholder="address" type="text" value={self.state.address} onChange={self.handleAddressChange} />
+              </FormGroup>
+            </div>
+
           </div>}
 
           <FormGroup className="login-form-group">

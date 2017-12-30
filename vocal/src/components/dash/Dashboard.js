@@ -35,6 +35,10 @@ export default class Dashboard extends Component {
             self._updateBalance();
         })
     }
+    
+    componentWillUnmount() {
+        this.removeListener();
+    }
 
     updateIssues() {
         const self = this;
@@ -51,9 +55,6 @@ export default class Dashboard extends Component {
         }
     }
 
-    componentWillUnmount() {
-        this.removeListener();
-    }
 
     updateCurrentPage(currentPage) {
         this.setState({ currentPage: currentPage });

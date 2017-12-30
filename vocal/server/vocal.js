@@ -49,12 +49,20 @@ const library = (function () {
             `values('${userId}', ${escape.literal(email)}, ${escape.literal(address)}, ${escape.literal(username)})`;
     }
 
+    function getAddress(userId) {
+        return `SELECT address from users where ID='${userId}'`;
+    }
+
     function getIssuesForUserQuery(userId) {
         return `SELECT * from issues where user_id='${userId}'`;
     }
 
     function getVotesForIssueIdQuery(issueId) {
         return `SELECT * from votes where issue_id='${issueId}'`;
+    }
+
+    function updateAddressQuery(userId, address) {
+        return `UPDATE users SET address=${escape.literal(address)} WHERE userId=${escape.literal(userId)}`;
     }
 
     // lat1, lng1 is SW corner, lat2,lng2 is NE corner.
@@ -68,6 +76,7 @@ const library = (function () {
 
     return {
         checkVoteQuery: checkVoteQuery,
+        getAddress: getAddress,
         deleteIssueQuery: deleteIssueQuery,
         getRandom: getRandom,
         getUserQuery: getUserQuery,
@@ -79,6 +88,7 @@ const library = (function () {
         insertEventQuery: insertEventQuery,
         insertUserQuery: insertUserQuery,
         insertVoteQuery: insertVoteQuery,
+        updateAddressQuery: updateAddressQuery,
         toggleActiveForIssueId: toggleActiveForIssueId,
         formatDateTimeMs: formatDateTimeMs
     }

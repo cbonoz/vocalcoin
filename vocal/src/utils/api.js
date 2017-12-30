@@ -42,11 +42,13 @@ const library = (function () {
         });
     }
 
-    function postUserQuery(user) {
+    function postUserQuery(user, address) {
         const url = `${BASE_URL}/api/signin`;
         return axios.post(url, {
             userId: user.uid,
-            username: user.email.split('@')[0]
+            email: user.email,
+            username: user.email.split('@')[0],
+            address: address
         }).then(response => {
             const data = response.data;
             return data;
@@ -139,6 +141,11 @@ const library = (function () {
         return axios.get(url, getHeaders()).then(response => response.data); 
     }
 
+    function getAddress(userId) {
+        const url = `${BASE_URL}/api/address/${userId}`;
+        return axios.get(url, getHeaders()).then(response => response.data); 
+    }
+
     // TODO: return axios promises for the requests below.
 
     function getTransactionHistory(user) {
@@ -146,12 +153,15 @@ const library = (function () {
         return null;
     }
 
-    function getAddress(user) {
-        return null;
-    }
-
-    function postAddress(user) {
-        return null;
+    function postAddress(userId, address) {
+        const url = `${BASE_URL}/api/address/update`;
+        return axios.post(url, {
+            userId: userId,
+            address: address
+        }, getHeaders()).then(response => {
+            const data = response.data;
+            return data;
+        });
     }
 
     return {
@@ -161,6 +171,7 @@ const library = (function () {
         postUserQuery: postUserQuery,
         getBalance: getBalance,
         getHasVoted: getHasVoted,
+        getAddress: getAddress,
         getIssuesForRegion: getIssuesForRegion,
         getIssuesForUserId: getIssuesForUserId,
         getToggleActiveForIssueId: getToggleActiveForIssueId,

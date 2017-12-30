@@ -118,7 +118,6 @@ export default class VoteModal extends Component {
                         <Modal.Title className="">Vote on: <b>{issue && issue.title}</b></Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <hr />
                         <div>
                             {/* <img src={vocal} className="modal-image" /> */}
                             {!hasVoted && <form>
