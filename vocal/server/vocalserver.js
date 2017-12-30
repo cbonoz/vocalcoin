@@ -296,42 +296,54 @@ function getAddressAndExecute(userId, cb) {
         console.log('vocal address', err, result)
         if (err || !result.rows) {
             console.error('vocal address error', err);
-            return res.status(500).json(err);
+            throw JSON.stringify(err);
         }
         const address = result.rows[0];
         console.log('got address', address);
         cb(address);
-
-    }); 
+    });
 }
 
 app.get('/api/balance/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
-    getAddressAndExecute(userId, (address) => {
-        const balanceFromBlockchain = contract.getBalance(address);
-        return res.json(balanceFromBlockchain);
-    });
+    try {
+        getAddressAndExecute(userId, (address) => {
+            const balanceFromBlockchain = contract.getBalance(address);
+            return res.json(balanceFromBlockchain);
+        });
+    } catch (err) {
+        return res.json(err);
+    }
+
 });
 
 app.get('/api/address/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
-    getAddressAndExecute(userId, (address) => {
-        return res.json(address);
-    });
+    try {
+        getAddressAndExecute(userId, (address) => {
+            return res.json(address);
+        });
+    } catch (err) {
+        return res.json(err)
+    }
+
 });
 
 // TODO: finish this.
 app.post('/api/vocal/add', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const userId = body.userId;
-
-    getAddressAndExecute(userId, (address) => {
-        const amount = vocal.calculateVocalCredit(userId);
-           // TODO: this should manipulate the blockchain, and return a success response for adding amount to
-           // the user's token balance.
-        // i.e. some call like contract.sendVocal(amount, etc...) should be here.
-        return res.json(true);
-    }); 
+    try {
+        getAddressAndExecute(userId, (address) => {
+            const amount = vocal.calculateVocalCredit(userId);
+            // TODO: this should manipulate the blockchain, and return a success response for adding amount to
+            // the user's token balance.
+            // i.e. some call like contract.sendVocal(amount, etc...) should be here.
+            return res.json(true);
+        });
+    } catch (err) {
+        return res.json(err)
+    }
 });
 
 app.post('/api/address/update', passport.authenticate('bearer', { session: false }), (req, res) => {
