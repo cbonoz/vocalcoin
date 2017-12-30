@@ -63,10 +63,10 @@ class App extends Component {
     const self = this;
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
       if (user) {
-        console.log('user:', JSON.stringify(user));
+        // console.log('user:', JSON.stringify(user));
         const userId = user.uid;
         api.postUserQuery(user).then((data) => {
-          console.log('retrieved user data', data);
+          // console.log('retrieved user data', data);
 
           localStorage.setItem("tok", data["token"]);
 

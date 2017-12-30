@@ -26,6 +26,10 @@ const library = (function () {
         return `SELECT * from votes where user_id='${userId}' and issue_id='${issueId}' limit 1`;
     }
 
+    function deleteIssueQuery(userId, issueId) {
+        return `DELETE * from issues where user_id='${userId}' and issue_id='${issueId}' limit 1`;
+    }
+
     function insertIssueQuery(issue) {
         return `INSERT INTO issues(user_id, description, title, lat, lng, place, active, time) ` +
             `values('${issue.userId}', ${escape.literal(issue.description)}, ${escape.literal(issue.title)}` +
@@ -64,6 +68,7 @@ const library = (function () {
 
     return {
         checkVoteQuery: checkVoteQuery,
+        deleteIssueQuery: deleteIssueQuery,
         getRandom: getRandom,
         getUserQuery: getUserQuery,
         getIssuesForRegionQuery: getIssuesForRegionQuery,

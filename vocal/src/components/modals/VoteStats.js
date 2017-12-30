@@ -8,6 +8,7 @@ export default class VoteStats extends Component {
     }
 
     render() {
+        const self = this;
         const issue = self.props.issue;
         const currentUser = self.props.currentUser;
         return (

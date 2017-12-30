@@ -55,6 +55,7 @@ const MapWithASearchBox = compose(
         currentIssue: {},
         enableRefreshButton: false,
         lastLocation: null,
+        lastCenter: null,
         center: {
           lat: latitude, lng: longitude
         },
@@ -83,9 +84,6 @@ const MapWithASearchBox = compose(
             bounds: currBounds,
             enableRefreshButton: true
           });
-            // lastLocation: "Map moved since last search"
-
-          // console.log(`New bounds: ${JSON.stringify(currBounds)}`);
         },
         getIssuesForRegion: () => {
           const self = this;
@@ -132,10 +130,11 @@ const MapWithASearchBox = compose(
               }
           });
 
-          console.log('nextLocation', JSON.stringify(nextLocation));
+          // console.log('nextLocation', JSON.stringify(nextLocation));
 
           this.setState({
             center: nextCenter,
+            lastCenter: nextCenter,
             markers: nextMarkers,
             lastLocation: nextLocation
           });
@@ -198,9 +197,16 @@ const MapWithASearchBox = compose(
 
         {/* From places search */}
         {props.markers.map((marker, index) =>
-          <Marker
+          <MarkerWithLabel
             key={index}
-            position={marker.position} />
+            position={marker.position}
+            labelAnchor={new google.maps.Point(125, 80)}
+            labelStyle={{backgroundColor: "yellow", fontSize: "12px", padding: "5px"}}>
+              <div>
+                Creating an issue will appear here.
+              </div>
+
+          </MarkerWithLabel>
         )}
 
         {/* From issues in region */}
@@ -229,7 +235,7 @@ const MapWithASearchBox = compose(
       <IssueModal
         currentUser={props.currentUser}
         lastLocation={props.lastLocation}
-        center={props.center}
+        center={props.lastCenter || props.center}
         toggleIssueModal={props.toggleIssueModal}
         showIssueModal={props.showIssueModal} />
 
