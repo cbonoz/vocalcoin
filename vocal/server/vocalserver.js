@@ -15,7 +15,8 @@ const path = require('path');
 const admin = require('firebase-admin')
 
 const serviceAccount = require("./db/vocalfb.json");
-// const wallet = require('lightwallet/lightwallet');
+const wallet = require('./lightwallet/lightwallet');
+const async = require('async');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -242,175 +243,177 @@ app.get('/api/hasvoted/:userId/:issueId', passport.authenticate('bearer', { sess
             return res.status(500).json({"error": err});
         }
         res.json(result.rows.length > 0);
-});
-
-
-app.get('/api/votes/:issueId', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const issueId = req.params.issueId;
-    const query = vocal.getVotesForIssueIdQuery(issueId);
-
-    pool.query(query, (err, result) => {
-        console.log('getVotes', err, result)
-        if (err) {
-            console.error('getVotes error', err);
-            return res.status(500).json(err);
-        }
-        // pool.end()
-        return res.json(result.rows);
     });
 });
 
-/* Auth routes */
+    app.get('/api/votes/:issueId', passport.authenticate('bearer', {session: false}), (req, res) => {
+        const issueId = req.params.issueId;
+        const query = vocal.getVotesForIssueIdQuery(issueId);
 
-app.post('/api/signin', (req, res) => {
-    const body = req.body;
-    console.log(body);
-    const userId = body.userId;
-
-    admin.auth().createCustomToken(userId).then(function(customToken) {
-        // Send token back to client.
-        console.log(userId, customToken);
-        db.users.assignToken(userId, customToken);
-        return res.json({"token": customToken});
-    })
-    .catch(function(error) {
-        console.error("Error creating custom token:", error);
-        return res.json({"error": error});
+        pool.query(query, (err, result) => {
+            console.log('getVotes', err, result)
+            if (err) {
+                console.error('getVotes error', err);
+                return res.status(500).json(err);
+            }
+            // pool.end()
+            return res.json(result.rows);
+        });
     });
-});
 
-app.post('/api/user', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const body = req.body;
-    const userId = body.userId;
-    
-    const query = vocal.getUserQuery(userId);
-    pool.query(query, (err, result) => {
-        console.log('get user', err, result)
-        if (err) {
-            console.error('get user error', err);
-            return res.status(500).json(err);
-        }
-        const rows = result.rows;
-        if (rows instanceof Array && rows[0]) {
-            return res.json(rows[0]);
-        } else {
-            const username = body.username;
-            const email = body.email;
-            const account = contract.web3.eth.accounts.create();
-            const address = account.address;
-            const userQuery = vocal.insertUserQuery(userId, email, address, username);
-            pool.query(userQuery, (err, result) => {
-                if (err) {
-                    console.error('create user error', err);
-                    return res.status(500).json(err);
-                }
-                console.log('inserted new user', JSON.stringify(user));
-                
-                return res.json(result); 
+    /* Auth routes */
+
+    app.post('/api/signin', (req, res) => {
+        const body = req.body;
+        console.log(body);
+        const userId = body.userId;
+
+        admin.auth().createCustomToken(userId).then(function (customToken) {
+            // Send token back to client.
+            console.log(userId, customToken);
+            db.users.assignToken(userId, customToken);
+            return res.json({"token": customToken});
+        })
+            .catch(function (error) {
+                console.error("Error creating custom token:", error);
+                return res.json({"error": error});
             });
-        }
-
-        // pool.end()
     });
-});
 
-/* Query methods */
+    app.post('/api/user', passport.authenticate('bearer', {session: false}), (req, res) => {
+        const body = req.body;
+        const userId = body.userId;
+
+        const query = vocal.getUserQuery(userId);
+        pool.query(query, (err, result) => {
+            console.log('get user', err, result)
+            if (err) {
+                console.error('get user error', err);
+                return res.status(500).json(err);
+            }
+            const rows = result.rows;
+            if (rows instanceof Array && rows[0]) {
+                return res.json(rows[0]);
+            } else {
+                const username = body.username;
+                const email = body.email;
+                const account = contract.web3.eth.accounts.create();
+                const address = account.address;
+                const userQuery = vocal.insertUserQuery(userId, email, address, username);
+                pool.query(userQuery, (err, result) => {
+                    if (err) {
+                        console.error('create user error', err);
+                        return res.status(500).json(err);
+                    }
+                    console.log('inserted new user', JSON.stringify(user));
+
+                    return res.json(result);
+                });
+            }
+
+            // pool.end()
+        });
+    });
+
+    /* Query methods */
 
 // TODO: each request below should do an address lookup (based on the past in userId) to find the appropriate address to credit or find the balance for.
 // TODO: this request queries the BLOCKCHAIN for the current balance.
-app.get('/api/balance/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const userId = req.params.userId;
-    // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
-    const balance = -1;
-    return res.json(balance);
-});
+    app.get('/api/balance/:userId',
+        // passport.authenticate('bearer', {session: false}),
+        (req, res) => {
+        const userId = req.params.userId;
+        // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
+        const balance = -1;
+        let balanceFromBlockchain = wallet.getBalances(userId);
+        return res.json(balanceFromBlockchain);
+    });
 
 // Check if the given userId param exists in the DB and contains a non-null address.
-app.get('/api/address/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const userId = req.params.userId;
-    pool.query(`SELECT * FROM users where userId='${userId}'`, (err, result) => {
-        console.log('verify address', err, result)
-        if (err) {
-            console.error('verify address', err);
-            return res.status(500).json(err);
-        }
-
-        if (result.rows) {
-            const userRow = result.rows[0];
-            // TODO: use an actual ethereum address validator (rather than isBlank).
-            const address = userRow['address']
-            const hasAddress = !isBlank(address);
-            if (hasAddress) {
-                return res.json(address)
+    app.get('/api/address/:userId', passport.authenticate('bearer', {session: false}), (req, res) => {
+        const userId = req.params.userId;
+        pool.query(`SELECT * FROM users where userId='${userId}'`, (err, result) => {
+            console.log('verify address', err, result)
+            if (err) {
+                console.error('verify address', err);
+                return res.status(500).json(err);
             }
-        }
 
-        // pool.end()
-        return res.json("");
+            if (result.rows) {
+                const userRow = result.rows[0];
+                // TODO: use an actual ethereum address validator (rather than isBlank).
+                const address = userRow['address']
+                const hasAddress = !isBlank(address);
+                if (hasAddress) {
+                    return res.json(address)
+                }
+            }
+
+            // pool.end()
+            return res.json("");
+        });
     });
-});
 
-app.post('/api/address/update', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const body = req.body;
-    const userId = body.userId;
-    const address = body.address;
+    app.post('/api/address/update', passport.authenticate('bearer', {session: false}), (req, res) => {
+        const body = req.body;
+        const userId = body.userId;
+        const address = body.address;
 
-    const query = vocal.updateAddressQuery(userId, address)
-    // TODO: update this to change the registered public eth address of the give user (indicated by their userId).
-    return res.json(true);
-});
+        const query = vocal.updateAddressQuery(userId, address)
+        // TODO: update this to change the registered public eth address of the give user (indicated by their userId).
+        return res.json(true);
+    });
 
 // TODO: query the blockchain for the transactions submitted by the given userId (using the address lookup).
-app.get('/api/transactions/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const userId = req.params.userId;
-    pool.query(`SELECT * FROM transactions where userId='${userId}'`, (err, result) => {
-        console.log('transactions', err, result)
-        if (err) {
-            console.error('transactions error', err);
-            return res.status(500).json(err);
-        }
-        // pool.end()
-        return res.json(result.rows);
+    app.get('/api/transactions/:userId', passport.authenticate('bearer', {session: false}), (req, res) => {
+        const userId = req.params.userId;
+        pool.query(`SELECT * FROM transactions where userId='${userId}'`, (err, result) => {
+            console.log('transactions', err, result)
+            if (err) {
+                console.error('transactions error', err);
+                return res.status(500).json(err);
+            }
+            // pool.end()
+            return res.json(result.rows);
+        });
     });
-});
 
 
-
-/**
- * End of Blockchain Routes
- */
+    /**
+     * End of Blockchain Routes
+     */
 
 // Socket IO handlers //
 
-io.origins('*:*') // for latest version
-io.on('connection', function (client) {
-    client.on('connect', function () {
-        console.log('user connect');
+    io.origins('*:*') // for latest version
+    io.on('connection', function (client) {
+        client.on('connect', function () {
+            console.log('user connect');
+        });
+        client.on('action', function (event) {
+            const query = vocal.insertEventQuery(event.name, event.time);
+            pool.query(query);
+            console.log('action', JSON.stringify(event));
+            io.emit('incoming', event)
+        });
+        client.on('disconnect', function () {
+            console.log('user disconnect');
+        });
     });
-    client.on('action', function (event) {
-        const query = vocal.insertEventQuery(event.name, event.time);
-        pool.query(query);
-        console.log('action', JSON.stringify(event));
-        io.emit('incoming', event)
-    });
-    client.on('disconnect', function () {
-        console.log('user disconnect');
-    });
-});
 
 // DB Connection and Server start //
 
-pool.connect((err, client, done) => {
-    if (err) {
-        console.error('postgres connection error', err)
-        if (prod) {
-            console.error('exiting')
-            return;
+    pool.connect((err, client, done) => {
+        if (err) {
+            console.error('postgres connection error', err)
+            if (prod) {
+                console.error('exiting')
+                return;
+            }
+            console.error('continuing with disabled postgres db');
         }
-        console.error('continuing with disabled postgres db');
-    }
 
-    server.listen(PORT, () => {
-        console.log('Express server listening on localhost port: ' + PORT);
-    });
-})
+        server.listen(PORT, () => {
+            console.log('Express server listening on localhost port: ' + PORT);
+        });
+    })
