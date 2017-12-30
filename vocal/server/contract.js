@@ -43,26 +43,30 @@ const library = (function () {
     }
   });
 
-  // Perform a transaction using ETH from the geth coinbase account
-  // web3.personal.unlockAccount(web3.eth.coinbase, "");
+  const getBalance = function (address) {
+    const balance = web3.eth.getBalance(address) / 1.0e18;
+    return balance;
+  }
+
+  const sendVocal = function (sendFrom, sendTo, sendValueAmount) {
+    var sendFrom = "0x7f21D215d58bb924e716FDB38dA5C75e1946954A";
+    var sendTo = "0x8ef3b9ae3765a007b38e971c6d7bd67be63fc07b";
+    var fromAddr = sendFrom;
+    var toAddr = sendTo;
+    var valueVocal = sendValueAmount;
+    var value = parseFloat(valueVocal) * 1.0e18;
+    var gasPrice = 18000000000;
+    var gas = 50000;
+    web3.eth.sendTransaction({ from: fromAddr, to: toAddr, value: value, gasPrice: gasPrice, gas: gas }, function (err, txhash) {
+      console.log('error: ' + err);
+      console.log('txhash: ' + txhash);
+    })
+  }
+
   console.log(VOCAL_ADDR, VOCAL_PASS);
-  // web3.personal.unlockAccount(web3.eth.coinbase, VOCAL_ADDR, VOCAL_PASS);
-  // web3.personal.unlockAccount(web3.eth.coinbase, VOCAL_ADDR, VOCAL_PASS, function (error, result) {
-  //   if (error) {
-  //     console.error('unlock error', JSON.stringify(error));
-  //   } else {
-  //     console.log('unlock success', JSON.stringify(result));
-  //   }
-  // });
-
-  // Set the account from where we perform out contract transactions
-  // web3.eth.defaultAccount = web3.eth.coinbase;
-
-  // Ex: Invoke a contract method
-  // const tx = vocalContract.setValue(3000, { gas: 200000 });
-  // console.log("Our tx is https://testnet.etherscan.io/tx/" + tx);
-
   return {
+    getBalance: getBalance,
+    sendVocal: sendVocal,
     vocalContract: vocalContract,
     web3: web3
   };

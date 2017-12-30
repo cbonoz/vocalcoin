@@ -15,12 +15,11 @@ const path = require('path');
 const admin = require('firebase-admin')
 
 const serviceAccount = require("./db/vocalfb.json");
-const wallet = require('./lightwallet/lightwallet');
 const async = require('async');
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://vocalcoin-69799.firebaseio.com"
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://vocalcoin-69799.firebaseio.com"
 });
 
 // Passport for middleware HTTP bearer authentication strategy for the blockchain routes
@@ -29,8 +28,8 @@ const Strategy = require('passport-http-bearer').Strategy;
 var db = require('./db');
 
 passport.use(new Strategy(
-    function(token, cb) {
-        db.users.findByToken(token, function(err, user) {
+    function (token, cb) {
+        db.users.findByToken(token, function (err, user) {
             if (err) { return cb(err); }
             if (!user) { return cb(null, false); }
             return cb(null, user);
@@ -61,7 +60,7 @@ const PORT = 9007;
 
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(server, { origins: '*:*'});
+const io = require('socket.io')(server, { origins: '*:*' });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -127,21 +126,21 @@ app.post('/api/issues/region', (req, res) => {
 app.post('/api/vote', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const vote = JSON.parse(body.vote);
-    
+
     const checkVoteQuery = vocal.checkVoteQuery(vote.userId, vote.issueId);
     pool.query(checkVoteQuery, (err, result) => {
         console.log('check vote', checkVoteQuery);
         console.log('checkVote', err, result);
         if (err) {
             console.error('postVote error', err);
-            return res.status(500).json({"error": err});
+            return res.status(500).json({ "error": err });
         }
 
         if (result.rows.length > 0) {
             // if we already have a vote for this user and issue, return.
             const errorMessage = "user already voted on this issue";
             console.error(errorMessage)
-            return res.status(200).json({"error": errorMessage});
+            return res.status(200).json({ "error": errorMessage });
         }
 
         // Ok. Insert the vote into the DB.
@@ -219,26 +218,26 @@ app.get('/api/hasvoted/:userId/:issueId', passport.authenticate('bearer', { sess
         console.log('has voted', err, result);
         if (err) {
             console.error('postVote error', err);
-            return res.status(500).json({"error": err});
+            return res.status(500).json({ "error": err });
         }
         res.json(result.rows.length > 0);
     });
 });
 
-    app.get('/api/votes/:issueId', passport.authenticate('bearer', {session: false}), (req, res) => {
-        const issueId = req.params.issueId;
-        const query = vocal.getVotesForIssueIdQuery(issueId);
+app.get('/api/votes/:issueId', passport.authenticate('bearer', { session: false }), (req, res) => {
+    const issueId = req.params.issueId;
+    const query = vocal.getVotesForIssueIdQuery(issueId);
 
-        pool.query(query, (err, result) => {
-            console.log('getVotes', err, result)
-            if (err) {
-                console.error('getVotes error', err);
-                return res.status(500).json(err);
-            }
-            // pool.end()
-            return res.json(result.rows);
-        });
+    pool.query(query, (err, result) => {
+        console.log('getVotes', err, result)
+        if (err) {
+            console.error('getVotes error', err);
+            return res.status(500).json(err);
+        }
+        // pool.end()
+        return res.json(result.rows);
     });
+});
 
 app.post('/api/signin', (req, res) => {
     const body = req.body;
@@ -247,7 +246,7 @@ app.post('/api/signin', (req, res) => {
     const email = body.email;
     const address = body.address;
     const username = body.username;
-       
+
     // Attempt to add the new user with address if set.
     if (address) {
         const query = vocal.getUserQuery(userId);
@@ -274,73 +273,24 @@ app.post('/api/signin', (req, res) => {
                 });
             }
         });
-    }   
+    }
 
     // Return the auth token.
-    admin.auth().createCustomToken(userId).then(function(customToken) {
+    admin.auth().createCustomToken(userId).then(function (customToken) {
         // Send token back to client.
         console.log(userId, customToken);
         db.users.assignToken(userId, customToken);
-        return res.json({"token": customToken});
+        return res.json({ "token": customToken });
     })
-    .catch(function(error) {
-        console.error("Error creating custom token:", error);
-        return res.json({"error": error});
-    });
-
-    app.post('/api/user', passport.authenticate('bearer', {session: false}), (req, res) => {
-        const body = req.body;
-        const userId = body.userId;
-
-        const query = vocal.getUserQuery(userId);
-        pool.query(query, (err, result) => {
-            console.log('get user', err, result)
-            if (err) {
-                console.error('get user error', err);
-                return res.status(500).json(err);
-            }
-            const rows = result.rows;
-            if (rows instanceof Array && rows[0]) {
-                return res.json(rows[0]);
-            } else {
-                const username = body.username;
-                const email = body.email;
-                const account = contract.web3.eth.accounts.create();
-                const address = account.address;
-                const userQuery = vocal.insertUserQuery(userId, email, address, username);
-                pool.query(userQuery, (err, result) => {
-                    if (err) {
-                        console.error('create user error', err);
-                        return res.status(500).json(err);
-                    }
-                    console.log('inserted new user', JSON.stringify(user));
-
-                    return res.json(result);
-                });
-            }
-
-            // pool.end()
+        .catch(function (error) {
+            console.error("Error creating custom token:", error);
+            return res.json({ "error": error });
         });
-    });
+});
 
 /* Query methods */
 
-// TODO: each request below should do an address lookup (based on the past in userId) to find the appropriate address to credit or find the balance for.
-// TODO: this request queries the BLOCKCHAIN for the current balance.
-    app.get('/api/balance/:userId',
-        passport.authenticate('bearer', {session: false}),
-        (req, res) => {
-        const userId = req.params.userId;
-        // TODO: query the blockchain (instead of the local db) for the most recent balance for the user.
-        const balance = -1;
-        let balanceFromBlockchain = wallet.getBalances(userId);
-        return res.json(balanceFromBlockchain);
-    });
-
-
-app.get('/api/address/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const userId = req.params.userId;
-
+function getAddressAndExecute(userId, cb) {
     const query = vocal.getAddress(userId);
     pool.query(query, (err, result) => {
         console.log('vocal address', err, result)
@@ -348,56 +298,43 @@ app.get('/api/address/:userId', passport.authenticate('bearer', { session: false
             console.error('vocal address error', err);
             return res.status(500).json(err);
         }
-        return res.json(result.rows[0]);
+        const address = result.rows[0];
+        console.log('got address', address);
+        cb(address);
+
+    }); 
+}
+
+app.get('/api/balance/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
+    const userId = req.params.userId;
+    getAddressAndExecute(userId, (address) => {
+        const balanceFromBlockchain = contract.getBalance(address);
+        return res.json(balanceFromBlockchain);
     });
 });
 
+app.get('/api/address/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
+    const userId = req.params.userId;
+    getAddressAndExecute(userId, (address) => {
+        return res.json(address);
+    });
+});
+
+// TODO: finish this.
 app.post('/api/vocal/add', passport.authenticate('bearer', { session: false }), (req, res) => {
     const body = req.body;
     const userId = body.userId;
-    if (!userId) {
-        return res.status(400).json({message: "userId must be defined"});
-    }
 
-    // calculate the amount of vocal to credit based on the userId (TODO: and other params).
-    const amount = vocal.calculateVocalCredit(userId);
-    const query = vocal.addVocalQuery(userId, amount);
-
-    pool.query(query, (err, result) => {
-        console.log('vocal add', err, result)
-        if (err) {
-            console.error('vocal add error', err);
-            return res.status(500).json(err);
-        }
-        // pool.end()
-        return res.json(result.rows);
-    });
+    getAddressAndExecute(userId, (address) => {
+        return res.json(address);
+        const amount = vocal.calculateVocalCredit(userId);
+           // TODO: this should manipulate the blockchain, and return a success response for adding amount to
+           // the user's token balance.
+        return res.json(true);
+    }); 
 });
 
-    app.post('/api/address/update', passport.authenticate('bearer', {session: false}), (req, res) => {
-        const body = req.body;
-        const userId = body.userId;
-        const address = body.address;
-
-        const query = vocal.updateAddressQuery(userId, address)
-        // TODO: update this to change the registered public eth address of the give user (indicated by their userId).
-        return res.json(true);
-    });
-
-// TODO: query the blockchain for the transactions submitted by the given userId (using the address lookup).
-    app.get('/api/transactions/:userId', passport.authenticate('bearer', {session: false}), (req, res) => {
-        const userId = req.params.userId;
-        pool.query(`SELECT * FROM transactions where userId='${userId}'`, (err, result) => {
-            console.log('transactions', err, result)
-            if (err) {
-                console.error('transactions error', err);
-                return res.status(500).json(err);
-            }
-            // pool.end()
-            return res.json(result.rows);
-        });
-    });
-
+app.post('/api/address/update', passport.authenticate('bearer', { session: false }), (req, res) => {
     const query = vocal.updateAddressQuery(userId, address)
     pool.query(query, (err, result) => {
         console.log('update address', err, result)
@@ -413,41 +350,41 @@ app.post('/api/vocal/add', passport.authenticate('bearer', { session: false }), 
 });
 
 
-    /**
-     * End of Blockchain Routes
-     */
+/**
+ * End of Blockchain Routes
+ */
 
 // Socket IO handlers //
 
-    io.origins('*:*') // for latest version
-    io.on('connection', function (client) {
-        client.on('connect', function () {
-            console.log('user connect');
-        });
-        client.on('action', function (event) {
-            const query = vocal.insertEventQuery(event.name, event.time);
-            pool.query(query);
-            console.log('action', JSON.stringify(event));
-            io.emit('incoming', event)
-        });
-        client.on('disconnect', function () {
-            console.log('user disconnect');
-        });
+io.origins('*:*') // for latest version
+io.on('connection', function (client) {
+    client.on('connect', function () {
+        console.log('user connect');
     });
+    client.on('action', function (event) {
+        const query = vocal.insertEventQuery(event.name, event.time);
+        pool.query(query);
+        console.log('action', JSON.stringify(event));
+        io.emit('incoming', event)
+    });
+    client.on('disconnect', function () {
+        console.log('user disconnect');
+    });
+});
 
 // DB Connection and Server start //
 
-    pool.connect((err, client, done) => {
-        if (err) {
-            console.error('postgres connection error', err)
-            if (prod) {
-                console.error('exiting')
-                return;
-            }
-            console.error('continuing with disabled postgres db');
+pool.connect((err, client, done) => {
+    if (err) {
+        console.error('postgres connection error', err)
+        if (prod) {
+            console.error('exiting')
+            return;
         }
+        console.error('continuing with disabled postgres db');
+    }
 
-        server.listen(PORT, () => {
-            console.log('Express server listening on localhost port: ' + PORT);
-        });
-    })
+    server.listen(PORT, () => {
+        console.log('Express server listening on localhost port: ' + PORT);
+    });
+})
