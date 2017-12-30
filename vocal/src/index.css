@@ -367,6 +367,8 @@ body {
 }
 
 .home-box {
+  display: inline-block;
+  clear: both;
   font-size: 16px;
   line-height: 24px;
   padding: 15px;
@@ -434,9 +436,13 @@ d
 }
 
 .help-icon {
+  margin: 0 auto;
+  text-align: center;
+  clear: both;
+  display: inline-block;
+  white-space: nowrap;
   padding: 30px;
-  color: gray;
-  vertical-align: bottom;
+  color: firebrick;
 }
 
 .home-learn-more {
