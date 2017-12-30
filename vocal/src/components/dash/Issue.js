@@ -22,7 +22,7 @@ export default class Issue extends Component {
 
     deleteIssue(issue) {
         const self = this;
-        self.setState({ loading: false });
+        self.setState({ loading: false , err: null});
         const issueId = issue.id
         console.log('delete', issueId);
 
@@ -36,7 +36,7 @@ export default class Issue extends Component {
                 self.props.updateIssues();
             }
         }).catch((err) => {
-            self.setState({ loading: false, err: err })
+            self.setState({ loading: false, err: err.statusText })
         });
     }
 

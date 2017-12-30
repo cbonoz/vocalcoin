@@ -192,27 +192,6 @@ app.post('/api/issue/delete', passport.authenticate('bearer', { session: false }
     });
 });
 
-app.post('/api/vocal/add', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const body = req.body;
-    const userId = body.userId;
-    if (!userId) {
-        return res.status(400).json({ message: "userId must be defined" });
-    }
-    // calculate the amount of vocal to credit based on the userId (TODO: and other params).
-    const amount = vocal.calculateVocalCredit(userId);
-    const query = vocal.addVocalQuery(userId, amount);
-
-    pool.query(query, (err, result) => {
-        console.log('vocal add', err, result)
-        if (err) {
-            console.error('vocal add error', err);
-            return res.status(500).json(err);
-        }
-        // pool.end()
-        return res.json(result.rows);
-    });
-});
-
 /* Dashboard routes */
 
 app.get('/api/issues/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
@@ -266,7 +245,39 @@ app.post('/api/signin', (req, res) => {
     const body = req.body;
     console.log(body);
     const userId = body.userId;
+    const email = body.email;
+    const address = body.address;
+    const username = body.username;
+       
+    // Attempt to add the new user with address if set.
+    if (address) {
+        const query = vocal.getUserQuery(userId);
+        pool.query(query, (err, result) => {
+            console.log('get user', err, result)
 
+            if (err) {
+                console.error('get user error', err);
+                return res.status(500).json(err);
+            }
+
+            const rows = result.rows;
+            if (rows instanceof Array && rows[0]) {
+                // User already created, no need to enter address.
+            } else {
+                const username = body.username;
+                const userQuery = vocal.insertUserQuery(userId, email, address, username);
+                pool.query(userQuery, (err, result) => {
+                    if (err) {
+                        console.error('create user error', err);
+                        return res.status(500).json(err);
+                    }
+                    console.log('inserted new user', JSON.stringify(user));
+                });
+            }
+        });
+    }   
+
+    // Return the auth token.
     admin.auth().createCustomToken(userId).then(function(customToken) {
         // Send token back to client.
         console.log(userId, customToken);
@@ -276,41 +287,6 @@ app.post('/api/signin', (req, res) => {
     .catch(function(error) {
         console.error("Error creating custom token:", error);
         return res.json({"error": error});
-    });
-});
-
-app.post('/api/user', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const body = req.body;
-    const userId = body.userId;
-    
-    const query = vocal.getUserQuery(userId);
-    pool.query(query, (err, result) => {
-        console.log('get user', err, result)
-        if (err) {
-            console.error('get user error', err);
-            return res.status(500).json(err);
-        }
-        const rows = result.rows;
-        if (rows instanceof Array && rows[0]) {
-            return res.json(rows[0]);
-        } else {
-            const username = body.username;
-            const email = body.email;
-            const account = contract.web3.eth.accounts.create();
-            const address = account.address;
-            const userQuery = vocal.insertUserQuery(userId, email, address, username);
-            pool.query(userQuery, (err, result) => {
-                if (err) {
-                    console.error('create user error', err);
-                    return res.status(500).json(err);
-                }
-                console.log('inserted new user', JSON.stringify(user));
-                
-                return res.json(result); 
-            });
-        }
-
-        // pool.end()
     });
 });
 
@@ -325,28 +301,39 @@ app.get('/api/balance/:userId', passport.authenticate('bearer', { session: false
     return res.json(balance);
 });
 
-// Check if the given userId param exists in the DB and contains a non-null address.
 app.get('/api/address/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
     const userId = req.params.userId;
-    pool.query(`SELECT * FROM users where userId='${userId}'`, (err, result) => {
-        console.log('verify address', err, result)
-        if (err) {
-            console.error('verify address', err);
+
+    const query = vocal.getAddress(userId);
+    pool.query(query, (err, result) => {
+        console.log('vocal address', err, result)
+        if (err || !result.rows) {
+            console.error('vocal address error', err);
             return res.status(500).json(err);
         }
+        return res.json(result.rows[0]);
+    });
+});
 
-        if (result.rows) {
-            const userRow = result.rows[0];
-            // TODO: use an actual ethereum address validator (rather than isBlank).
-            const address = userRow['address']
-            const hasAddress = !isBlank(address);
-            if (hasAddress) {
-                return res.json(address)
-            }
+app.post('/api/vocal/add', passport.authenticate('bearer', { session: false }), (req, res) => {
+    const body = req.body;
+    const userId = body.userId;
+    if (!userId) {
+        return res.status(400).json({ message: "userId must be defined" });
+    }
+
+    // calculate the amount of vocal to credit based on the userId (TODO: and other params).
+    const amount = vocal.calculateVocalCredit(userId);
+    const query = vocal.addVocalQuery(userId, amount);
+
+    pool.query(query, (err, result) => {
+        console.log('vocal add', err, result)
+        if (err) {
+            console.error('vocal add error', err);
+            return res.status(500).json(err);
         }
-
         // pool.end()
-        return res.json("");
+        return res.json(result.rows);
     });
 });
 
@@ -356,15 +343,8 @@ app.post('/api/address/update', passport.authenticate('bearer', { session: false
     const address = body.address;
 
     const query = vocal.updateAddressQuery(userId, address)
-    // TODO: update this to change the registered public eth address of the give user (indicated by their userId).
-    return res.json(true);
-});
-
-// TODO: query the blockchain for the transactions submitted by the given userId (using the address lookup).
-app.get('/api/transactions/:userId', passport.authenticate('bearer', { session: false }), (req, res) => {
-    const userId = req.params.userId;
-    pool.query(`SELECT * FROM transactions where userId='${userId}'`, (err, result) => {
-        console.log('transactions', err, result)
+    pool.query(query, (err, result) => {
+        console.log('update address', err, result)
         if (err) {
             console.error('transactions error', err);
             return res.status(500).json(err);
@@ -372,6 +352,8 @@ app.get('/api/transactions/:userId', passport.authenticate('bearer', { session: 
         // pool.end()
         return res.json(result.rows);
     });
+    // TODO: update this to change the registered public eth address of the give user (indicated by their userId).
+    return res.json(true);
 });
 
 

@@ -9,6 +9,7 @@ export default class LoginForm extends Component {
       email: '',
       password: '',
       repeatPassword: '',
+      address: '',
       error: '',
       isRegister: false,
       loginButtonStyle: "success",
@@ -18,6 +19,7 @@ export default class LoginForm extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleRepeatPasswordChange = this.handleRepeatPasswordChange.bind(this);
+    this.handleAddressChange = this.handleAddressChange.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -28,6 +30,10 @@ export default class LoginForm extends Component {
 
   handleEmailChange(event) {
     this.setState({ email: event.target.value });
+  }
+
+  handleAddressChange(event) {
+    this.setState({ password: event.target.value });
   }
 
   handlePasswordChange(event) {
@@ -65,13 +71,26 @@ export default class LoginForm extends Component {
     const email = self.state.email;
     const password = self.state.password;
     const repeatPassword = self.state.repeatPassword;
+    const address = self.state.address;
+
     if (password !== repeatPassword) {
       self.setState({ error: "Passwords do not match." });
       return;
     }
 
-    createUser(email, password)
-      .then(function (res) {
+    if (!password) {
+      self.setState( {error: "Password must not be empty"})
+      return;
+    }
+
+    if (!address) {
+      self.setState( {error: "Address must not be empty"})
+      return;
+    }
+
+    localStorage.setItem("address", address);
+
+    createUser(email, password).then(function (res) {
         self.props.onLogin();
       })
       .catch(function (error) {
@@ -120,11 +139,23 @@ export default class LoginForm extends Component {
             <FormControl placeholder="password" type="password" value={self.state.password} onChange={self.handlePasswordChange} />
           </FormGroup>
 
-          {self.state.isRegister && <div className="repeat-password">
-            <div className="login-form-field-name">Repeat Password:</div>
-            <FormGroup className="login-form-group">
-              <FormControl placeholder="password" type="password" value={self.state.repeatPassword} onChange={self.handleRepeatPasswordChange} />
-            </FormGroup>
+          {self.state.isRegister && <div className="register-form">
+            <div className="repeat-password">
+              <div className="login-form-field-name">Repeat Password:</div>
+              <FormGroup className="login-form-group">
+                <FormControl placeholder="password" type="password" value={self.state.repeatPassword} onChange={self.handleRepeatPasswordChange} />
+              </FormGroup>
+            </div>
+
+            <hr/>
+
+            <div className="address">
+              <div className="login-form-field-name">Enter your public Ethereum Address:</div>
+              <FormGroup className="login-form-group">
+                <FormControl placeholder="address" type="text" value={self.state.address} onChange={self.handleAddressChange} />
+              </FormGroup>
+            </div>
+
           </div>}
 
           <FormGroup className="login-form-group">
