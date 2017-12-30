@@ -341,8 +341,10 @@ app.post('/api/vocal/add',
             // TODO: this should manipulate the blockchain, and return a success response for adding amount to
             // the user's token balance.
             // i.e. some call like contract.sendVocal(amount, etc...) should be here.
-            contract.sendVocal(address, amount);
-            return res.json(true);
+            // contract.sendVocal(address, amount);
+            let from = '0x7f21D215d58bb924e716FDB38dA5C75e1946954A';
+            let transactiontHash = contract.sendVocalRaw(from, address, amount);
+            return res.json(transactiontHash);
         });
     } catch (err) {
         return res.json(err)

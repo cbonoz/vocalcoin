@@ -12,12 +12,13 @@ const library = (function () {
   console.log('provider', INFURA_PROVIDER);
   // TODO: replace with actual compiled contract abi.
   // const CONTRACT_ABI = "./VocalToken.json";
-  // const CONTRACT_ABI = "./VocalToken.json";
-  const CONTRACT_ABI = "vocal/server/VocalToken.json";
+  const CONTRACT_ABI = "./VocalToken.json";
+  // const CONTRACT_ABI = "vocal/server/VocalToken.json";
 
   const fs = require("fs");
   const Web3 = require('web3'); // https://www.npmjs.com/package/web3
   const Accounts = require('web3-eth-accounts');
+  const Tx = require('ethereumjs-tx');
 
   // Create a web3 connection to a running geth node over JSON-RPC running at
   // http://localhost:8545
@@ -54,19 +55,45 @@ const library = (function () {
     var fromAddr = sendFrom;
     var toAddr = sendTo;
     var valueVocal = sendValueAmount;
-    var value = parseFloat(valueVocal) * 1.0e18;
+    var value = valueVocal * 1.0e18;
+    // var value = valueVocal;
     var gasPrice = 18000000000;
     var gas = 50000;
-    web3.eth.sendTransaction({ from: fromAddr, to: toAddr, value: value, gasPrice: gasPrice, gas: gas }, function (err, txhash) {
+    // web3.eth.sendTransaction({ from: fromAddr, to: toAddr, value: value, gasPrice: gasPrice, gas: gas }, function (err, txhash) {
+    web3.eth.sendTransaction({ from: fromAddr, to: toAddr, value: value }, function (err, txhash) {
+      console.log('fromAddr: ' + fromAddr);
+      console.log('toAddr: ' + toAddr);
+      console.log('value: ' + value);
       console.log('error: ' + err);
       console.log('txhash: ' + txhash);
     })
   }
 
+  const sendVocalRaw = function (sendFrom, sendTo, sendValueAmount) {
+      let privateKey = new Buffer("be2f9b6e9c46fce3821c0d96035aa5190199178f0731cc923d66f6c1ff0a16f2", "hex");
+
+      let rawTx = {
+          nonce: '29',
+          gasPrice: '0x4A817C800',
+          gasLimit: '0x100000',
+          to:'0x8ef3b9ae3765a007b38e971c6d7bd67be63fc07b',
+          value: '5',
+          data: ''
+      }
+
+      let tx = new Tx(rawTx);
+      tx.sign(privateKey);
+      var serializedTx = tx.serialize();
+
+      let resultHash = web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'));
+
+      return resultHash;
+  }
+
   console.log(VOCAL_ADDR, VOCAL_PASS);
   return {
     getBalance: getBalance,
-    sendVocal: sendVocal,
+    sendVocalRaw: sendVocalRaw,
     vocalContract: vocalContract,
     web3: web3
   };
