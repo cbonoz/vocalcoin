@@ -59,7 +59,7 @@ export default class FAQ extends Component {
                 })}
                 {!self.state.currentUser && <p className="centered faq-bottom-text large">Ready? Click login in the Header bar to begin.</p>}
 
-                <div className='faq-whitepaper centered'><a href="/whitepaper">View Whitepaper</a></div>
+                <div className='faq-whitepaper centered'><a href="/whitepaper">Or View the Whitepaper</a></div>
             </div>
         )
     }
