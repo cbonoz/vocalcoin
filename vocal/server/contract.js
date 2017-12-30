@@ -12,8 +12,8 @@ const library = (function () {
   console.log('provider', INFURA_PROVIDER);
   // TODO: replace with actual compiled contract abi.
   // const CONTRACT_ABI = "./VocalToken.json";
-  const CONTRACT_ABI = "./VocalToken.json";
-  // const CONTRACT_ABI = "vocal/server/VocalToken.json";
+  // const CONTRACT_ABI = "./VocalToken.json";
+  const CONTRACT_ABI = "vocal/server/VocalToken.json";
 
   const fs = require("fs");
   const Web3 = require('web3'); // https://www.npmjs.com/package/web3
@@ -48,7 +48,7 @@ const library = (function () {
     return balance;
   }
 
-  const sendVocal = function (sendFrom, sendTo, sendValueAmount) {
+  const sendVocal = function (sendTo, sendValueAmount) {
     var sendFrom = "0x7f21D215d58bb924e716FDB38dA5C75e1946954A";
     var sendTo = "0x8ef3b9ae3765a007b38e971c6d7bd67be63fc07b";
     var fromAddr = sendFrom;
