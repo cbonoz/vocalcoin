@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Checkbox, Form, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap';
+import { Button, Checkbox, Form, Popover, OverlayTrigger, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap';
 import { createUser, signInUser } from './../../utils/fire';
 
 export default class LoginForm extends Component {
@@ -127,6 +127,16 @@ export default class LoginForm extends Component {
 
   render() {
     const self = this;
+
+    const popover = (
+      <Popover id="modal-popover" title="Getting an Address">
+        <p>Sign up for a wallet at https://www.myetherwallet.com/, or use an existing eth wallet if you have one</p>
+        <p>Remember your password and seed when signing up for one. If you lose your password, <b>your coins may be lost</b>.</p>
+        <p>Your address should start with <b>0x</b> followed by a mix of letters and numbers.</p>
+        <p>The wallet address is used receive <b>Vocal</b> coins for participation on the platform.</p>
+      </Popover>
+  );
+  
     return (
       <div className="login-form">
         <Form>
@@ -150,7 +160,12 @@ export default class LoginForm extends Component {
             <hr/>
 
             <div className="address">
-              <div className="login-form-field-name">Enter your public Ethereum Address:</div>
+              <div className="login-form-field-name">
+                Enter your public Ethereum Address:&nbsp;
+                <OverlayTrigger trigger={['hover', 'focus']} placement="left" overlay={popover}>
+                  <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                </OverlayTrigger>
+              </div>
               <FormGroup className="login-form-group">
                 <FormControl placeholder="address" type="text" value={self.state.address} onChange={self.handleAddressChange} />
               </FormGroup>

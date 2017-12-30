@@ -78,18 +78,7 @@ export default class IssueModal extends Component {
     render() {
         const self = this;
         const issue = self.props.issue;
-
-        const popover = (
-            <Popover id="modal-popover" title="popover">
-                very popover. such engagement
-            </Popover>
-        );
-        const tooltip = (
-            <Tooltip id="modal-tooltip">
-                wow.
-            </Tooltip>
-        );
-
+        
         const center = JSON.parse(JSON.stringify(self.props.center));
         const lat = parseFloat(center['lat']).toFixed(2);
         const lng = parseFloat(center['lng']).toFixed(2);
