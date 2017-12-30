@@ -51,8 +51,8 @@ export default class Issue extends Component {
                         <i onClick={() => self.fetchComments(issue)} className="issue-row-icon fa fa-3x fa-comments" aria-hidden="true"></i>
                         {/* <i onClick={() => self.deleteIssue(issue)} className="issue-row-icon fa fa-3x fa-trash-o" aria-hidden="true"></i> */}
                     </span>
-                    <h3 className="emph">
-                        Issue Title: <b>{issue.title}</b>
+                    <h3 className="pull-left">
+                        Issue: <b>{issue.title}</b>
 
                     </h3>
                     <p className="centered">Issue Description: <b>{issue.description}</b></p>

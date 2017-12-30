@@ -445,6 +445,10 @@ d
   margin: 20px;
 }
 
+.pull-left {
+  float: left;
+}
+
 .pull-right {
   float: right;
 }
