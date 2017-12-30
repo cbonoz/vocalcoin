@@ -326,10 +326,10 @@ app.post('/api/vocal/add', passport.authenticate('bearer', { session: false }), 
     const userId = body.userId;
 
     getAddressAndExecute(userId, (address) => {
-        return res.json(address);
         const amount = vocal.calculateVocalCredit(userId);
            // TODO: this should manipulate the blockchain, and return a success response for adding amount to
            // the user's token balance.
+        // i.e. some call like contract.sendVocal(amount, etc...) should be here.
         return res.json(true);
     }); 
 });
