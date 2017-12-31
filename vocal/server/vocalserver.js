@@ -443,37 +443,6 @@ app.get('/api/address/:userId', passport.authenticate('bearer', {
     }
 });
 
-// TODO: finish this.
-<<<<<<< HEAD
-<<<<<<< HEAD
-app.post('/api/vocal/add',
-    // passport.authenticate('bearer', { session: false }),
-    (req, res) => {
-=======
-app.post('/api/vocal/modify', passport.authenticate('bearer', { session: false }), (req, res) => {
->>>>>>> update hasVoted logic, fix address retrieval
-    const body = req.body;
-    const userId = body.userId;
-
-    try {
-        getAddressAndExecute(userId, (address) => {
-            const amount = vocal.calculateVocalCredit(userId);
-            // TODO: this should manipulate the blockchain, and return a success response for adding amount to
-            // the user's token balance.
-            // i.e. some call like contract.sendVocal(amount, etc...) should be here.
-            // contract.sendVocal(address, amount);
-            let from = '0x7f21D215d58bb924e716FDB38dA5C75e1946954A';
-            let transactiontHash = contract.sendVocalRaw(from, address, amount);
-            return res.json(transactiontHash);
-        });
-    } catch (err) {
-        return res.json(err)
-    }
-
-});
-
-app.post('/api/address/update', passport.authenticate('bearer', { session: false }), (req, res) => {
-=======
 // app.post('/api/vocal/modify', passport.authenticate('bearer', {
 //     session: false
 // }), (req, res) => {
@@ -506,7 +475,6 @@ app.post('/api/address/update', passport.authenticate('bearer', { session: false
 app.post('/api/address/update', passport.authenticate('bearer', {
     session: false
 }), (req, res) => {
->>>>>>> use postgres for now
     const query = vocal.updateAddressQuery(userId, address)
     pool.query(query, (err, result) => {
         console.log('update address', err, result)
