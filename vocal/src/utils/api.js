@@ -69,6 +69,7 @@ const library = (function () {
         return axios.get(url, getHeaders()).then(response => response.data);
     }
 
+    // UNUSED.
     function postVocal(userId) {
         const url = `${BASE_URL}/api/vocal/modify`;
         return axios.post(url, {
@@ -145,13 +146,6 @@ const library = (function () {
         return axios.get(url, getHeaders()).then(response => response.data); 
     }
 
-    // TODO: return axios promises for the requests below.
-
-    function getTransactionHistory(user) {
-        const userId = user.uid;
-        return null;
-    }
-
     function postAddress(userId, address) {
         const url = `${BASE_URL}/api/address/update`;
         return axios.post(url, {
@@ -177,7 +171,6 @@ const library = (function () {
         getVotesForIssueId: getVotesForIssueId,
         getSocketEvents: getSocketEvents,
         getRandom: getRandom,
-        getTransactionHistory: getTransactionHistory,
         getAddress: getAddress,
         formatDateTimeMs: formatDateTimeMs,
         socket: socket

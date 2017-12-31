@@ -7,8 +7,8 @@ import firebase from 'firebase'
     authDomain: "vocalcoin-69799.firebaseapp.com",
     databaseURL: "https://vocalcoin-69799.firebaseio.com",
     projectId: "vocalcoin-69799",
-    storageBucket: "vocalcoin-69799.appspot.com",
-    messagingSenderId: "181951805420"
+    // storageBucket: "vocalcoin-69799.appspot.com",
+    // messagingSenderId: "181951805420"
   };
   firebase.initializeApp(config);
 

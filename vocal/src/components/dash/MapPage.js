@@ -208,6 +208,11 @@ const MapWithASearchBox = compose(
        {/* gridSize={60}> */}
       <MarkerClusterer
         onClick={props.onMarkerClustererClick}
+        icon={{
+          path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+          strokeColor: "blue",
+          scale: 3
+        }}
         averageCenter
         enableRetinaIcons
         gridSize={120}>
@@ -217,8 +222,8 @@ const MapWithASearchBox = compose(
           <MarkerWithLabel
             key={index}
             position={marker.position}
-            labelAnchor={new google.maps.Point(125, 80)}
-            labelStyle={{backgroundColor: "yellow", fontSize: "12px", padding: "5px"}}>
+            labelAnchor={new google.maps.Point(50, 0)}
+            labelStyle={{backgroundColor: "yellow", fontSize: "16px", padding: "5px", margin: "0 auto"}}>
               <div>
                 Creating an issue will appear here.
               </div>

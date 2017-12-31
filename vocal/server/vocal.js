@@ -3,6 +3,7 @@ const library = (function () {
 
     const REWARD_VALUE = 5;
     const ISSUE_COST = 50;
+    const DEFAULT_BALANCE = 50;
 
     const getRandom = (items) => {
         return items[Math.floor(Math.random()*items.length)];
@@ -41,13 +42,21 @@ const library = (function () {
         return `UPDATE issues SET active = NOT active WHERE issue_id='${issueId}'`;
     }
 
+    function modifyBalance(address, amount) {
+        return `UPDATE users SET balance = balance+${amount} where address='${address}'`;
+    }
+
+    function getBalance(address) {
+        return `SELECT balance from users where address='${address}'`;
+    }
+
     function getUserQuery(userId) {
         return `SELECT * FROM users where ID='${userId}'`;
     }
 
     function insertUserQuery(userId, email, address, username) {
-        return `INSERT INTO users(ID, email, address, username) ` +
-            `values('${userId}', ${escape.literal(email)}, ${escape.literal(address)}, ${escape.literal(username)})`;
+        return `INSERT INTO users(ID, email, address, username, balance) ` +
+            `values('${userId}', ${escape.literal(email)}, ${escape.literal(address)}, ${escape.literal(username)}, ${DEFAULT_BALANCE})`;
     }
 
     function getAddress(userId) {
@@ -80,6 +89,8 @@ const library = (function () {
         getAddress: getAddress,
         deleteIssueQuery: deleteIssueQuery,
         getRandom: getRandom,
+        getBalance: getBalance,
+        modifyBalance: modifyBalance,
         getUserQuery: getUserQuery,
         getIssuesForRegionQuery: getIssuesForRegionQuery,
         getIssuesForUserQuery: getIssuesForUserQuery,

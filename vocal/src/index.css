@@ -206,6 +206,10 @@ body {
   cursor: pointer;
 }
 
+.dash-heading {
+  margin: 20px;
+}
+
 .search-result {
   width: 100%;
   height: 100px;

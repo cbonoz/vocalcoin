@@ -19,7 +19,7 @@ export default class Issues extends Component {
             <div>
                 <ListGroup>
                     <ListGroupItem className={"sidebar-item"} header={"Vocal Control Panel"} bsStyle="info" />
-                    <h5>Your Issues:</h5>
+                    <h3 className="dash-heading">Your Issues:</h3>
 
                     {!issues.length && <div>
                         {self.props.loading && <p><b>Loading...</b></p>}
