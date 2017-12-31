@@ -28,6 +28,43 @@ We have an open beta website at https://www.vocalcoin.com
     <li>Governments can also promote and add issues that they want information about from local communities, questions such as 'What would be the most valuable improvement to this town? Or should we make this investment?'</li>
 </ol>
 
+### Screenshots
+
+<div style="margin: 0 auto">
+
+<b>Vocal Home Page</b><br/>
+
+<img src="./assets/vocal_home.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
+
+
+<b>Vocal Whitepaper/Proposal on Website</b><br/>
+
+<img src="./assets/vocal_paper.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
+
+<b>Vocal Create Issue on Location (City: Cambridge)</b><br/>
+
+<img src="./assets/vocal_map_cambridge.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
+
+
+<b>Vocal Create Issue Dialog (City: Cambridge)</b><br/>
+
+<img src="./assets/vocal_issue_crimson.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
+
+
+<b>Vocal Search (Sample Issues - Chicago)</b><br/>
+
+<img src="./assets/vocal_map_chicago.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
+
+
+<b>Vocal Help</b><br/>
+
+<img src="./assets/vocal_help.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
+
+
+</div>
+
+
+
 
 ### Future Work
 
