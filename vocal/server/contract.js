@@ -2,8 +2,9 @@ const library = (function () {
 
 
   const INFURA_TOKEN = process.env.INFURA_ACCESS_TOKEN;
-  const VOCAL_ADDR = process.env.VOCAL_ADDR
-  const VOCAL_PASS = process.env.VOCAL_PASS
+  const VOCAL_ADDR = process.env.VOCAL_ADDR;
+  const VOCAL_PASS = process.env.VOCAL_PASS;
+  const METAMASK_PRIVATE_KEY = process.env.METAMASK_PRIVATE_KEY;
 
   // TODO: replace with actual contract address
   const CONTRACT_ADDR = '0x6135004c5b2b44493779ce86d6739f57dde674e0';
@@ -70,14 +71,14 @@ const library = (function () {
   }
 
   const sendVocalRaw = function (sendFrom, sendTo, sendValueAmount) {
-      let privateKey = new Buffer("be2f9b6e9c46fce3821c0d96035aa5190199178f0731cc923d66f6c1ff0a16f2", "hex");
+      let privateKey = new Buffer(METAMASK_PRIVATE_KEY, "hex");
 
       let rawTx = {
           nonce: '29',
           gasPrice: '0x4A817C800',
           gasLimit: '0x100000',
-          to:'0x8ef3b9ae3765a007b38e971c6d7bd67be63fc07b',
-          value: '5',
+          to: sendTo,
+          value: sendValueAmount,
           data: ''
       }
 
