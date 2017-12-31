@@ -99,7 +99,7 @@ export default class Dashboard extends Component {
             case 1:
                 return <Help currentUser={self.state.currentUser} />
             default: // includes 0.
-                return <Issues loading={self.state.loading} updateIssues={() => self.updateIssues} issues={self.state.issues} currentUser={self.state.currentUser} balance={self.state.balance} />
+                return <Issues address={self.state.address} loading={self.state.loading} updateIssues={() => self.updateIssues} issues={self.state.issues} currentUser={self.state.currentUser} balance={self.state.balance} />
         }
     }
 

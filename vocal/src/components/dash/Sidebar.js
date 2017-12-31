@@ -33,7 +33,7 @@ export default class Sidebar extends Component {
                 </ListGroup>
 
                 <div className="your-balance">Account Balance:<br/> <span className="emph">{self.props.balance}</span></div>
-                <div className="your-balance">Account Address:<br/> <span className="emph">{self.props.address}</span></div>
+               
             </div>
         )
     }
