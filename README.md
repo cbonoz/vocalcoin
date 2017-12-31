@@ -63,7 +63,9 @@ We have an open beta website at https://www.vocalcoin.com
 
 </div>
 
+### Demo Video
 
+<a target="_blank" href="https://youtu.be/-_xxKBeUTdg">Original Demo Video</a>
 
 
 ### Future Work
