@@ -63,10 +63,14 @@ const MapWithASearchBox = compose(
         onMapMounted: ref => {
           refs.map = ref;
         },
-        triggerVoteModal: (issue) => {
+        triggerVoteModal: (issue, trigger) => {
           const self = this;
-          const isOpen = this.state.showVoteModal;
-          self.setState( {currentIssue: issue, showVoteModal: !isOpen});
+          if (trigger) {
+            const isOpen = this.state.showVoteModal;
+            self.setState( {showVoteModal: !isOpen});
+          }
+
+          self.setState( {currentIssue: issue });
           if (self.state.showVoteModal) {
             const userId = self.props.currentUser.uid;
             const issueId = issue.id;
@@ -236,10 +240,10 @@ const MapWithASearchBox = compose(
           return (<MarkerWithLabel
             key={index}
             position={position}
-            onClick={() => props.triggerVoteModal(issue)}
-            onDblClick={() => props.triggerVoteModal(issue)}
+            onClick={() => props.triggerVoteModal(issue, true)}
+            onDblClick={() => props.triggerVoteModal(issue, true)}
             labelAnchor={new google.maps.Point(125, 80)}
-            labelStyle={{backgroundColor: "#3b5998", color: "#fff", fontSize: "14px", 'padding-left': "8px", 'padding-right': "8px", width: "250px" }}>
+            labelStyle={{backgroundColor: "#fff", color: "#3b5998", fontSize: "12px", 'padding-left': "8px", 'padding-right': "8px", width: "250px" }}>
               {/* Label content */}
               <div>
                 Active Issue:<br/><b>{helper.capitalize(issue.title)}</b><br/>
@@ -263,6 +267,7 @@ const MapWithASearchBox = compose(
         currentUser={props.currentUser}
         issue={props.currentIssue}
         center={props.center}
+        triggerVoteModal={(issue) => props.triggerVoteModal(issue, false)}
         toggleVoteModal={props.toggleVoteModal}
         showVoteModal={props.showVoteModal} />
 

@@ -73,12 +73,13 @@ export default class VoteModal extends Component {
         const self = this;
         self.setState({ postVoteEnabled: false, error: null });
         const vote = self._createVoteFromForm()
+        const issue = self.props.issue;
 
         postVote(vote).then((res) => {
             self.setState({ postVoteEnabled: true, justVoted: true });
             console.log('postVote: ' + res);
             toast(<div><b>Vote Cast!</b></div>);
-            self.props.toggleVoteModal();
+            self.props.triggerVoteModal(issue, false);
             // TODO: alert vote that vote was cast and close the modal.
 
         }).catch((err) => {
