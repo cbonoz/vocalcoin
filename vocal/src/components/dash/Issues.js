@@ -17,6 +17,9 @@ export default class Issues extends Component {
 
         return (
             <div>
+                <div className="centered">
+                    <div className="your-balance">Account Address:<br/> <span className="emph">{self.props.address}</span></div>
+                </div>
                 <ListGroup>
                     <ListGroupItem className={"sidebar-item"} header={"Vocal Control Panel"} bsStyle="info" />
                     <h3 className="dash-heading">Your Issues:</h3>

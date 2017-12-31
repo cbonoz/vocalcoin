@@ -241,7 +241,7 @@ app.post('/api/issue', passport.authenticate('bearer', {
                     return res.status(401).json({data: errorMessage})
                 }
 
-                modifyBalanceAndExecute(address, amount, () => {
+                modifyBalanceAndExecute(address, -vocal.ISSUE_COST, () => {
                     // Now insert the new issue.
                     const query = vocal.insertIssueQuery(issue);
                     pool.query(query, (err, result) => {

@@ -81,7 +81,8 @@ export default class Issue extends Component {
         return (
             <div>
                 <div className="issue-row issue-text">
-                    <div className="pull-right">
+                    <div className="issue-heading">
+                    <div>
                         <OverlayTrigger trigger={['hover', 'focus']} placement="right" overlay={fetchCommentsPopover}>
                             <i onClick={() => self.fetchComments(issue)} className="issue-row-icon fa fa-3x fa-comments" aria-hidden="true"></i>
                         </OverlayTrigger>
@@ -92,13 +93,12 @@ export default class Issue extends Component {
                         </span>}
                     </div>
 
-                    <h3 className="pull-left">
-                        Issue: <b>{issue.title}</b>
-                    </h3><br/>
 
-                    <div className="clear">
-                        <p>Issue Description: <b>{issue.description}</b></p>
-                        <p>Issue Created: <b>{helper.formatDateTimeMs(issue.time)}</b></p>
+                        <h3>
+                            Issue: <b>{issue.title}</b>
+                        </h3><br/>
+                            <p>Issue Description: <b>{issue.description}</b></p>
+                            <p>Issue Created: <b>{helper.formatDateTimeMs(issue.time)}</b></p>
                     </div>
 
                     {self.state.err && <div className="error-text">

@@ -102,7 +102,7 @@ const library = (function () {
             issue: JSON.stringify(issue)
         }, getHeaders()).then(response => {
             const data = response.data;
-            const eventName = "New Issue added: " + JSON.stringify(data);
+            const eventName = `New Issue added: ${issue.title}`;
             socket.emit('action', { name: eventName, time: Date.now() }, (data) => {
                 console.log('action ack', data);
             });
@@ -116,10 +116,10 @@ const library = (function () {
             vote: JSON.stringify(vote)
         }, getHeaders()).then(response => {
             const data = response.data;
-            const eventName = "New Vote added: " + JSON.stringify(data);
-            socket.emit('action', { name: eventName, time: Date.now() }, (data) => {
-                console.log('action ack', data);
-            });
+            // const eventName = "New Vote added: " + JSON.stringify(vote.title);
+            // socket.emit('action', { name: eventName, time: Date.now() }, (data) => {
+            //     console.log('action ack', data);
+            // });
             return data;
         });
     }

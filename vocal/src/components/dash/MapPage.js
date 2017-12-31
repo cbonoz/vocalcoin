@@ -70,7 +70,7 @@ const MapWithASearchBox = compose(
             self.setState( {showVoteModal: !isOpen});
           }
 
-          self.setState( {currentIssue: issue });
+          self.setState( {currentIssue: issue, hasVoted: false });
           if (self.state.showVoteModal) {
             const userId = self.props.currentUser.uid;
             const issueId = issue.id;
@@ -81,7 +81,6 @@ const MapWithASearchBox = compose(
             api.getHasVoted(userId, issueId).then((res) => {
                 console.log('hasvoted', res)
                 self.setState({ hasVoted: res });
-
             }).catch((err) => {
                 self.setState({ hasVoted: false, error: err });
             });

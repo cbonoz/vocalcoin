@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import DataFeed from './data/DataFeed';
 import helper from '../utils/helper';
-import { socket, getSocketEvents, MAX_BLOCKS } from '../utils/api';
+import { socket, getSocketEvents, MAX_BLOCKS } from './../utils/api';
 
 export default class SocketFeed extends Component {
 
