@@ -43,7 +43,6 @@ export default class Dashboard extends Component {
 
     updateIssues() {
         const self = this;
-        console.log('updateIssues');
         if (!self.state.loading) {
             self.setState({ loading: true, err: null });
             const userId = self.state.currentUser.uid;

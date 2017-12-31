@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Popover, OverlayTrigger } from 'react-bootstrap';
 import api from '../../utils/api';
 import helper from '../../utils/helper';
 
@@ -63,33 +64,53 @@ export default class Issue extends Component {
 
         const isOwner = issue.userId === currentUser.uid;
 
+        const fetchCommentsPopover = (
+            <Popover id="fetch-comments-popover" title="Fetch Comments">
+                <p>Click to Refresh Comments below</p>
+            </Popover>
+        );
+
+        const deleteIssuePopover = (
+            <Popover id="delete-issue-popover" title="Delete Issue">
+                <p>Click to Delete this Issue. Warning this cannot be undone.</p>
+            </Popover>
+        );
+
         return (
             <div>
                 <div className="issue-row issue-text">
-
-                    {isOwner && <span className="pull-right">
-                        <i onClick={() => self.fetchComments(issue)} className="issue-row-icon fa fa-3x fa-comments" aria-hidden="true"></i>
-                        <i onClick={() => self.deleteIssue(issue)} className="issue-row-icon fa fa-3x fa-trash-o" aria-hidden="true"></i>
-                    </span>}
+                    <div className="pull-right">
+                        <OverlayTrigger trigger={['hover', 'focus']} placement="right" overlay={fetchCommentsPopover}>
+                            <i onClick={() => self.fetchComments(issue)} className="issue-row-icon fa fa-3x fa-comments" aria-hidden="true"></i>
+                        </OverlayTrigger>
+                        {isOwner && <span className="pull-right">
+                            <OverlayTrigger trigger={['hover', 'focus']} placement="right" overlay={deleteIssuePopover}>
+                                <i onClick={() => self.deleteIssue(issue)} className="issue-row-icon fa fa-3x fa-trash-o" aria-hidden="true"></i>
+                            </OverlayTrigger>
+                        </span>}
+                    </div>
 
                     <h3 className="pull-left">
                         Issue: <b>{issue.title}</b>
+                    </h3><br/>
 
-                    </h3>
-                    <p className="centered">Issue Description: <b>{issue.description}</b></p>
-                    <p>Issue Created: <b>{helper.formatDateTimeMs(issue.time)}</b></p>
+                    <div className="clear">
+                        <p>Issue Description: <b>{issue.description}</b></p>
+                        <p>Issue Created: <b>{helper.formatDateTimeMs(issue.time)}</b></p>
+                    </div>
 
                     {self.state.err && <div className="error-text">
                         {helper.processError(self.state.err)}
                     </div>}
 
-                    {(votes === undefined) && <p><b>Click to Fetch Votes.</b></p>}
+                    <hr/>
 
+                    {(votes === undefined) && <div>Click comment icon above to view comments</div>}
                     {(votes !== undefined && votes.length == 0) && <div>No Votes yet.</div>}
                     {(votes !== undefined && votes.length > 0) && <div>
-                        <h5>Net Vote Score: {helper.getAgreeScoreFromVotes(votes)}</h5>
+                        <h5>Net Vote Score: <b>{helper.getAgreeScoreFromVotes(votes)}</b></h5>
                         {votes.map((vote, index) => {
-                            return (<div key={index} className="vote-item">
+                            return (<div key={index} className="vote-row">
                                 <p>Vote: <b>{helper.convertAgreeToText(vote.agree)}</b></p>
                                 <p>Comment: {vote.message}</p>
                                 <p>Time: <b>{helper.formatDateTimeMs(vote.time)}</b></p>

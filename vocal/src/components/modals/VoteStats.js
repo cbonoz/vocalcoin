@@ -13,7 +13,8 @@ export default class VoteStats extends Component {
         const currentUser = self.props.currentUser;
         return (
             <div>
-                {/* TODO: add modal specific vote stats */}
+                <h2 className="facebook-blue">You Voted on this Issue!</h2>
+                
                 <Issue issue={issue} currentUser={currentUser}/>
             </div>
         )

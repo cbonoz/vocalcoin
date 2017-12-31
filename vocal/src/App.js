@@ -67,8 +67,7 @@ class App extends Component {
         const userId = user.uid;
         const address = localStorage.getItem("address");
         api.postUserQuery(user, address).then((data) => {
-          console.log('retrieved user data', JSON.stringify(data));
-
+          // console.log('retrieved user data', JSON.stringify(data));
           localStorage.setItem("address", data["address"]);
           localStorage.setItem("tok", data["token"]);
 

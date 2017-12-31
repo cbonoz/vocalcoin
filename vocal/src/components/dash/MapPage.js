@@ -38,8 +38,7 @@ const MapWithASearchBox = compose(
   lifecycle({
     componentWillMount() {
       const refs = {}
-
-      console.log('coords', this.props.coords);
+      // console.log('coords', this.props.coords);
       let latitude = 41.9;
       let longitude = -87.624;
       if (this.props.coords) {
@@ -222,12 +221,11 @@ const MapWithASearchBox = compose(
           <MarkerWithLabel
             key={index}
             position={marker.position}
-            labelAnchor={new google.maps.Point(50, 0)}
-            labelStyle={{backgroundColor: "yellow", fontSize: "16px", padding: "5px", margin: "0 auto"}}>
+            labelAnchor={new google.maps.Point(125, 0)}
+            labelStyle={{backgroundColor: "#3b5998", fontSize: "16px", padding: "5px", width: "250px", margin: "0 auto"}}>
               <div>
                 Creating an issue will appear here.
               </div>
-
           </MarkerWithLabel>
         )}
 
@@ -245,7 +243,7 @@ const MapWithASearchBox = compose(
             labelStyle={{backgroundColor: "#e9e9e9", fontSize: "12px", 'padding-left': "8px", 'padding-right': "8px", width: "250px" }}>
               {/* Label content */}
               <div>
-                Issue:<br/><b>{helper.capitalize(issue.title)}</b><br/>
+                Active Issue:<br/><b>{helper.capitalize(issue.title)}</b><br/>
                 Started: <b>{createdAt}</b>
               
               </div>

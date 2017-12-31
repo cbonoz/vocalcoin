@@ -98,7 +98,7 @@ export default class VoteModal extends Component {
             <div>
                 <Modal show={self.props.showVoteModal} onHide={self.props.toggleVoteModal}>
                     <Modal.Header closeButton>
-                        <Modal.Title className="">Vote on: <b>{issue && issue.title}</b></Modal.Title>
+                        <Modal.Title className="">Vote on Issue: <b>{issue && issue.title}</b></Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>

@@ -61,14 +61,12 @@ body {
   max-width: 500px;
 }
 
-.sync-result-box {
-  padding: 5px;
+.clear {
+  clear: both;
 }
 
-.vote-item {
-  border: 1px dotted black;
-  padding: 10px;
-  margin: 10px;
+.sync-result-box {
+  padding: 5px;
 }
 
 .your-balance {
@@ -435,7 +433,7 @@ body {
 .border-bottom-blue {
   border-bottom: 5px solid #3b5998;
 }
-d
+
 .facebook-blue {
   color: #3b5998; 
 }
