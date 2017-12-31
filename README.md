@@ -36,7 +36,6 @@ We have an open beta website at https://www.vocalcoin.com
 
 <img src="./assets/vocal_home.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
 
-
 <b>Vocal Whitepaper/Proposal on Website</b><br/>
 
 <img src="./assets/vocal_paper.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
@@ -45,16 +44,13 @@ We have an open beta website at https://www.vocalcoin.com
 
 <img src="./assets/vocal_map_cambridge.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
 
-
 <b>Vocal Create Issue Dialog (City: Cambridge)</b><br/>
 
 <img src="./assets/vocal_issue_crimson.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
 
-
 <b>Vocal Search (Sample Issues - Chicago)</b><br/>
 
 <img src="./assets/vocal_map_chicago.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
-
 
 <b>Vocal Help</b><br/>
 
@@ -67,7 +63,6 @@ We have an open beta website at https://www.vocalcoin.com
 
 <a target="_blank" href="https://youtu.be/-_xxKBeUTdg">Original Demo Video</a>
 
-
 ### Future Work
 
 - Better sorting/searching/filtering of issues on the map. i.e. finding by categories or creators.
@@ -77,7 +72,7 @@ We have an open beta website at https://www.vocalcoin.com
 - Improve UI / Remaining Beta Bug Fixes
 
 ## Repository Contents:
-* /slidedeck - Contains the slidedeck for Vocal. 
+* /slidedeck - Contains the pitch slidedeck for Vocal Coin.
 * /whitepaper - vocal whitepaper tex and build output files such as the pdf.
 * /vocal - Front end and server code.
 * /vocalcontract - smart contract code and deployment logic (truffle).
@@ -86,7 +81,7 @@ We have an open beta website at https://www.vocalcoin.com
 
 ## Truffle Instructions:
 
-Instructions to deploy contract to testnet.
+Instructions to deploy contract to Ropsten testnet.
 
 ```
 cd vocal/vocalcontract
