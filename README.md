@@ -1,3 +1,5 @@
+<i src='./assets/vocal_trans_black.png' style="margin: 0 auto;">
+
 # Vocal Coin
 A Minimally Viable Distributed Political Currency.
 ---
@@ -31,7 +33,7 @@ We have an open beta website at https://www.vocalcoin.com
 
 - Better sorting/searching/filtering of issues on the map. i.e. finding by categories or creators.
 - Implement remaining use cases for Vocal coin
-- Potentially make Vocal purchaseable on the Ethereum blockchain. One unit of Vocal today might be redeemable for some amount of political value, but might be worth much more in the future (offers speculative value).
+- Potentially make Vocal purchase-able on the Ethereum blockchain. One unit of Vocal today might be redeemable for some amount of political value, but might be worth much more in the future (offers speculative value).
 - Interaction/Trading between users
 - Improve UI / Remaining Beta Bug Fixes
 
