@@ -38,6 +38,7 @@ We have an open beta website at https://www.vocalcoin.com
 - Improve UI / Remaining Beta Bug Fixes
 
 ## Repository Contents:
+* /slidedeck - Contains the slidedeck for Vocal. 
 * /whitepaper - vocal whitepaper tex and build output files such as the pdf.
 * /vocal - Front end and server code.
 * /vocalcontract - smart contract code and deployment logic (truffle).
