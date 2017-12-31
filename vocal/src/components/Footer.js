@@ -23,7 +23,7 @@ export default class Footer extends Component {
 
                     <div className="footer-left">
 
-                        <h3><img src={vocal} className="footer-image" /></h3>
+                        <h3><img alt="Vocal Coin" src={vocal} className="footer-image" /></h3>
                         <p className="footer-slogan">Distributed Political Currency</p>
 
                         <p className="footer-links">
@@ -37,10 +37,10 @@ export default class Footer extends Component {
                         <p className="footer-company-name">Vocal Project &copy; 2017</p>
 
                         <div className="footer-icons">
-                            <a href="#"><i className="fa fa-facebook"></i></a>
-                            <a href="#"><i className="fa fa-twitter"></i></a>
-                            <a href="#"><i className="fa fa-linkedin"></i></a>
-                            <a href="#"><i className="fa fa-github"></i></a>
+                            <a href="/"><i className="fa fa-facebook"></i></a>
+                            <a href="/"><i className="fa fa-twitter"></i></a>
+                            <a href="/"><i className="fa fa-linkedin"></i></a>
+                            <a href="/"><i className="fa fa-github"></i></a>
                         </div>
 
                     </div>

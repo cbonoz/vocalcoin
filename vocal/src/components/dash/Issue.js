@@ -23,22 +23,24 @@ export default class Issue extends Component {
 
     deleteIssue(issue) {
         const self = this;
-        self.setState({ loading: false , err: null});
         const issueId = issue.id
         console.log('delete', issueId);
 
         const userId = self.props.currentUser.uid;
 
-        api.postDeleteIssue(userId, issueId).then((data) => {
-            console.log(JSON.stringify(data));
-            self.setState({ loading: false });
-            toast(<div><b>Deleted Issue</b></div>);
-            if (self.props.updateIssues) {
-                self.props.updateIssues();
-            }
-        }).catch((err) => {
-            self.setState({ loading: false, err: err })
-        });
+        if (!self.state.loading) {
+            self.setState({ loading: true , err: null});
+            api.postDeleteIssue(userId, issueId).then((data) => {
+                console.log(JSON.stringify(data));
+                self.setState({ loading: false });
+                toast(<div><b>Deleted Issue</b></div>);
+                if (self.props.updateIssues) {
+                    self.props.updateIssues();
+                }
+            }).catch((err) => {
+                self.setState({ loading: false, err: err })
+            });
+        }
     }
 
     fetchComments(issue) {
@@ -105,7 +107,7 @@ export default class Issue extends Component {
 
                     <hr/>
 
-                    {(votes === undefined) && <div>Click comment icon above to view comments</div>}
+                    {(votes === undefined) && <div onClick={() => self.fetchComments(issue)}>Click here or comment icon above to load public comments</div>}
                     {(votes !== undefined && votes.length == 0) && <div>No Votes yet.</div>}
                     {(votes !== undefined && votes.length > 0) && <div>
                         <h5>Net Vote Score: <b>{helper.getAgreeScoreFromVotes(votes)}</b></h5>
