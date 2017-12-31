@@ -3,7 +3,7 @@ import { Jumbotron, Button, Row, Col, ListGroup, ListGroupItem } from 'react-boo
 import { Link } from 'react-router-dom';
 import ReactRotatingText from 'react-rotating-text';
 import HeaderBox from './data/HeaderBox';
-// import SocketFeed from './SocketFeed';
+import SocketFeed from './SocketFeed';
 import YouTube from 'react-youtube';
 
 import HelpSteps from './HelpSteps';
@@ -82,7 +82,7 @@ export default class Home extends Component {
                             <Col xs={12} md={3} className="home-right-col">
                                 <ListGroup>
                                     <HeaderBox header={"What's Happening"}>
-                                        {/* <SocketFeed /> */}
+                                        <SocketFeed />
                                     </HeaderBox>
                                 </ListGroup>
                             </Col>
