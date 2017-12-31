@@ -1,0 +1,9 @@
+[0] Config.pm:354> INFO - This is Biber 2.7
+[0] Config.pm:357> INFO - Logfile is 'vocal.blg'
+[39] biber-darwin:303> INFO - === Mon Sep 25, 2017, 22:08:31
+[69] Biber.pm:359> INFO - Reading 'vocal.bcf'
+[155] Biber.pm:835> INFO - Found 0 citekeys in bib section 0
+[164] Utils.pm:164> WARN - The file 'vocal.bcf' does not contain any citations!
+[171] bbl.pm:608> INFO - Writing 'vocal.bbl' with encoding 'UTF-8'
+[171] bbl.pm:712> INFO - Output to vocal.bbl
+[171] Biber.pm:109> INFO - WARNINGS: 1

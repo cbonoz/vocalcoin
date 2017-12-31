@@ -1,0 +1,35 @@
+{
+  "name": "vocal",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.17.0",
+    "firebase": "^4.6.2",
+    "react": "^16.1.1",
+    "react-bootstrap": "^0.31.5",
+    "react-dom": "^16.1.1",
+    "react-geolocation": "^1.0.3",
+    "react-google-maps": "^9.4.1",
+    "react-paginate": "^5.0.0",
+    "react-pdf": "^2.5.0",
+    "react-rotating-text": "^1.2.1",
+    "react-router": "^4.2.0",
+    "react-router-bootstrap": "^0.24.4",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.17",
+    "react-spinners": "^0.2.1",
+    "react-stack-grid": "^0.6.0",
+    "react-tabs": "^2.1.1",
+    "react-toastify": "^2.2.0",
+    "react-vis": "^1.7.10",
+    "react-youtube": "^7.5.0",
+    "socket.io-client": "^2.0.4",
+    "universal-cookie": "^2.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
