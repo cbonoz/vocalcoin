@@ -81,7 +81,7 @@ const library = (function () {
     }
 
     function insertEventQuery(name, time) {
-        return `INSERT INTO events(name, time) values(${escape.literal(event.name)}, ${event.time})`;
+        return `INSERT INTO events(name, time) values(${escape.literal(name)}, ${time})`;
     }
 
     return {

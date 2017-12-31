@@ -17,7 +17,8 @@ const library = (function () {
     }
 
     function processError(err) {
-        return "There was an error connecting to the server";
+        return JSON.stringify(err);
+        // return "There was an error connecting to the server";
         // if (err.hasOwnProperty('response')) {
         //     let resp = '';
         //     try {

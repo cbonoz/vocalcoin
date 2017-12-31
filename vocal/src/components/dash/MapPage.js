@@ -13,7 +13,6 @@ import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Marker,
 } from "react-google-maps";
 
 import _ from "lodash";
@@ -222,7 +221,7 @@ const MapWithASearchBox = compose(
             key={index}
             position={marker.position}
             labelAnchor={new google.maps.Point(125, 0)}
-            labelStyle={{backgroundColor: "#3b5998", fontSize: "16px", padding: "5px", width: "250px", margin: "0 auto"}}>
+            labelStyle={{backgroundColor: "#fff", fontSize: "16px", padding: "5px", width: "250px", margin: "0 auto"}}>
               <div>
                 Creating an issue will appear here.
               </div>
@@ -240,7 +239,7 @@ const MapWithASearchBox = compose(
             onClick={() => props.triggerVoteModal(issue)}
             onDblClick={() => props.triggerVoteModal(issue)}
             labelAnchor={new google.maps.Point(125, 80)}
-            labelStyle={{backgroundColor: "#e9e9e9", fontSize: "12px", 'padding-left': "8px", 'padding-right': "8px", width: "250px" }}>
+            labelStyle={{backgroundColor: "#3b5998", color: "#fff", fontSize: "14px", 'padding-left': "8px", 'padding-right': "8px", width: "250px" }}>
               {/* Label content */}
               <div>
                 Active Issue:<br/><b>{helper.capitalize(issue.title)}</b><br/>
