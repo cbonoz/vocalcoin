@@ -8,8 +8,7 @@ const library = (function () {
 
     const BASE_URL = "https://www.vocalcoin.com"
     // const BASE_URL = `https://www.vocalcoin.com:${PORT}`;
-    // const socket = require('socket.io-client')(BASE_URL);
-    const socket = null;
+    const socket = require('socket.io-client')(BASE_URL);
 
     const getHeaders = () => {
         const token = localStorage.getItem("tok");
@@ -70,8 +69,9 @@ const library = (function () {
         return axios.get(url, getHeaders()).then(response => response.data);
     }
 
+    // UNUSED.
     function postVocal(userId) {
-        const url = `${BASE_URL}/api/vocal/add`;
+        const url = `${BASE_URL}/api/vocal/modify`;
         return axios.post(url, {
             userId: userId
         }, getHeaders()).then(response => {
@@ -146,13 +146,6 @@ const library = (function () {
         return axios.get(url, getHeaders()).then(response => response.data); 
     }
 
-    // TODO: return axios promises for the requests below.
-
-    function getTransactionHistory(user) {
-        const userId = user.uid;
-        return null;
-    }
-
     function postAddress(userId, address) {
         const url = `${BASE_URL}/api/address/update`;
         return axios.post(url, {
@@ -178,7 +171,6 @@ const library = (function () {
         getVotesForIssueId: getVotesForIssueId,
         getSocketEvents: getSocketEvents,
         getRandom: getRandom,
-        getTransactionHistory: getTransactionHistory,
         getAddress: getAddress,
         formatDateTimeMs: formatDateTimeMs,
         socket: socket

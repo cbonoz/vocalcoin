@@ -3,7 +3,7 @@ import { Button, ButtonGroup, ButtonToolbar, ControlLabel, FormControl, FormGrou
 
 import VoteStats from './VoteStats';
 
-import { getHasVoted, postVote } from './../../utils/api';
+import { postVote } from './../../utils/api';
 import helper from './../../utils/helper';
 
 import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
@@ -25,26 +25,9 @@ export default class VoteModal extends Component {
         };
 
         this._createVoteFromForm = this._createVoteFromForm.bind(this);
-        this.checkIfVoted = this.checkIfVoted.bind(this);
         this.handleVoteChange = this.handleVoteChange.bind(this);
         this.handleVoteMessageChange = this.handleVoteMessageChange.bind(this);
         this.postVote = this.postVote.bind(this);
-
-        this.checkIfVoted();
-    }
-
-    checkIfVoted() {
-        const self = this;
-        const userId = self.props.currentUser.uid;
-        const issueId = self.props.issue.id;
-
-        getHasVoted(userId, issueId).then((res) => {
-            console.log('hasvoted', res)
-            self.setState({ hasVoted: res });
-
-        }).catch((err) => {
-            self.setState({ hasVoted: false, error: err.statusText });
-        });
     }
 
     handleVoteChange(selectedVotes) {
@@ -75,6 +58,7 @@ export default class VoteModal extends Component {
             agree: voteAgree,
             message: voteMessage,
             issueId: issue.id,
+            justVoted: false,
             userId: currentUser.uid,
             lat: voteLat,
             lng: voteLng,
@@ -85,22 +69,21 @@ export default class VoteModal extends Component {
         return vote;
     }
 
-
-
     postVote() {
         const self = this;
         self.setState({ postVoteEnabled: false, error: null });
         const vote = self._createVoteFromForm()
 
         postVote(vote).then((res) => {
-            self.setState({ postVoteEnabled: true, hasVoted: true });
+            self.setState({ postVoteEnabled: true, justVoted: true });
             console.log('postVote: ' + res);
             toast(<div><b>Vote Cast!</b></div>);
             self.props.toggleVoteModal();
             // TODO: alert vote that vote was cast and close the modal.
 
         }).catch((err) => {
-            self.setState({ postVoteEnabled: true, error: err.statusText });
+            console.log('post vote', err);
+            self.setState({ postVoteEnabled: true, error: err});
         });
     }
 
@@ -109,7 +92,7 @@ export default class VoteModal extends Component {
         const issue = self.props.issue;
         const currentUser = self.props.currentUser;
 
-        const hasVoted = self.state.hasVoted; 
+        const hasVoted = self.props.hasVoted || self.state.justVoted; 
 
         return (
             <div>
@@ -164,7 +147,7 @@ export default class VoteModal extends Component {
                                 </Button>
 
                                 {!self.state.error && <p className="centered">See other votes after submitting yours!</p>}
-                                {self.state.error && <div className="error-text">{self.state.error}</div>}
+                                {self.state.error && <div className="error-text">{helper.processError(self.state.error)}</div>}
 
                             </form>}
                             {hasVoted && <VoteStats currentUser={currentUser} issue={issue}/>}

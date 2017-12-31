@@ -36,7 +36,7 @@ export default class Issue extends Component {
                 self.props.updateIssues();
             }
         }).catch((err) => {
-            self.setState({ loading: false, err: err.statusText })
+            self.setState({ loading: false, err: err })
         });
     }
 
@@ -80,7 +80,7 @@ export default class Issue extends Component {
                     <p>Issue Created: <b>{helper.formatDateTimeMs(issue.time)}</b></p>
 
                     {self.state.err && <div className="error-text">
-                        {self.state.err.statusText}
+                        {helper.processError(self.state.err)}
                     </div>}
 
                     {(votes === undefined) && <p><b>Click to Fetch Votes.</b></p>}

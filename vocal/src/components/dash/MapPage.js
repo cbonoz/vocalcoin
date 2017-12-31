@@ -55,6 +55,7 @@ const MapWithASearchBox = compose(
         currentIssue: {},
         enableRefreshButton: false,
         lastLocation: null,
+        hasVoted: false,
         lastCenter: null,
         center: {
           lat: latitude, lng: longitude
@@ -65,8 +66,24 @@ const MapWithASearchBox = compose(
           refs.map = ref;
         },
         triggerVoteModal: (issue) => {
+          const self = this;
           const isOpen = this.state.showVoteModal;
-          this.setState( {currentIssue: issue, showVoteModal: !isOpen});
+          self.setState( {currentIssue: issue, showVoteModal: !isOpen});
+          if (self.state.showVoteModal) {
+            const userId = self.props.currentUser.uid;
+            const issueId = issue.id;
+            console.log('check voted', userId, issueId);
+            
+            self.setState( {error: null});
+
+            api.getHasVoted(userId, issueId).then((res) => {
+                console.log('hasvoted', res)
+                self.setState({ hasVoted: res });
+
+            }).catch((err) => {
+                self.setState({ hasVoted: false, error: err });
+            });
+          }
         },
         toggleVoteModal: () => {
           const isOpen = this.state.showVoteModal;
@@ -87,7 +104,7 @@ const MapWithASearchBox = compose(
         },
         getIssuesForRegion: () => {
           const self = this;
-          self.setState({ enableRefreshButton: false });
+          self.setState({ enableRefreshButton: false, error: null });
           const currBounds = refs.map.getBounds();
           const sw_lat = currBounds.getSouthWest().lat();
           const sw_lon = currBounds.getSouthWest().lng();
@@ -191,6 +208,11 @@ const MapWithASearchBox = compose(
        {/* gridSize={60}> */}
       <MarkerClusterer
         onClick={props.onMarkerClustererClick}
+        icon={{
+          path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+          strokeColor: "blue",
+          scale: 3
+        }}
         averageCenter
         enableRetinaIcons
         gridSize={120}>
@@ -200,8 +222,8 @@ const MapWithASearchBox = compose(
           <MarkerWithLabel
             key={index}
             position={marker.position}
-            labelAnchor={new google.maps.Point(125, 80)}
-            labelStyle={{backgroundColor: "yellow", fontSize: "12px", padding: "5px"}}>
+            labelAnchor={new google.maps.Point(50, 0)}
+            labelStyle={{backgroundColor: "yellow", fontSize: "16px", padding: "5px", margin: "0 auto"}}>
               <div>
                 Creating an issue will appear here.
               </div>
@@ -240,6 +262,7 @@ const MapWithASearchBox = compose(
         showIssueModal={props.showIssueModal} />
 
       <VoteModal
+        hasVoted={props.hasVoted}
         currentUser={props.currentUser}
         issue={props.currentIssue}
         center={props.center}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Checkbox, Form, Popover, OverlayTrigger, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap';
 import { createUser, signInUser } from './../../utils/fire';
+import helper from './../../utils/helper';
 
 export default class LoginForm extends Component {
   constructor(props) {
@@ -83,14 +84,12 @@ export default class LoginForm extends Component {
       return;
     }
 
-    if (!address) {
-      self.setState( {error: "Address must not be empty"})
-      return;
-    }
+    console.log('handle register');
 
     localStorage.setItem("address", address);
 
     createUser(email, password).then(function (res) {
+      console.log('logged in');
         self.props.onLogin();
       })
       .catch(function (error) {
@@ -161,10 +160,11 @@ export default class LoginForm extends Component {
 
             <div className="address">
               <div className="login-form-field-name">
-                Enter your public Ethereum Address:&nbsp;
+                Current Ethereum Address (Optional):&nbsp;
                 <OverlayTrigger trigger={['hover', 'focus']} placement="left" overlay={popover}>
-                  <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                  <i className="fa fa-question-circle-o" aria-hidden="true"></i>
                 </OverlayTrigger>
+                <br/><span className="emph">If left blank, one will be generated for you</span>
               </div>
               <FormGroup className="login-form-group">
                 <FormControl placeholder="address" type="text" value={self.state.address} onChange={self.handleAddressChange} />
@@ -178,7 +178,7 @@ export default class LoginForm extends Component {
             <Checkbox onChange={self.handleCheckboxChange} checked={self.state.isRegister}>Register</Checkbox>
           </FormGroup>
           
-          {self.state.error && <p className="error-text centered red italics medium">{self.state.error}</p>}
+          {self.state.error && <p className="error-text centered red italics medium">{helper.processError(self.state.error)}</p>}
         </Form>
       </div>
     );
