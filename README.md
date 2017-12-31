@@ -1,4 +1,4 @@
-<i src='./assets/vocal_trans_black.png' style="margin: 0 auto;">
+<img src='./assets/vocal_trans_black.png' style="margin: 0 auto;"/>
 
 # Vocal Coin
 A Minimally Viable Distributed Political Currency.
