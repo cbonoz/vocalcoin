@@ -6,7 +6,7 @@ A Minimally Viable Distributed Political Currency.
 
 Vocal is a currency platform for promoting social change and civic engagement.
 
-We have an open beta website at https://www.vocalcoin.com
+We have an open beta website at https://www.vocalcoin.com (enter https://vocalcoin.com manually in browser window if page doesn't load initially).
 
 ### What Vocal Solves:
 
