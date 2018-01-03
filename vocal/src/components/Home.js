@@ -53,7 +53,7 @@ export default class Home extends Component {
                 <div className="home-content">
                     <Row>
                         <Jumbotron className="jumbotron transparency-jumbotron" style={backgroundStyle}>
-                            <Col xs={12} md={8}>
+                            <Col xs={12} md={12}>
                                 <div className="static-modal-jumbotron opaque centered">
                                     <img className="home-banner-image" src={vocal} />
                                     <h2 className="bold title-text animated fadeIn">
@@ -79,14 +79,14 @@ export default class Home extends Component {
 
                                 </div>
                             </Col>
-                            <Col xs={12} md={3} className="home-right-col">
+                            {/* <Col xs={12} md={3} className="home-right-col">
                                 <ListGroup>
                                     <HeaderBox header={"What's Happening"}>
                                         <SocketFeed />
                                     </HeaderBox>
                                 </ListGroup>
                             </Col>
-                            <Col xsHidden md={1} />
+                            <Col xsHidden md={1} /> */}
                         </Jumbotron>
                     </Row>
                 </div>
@@ -94,11 +94,11 @@ export default class Home extends Component {
                     <Col xs={12} md={12}>
                         <div className="home-video-section centered">
                             <h1 className='facebook-blue centered home-video-heading'>How it Works</h1>
-                            {/* <YouTube
-                                videoId="a_jt1hN8wpg"
+                            <YouTube
+                                videoId="-_xxKBeUTdg"
                                 opts={videoOpts}
                                 onVideoReady={this._onVideoReady}
-                            /> */}
+                            />
                         </div>
                     </Col>
                 </Row>
