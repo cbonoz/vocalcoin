@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "vocalcoin-69799",
+  "private_key_id": "5028d84567f134fe6befddc6be570e98a5f92a9c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCq2QWzHUhBmCiQ\nzToaTpa7I0DWmSLMk3D2Ly3FB4yTB2rsUUx2IKzr+NCHGWOoV6UrnjtNd//VWSn6\nP76ynh3d7NcswANtgRcoKbhXBJ2Pk7BI0Hx7ndKzehONiiiildpKB85KMYG1LR3K\nh1xMUaAL/VhzeTAXFvt8A5jlS4+4lKXmq/j9h7ZUnkuv52fk+hqvnhDEYQlpig/C\n7PKzbMQuyck/JvLwXz5RJJR9PvSZgZ1Qm/s2QQ/sJBsHfY3x1W6BbIhdTDYRYWuZ\n/Xvi77B7FjdEZ/G60nNUiO76GxFHvT4A8bSQNkEs1R0VKJvOAgF3meg2JcpaTR8u\ns/Ki/GopAgMBAAECggEABAOoJ4CeQmNMvbVCwpw63LAL/ZbYy1mCB5jNcKIYJpq/\no4iX/TUQlxVQMgJx1eJkUEFuJ4h0p4rKKpX9mTUPotemKSgkVHn6ZTBQw2Opf5aC\n530VlbJ8QUkSpUpcINDYUZG8IkBmSa9jEi+KxsTKt8lmvwTXkU1SEKSFfsq/GGFE\n7jDQQ1Df5BJdUI5JB0XSmq24Mgze8Axk8v1VLx3PoSsE/OTopX0FPweEva2mnjGA\nPYuyoicraDSr1moCEaMw4rxBxDCDGcz90tDYpGPhFIT79IX5wzT8Tl+DF2jTB95O\nDXCdxa8DFNF2puARBgy6oNTpSlUOVGZ3pCYeZe/lUQKBgQDR8NFmO8QY0gx+VHnP\nh7rX0P4dV38piRwl3qgokV6gpg3DyXFTCs2qn0sGUVNbMb54YZHxhVTP/UU3H8e+\nVaD2qsma2bTmYK/3ryJrLHKuBqHTud8tyP/hK826u1yEtiaJlgMfgZ2goGmR36gB\nGqzek9ckgB1MG3LEUpyo1MqtGQKBgQDQVJL9oeJWLZhzPlwau+h61RhLE24lzAzo\npLHRpLSi12gvniqSooXBUkFU8yTibz6Stia/gd22wh3Jb9R8hlIuU+vuSrV/zu9R\nVBUyTAuCW4HBUvpDx3irqPV6yd2gYecufFF8IeVeWRV0Ffuk4naVsbFptcSN4Uob\nlVSQOQA3kQKBgCbBL8aRjdePHuNLMNlQkvs4B1DfUAgY2WtcOOqUO0Wooa3cx+Cu\ng9zVXwIhjSOugRyz1j8hf9CNTnOomDTYlcgzKtg9DBnjC1jLqazjHaBmdQUisMJA\n8otcjLPF1oRhI6gOWzE7uh9mvVZCVT8u725/GB4S0FW2U29OWMEJ1wgxAoGAPPUC\nLYR4nY6p1M6iVJA27fn8Kbt9t0GFZW0LOrRexmcQ7R3yhwVW7cILq7eZS0gRnwv9\nOnvdS+Rwosg9/FGxKi0UE514jfUWwU1BBn6Jv5LW3KJS6BItlMzTRyJZ3tvGsStf\nDFs+qeSXCmiEQTKiUBq2NqAg6wLIlFmVbL3A+oECgYBFZbAO6y5m3yt8FHo+e7WD\nSDg3dA8IR4S+E+Nybf9rT+UP5+htakr4nh5Kp8DhsicUcvTNivMJXz+TpeFVUtff\nhYrN2CA5Y3MrXQFr0PFoqXl+gsil2B0pr2iyhgkgZC1MyRVfuJ5ZoAdTJ0tZK2tr\nmNe08jt95ovs8Ch7B9abkw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "vocal-86@vocalcoin-69799.iam.gserviceaccount.com",
+  "client_id": "109538483376302978487",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vocal-86%40vocalcoin-69799.iam.gserviceaccount.com"
+}
