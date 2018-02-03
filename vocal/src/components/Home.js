@@ -53,7 +53,11 @@ export default class Home extends Component {
                 <div className="home-content">
                     <Row>
                         <Jumbotron className="jumbotron transparency-jumbotron" style={backgroundStyle}>
+<<<<<<< HEAD
                             <Col xs={12} md={8}>
+=======
+                            <Col xs={12} md={12}>
+>>>>>>> 281ade75cbeae8dd04b1bebf68e928c5220d3980
                                 <div className="static-modal-jumbotron opaque centered">
                                     <img className="home-banner-image" src={vocal} />
                                     <h2 className="bold title-text animated fadeIn">
@@ -79,14 +83,22 @@ export default class Home extends Component {
 
                                 </div>
                             </Col>
+<<<<<<< HEAD
                             <Col xs={12} md={3} className="home-right-col">
+=======
+                            {/* <Col xs={12} md={3} className="home-right-col">
+>>>>>>> 281ade75cbeae8dd04b1bebf68e928c5220d3980
                                 <ListGroup>
                                     <HeaderBox header={"What's Happening"}>
                                         <SocketFeed />
                                     </HeaderBox>
                                 </ListGroup>
                             </Col>
+<<<<<<< HEAD
                             <Col xsHidden md={1} />
+=======
+                            <Col xsHidden md={1} /> */}
+>>>>>>> 281ade75cbeae8dd04b1bebf68e928c5220d3980
                         </Jumbotron>
                     </Row>
                 </div>
@@ -94,11 +106,19 @@ export default class Home extends Component {
                     <Col xs={12} md={12}>
                         <div className="home-video-section centered">
                             <h1 className='facebook-blue centered home-video-heading'>How it Works</h1>
+<<<<<<< HEAD
                             {/* <YouTube
                                 videoId="a_jt1hN8wpg"
                                 opts={videoOpts}
                                 onVideoReady={this._onVideoReady}
                             /> */}
+=======
+                            <YouTube
+                                videoId="-_xxKBeUTdg"
+                                opts={videoOpts}
+                                onVideoReady={this._onVideoReady}
+                            />
+>>>>>>> 281ade75cbeae8dd04b1bebf68e928c5220d3980
                         </div>
                     </Col>
                 </Row>
