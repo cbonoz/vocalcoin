@@ -6,6 +6,7 @@ const library = (function () {
   StellarSdk.Network.useTestNetwork();
   const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
+
   // 4 Key Methods:
   // createKeyPair: Create Key Pair for a wallet.
   // createAccount: Create Account (containing potentially multiple asset types).
@@ -38,7 +39,7 @@ const library = (function () {
     });
   }
 
-  const submitTransaction = (sourceKeys, destinationId, amount, memo, success, failure) => {
+  const submitTransaction = (sourceKeyPair, destinationId, amount, memo, success, failure) => {
 
     // First, check to make sure that the destination account exists.
     // You could skip this, but if the account does not exist, you will be charged
@@ -50,7 +51,7 @@ const library = (function () {
       })
       // If there was no error, load up-to-date information on your account.
       .then(function () {
-        return server.loadAccount(sourceKeys.publicKey());
+        return server.loadAccount(sourceKeyPair.publicKey());
       })
       .then(function (sourceAccount) {
         // Start building the transaction.
@@ -68,7 +69,7 @@ const library = (function () {
           .addMemo(StellarSdk.Memo.text(memo)) // 'Test Transaction'
           .build();
         // Sign the transaction to prove you are actually the person sending it.
-        transaction.sign(sourceKeys);
+        transaction.sign(sourceKeyPair);
         // And finally, send it off to Stellar!
         return server.submitTransaction(transaction);
       })
