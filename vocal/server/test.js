@@ -40,4 +40,11 @@ function createNewAsset(assetName) {
     const vocalCoin = new StellarSdk.Asset(assetName, issuingKeys.publicKey());
 }
 
-createNewAsset('Vocal')
+createNewAsset(stellar.ASSET_NAME);
+
+
+stellar.submitTransaction(
+
+);
+
+

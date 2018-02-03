@@ -1,0 +1,9 @@
+# stellar.toml Vocal Coin
+[[CURRENCIES]]
+code="VOCAL"
+issuer="GD5T6IPRNCKFOHQWT264YPKOZAWUMMZOLZBJ6BNQMUGPWGRLBK3U7ZNP"
+display_decimals=2 
+name="vocal coin"
+desc="1 Vocal coin represents a unit of political currency"
+conditions="There will only ever be 10,000,000 Vocal coins in existence."
+image="https://pbs.twimg.com/profile_images/666921221410439168/iriHah4f.jpg"
