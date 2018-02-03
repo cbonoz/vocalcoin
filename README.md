@@ -6,11 +6,7 @@ A Minimally Viable Distributed Political Currency.
 
 Vocal is a currency platform for promoting social change and civic engagement.
 
-<<<<<<< HEAD
-We have an open beta website at https://www.vocalcoin.com
-=======
 We have an open beta website at https://www.vocalcoin.com (enter https://vocalcoin.com manually in browser window if page doesn't load initially).
->>>>>>> 281ade75cbeae8dd04b1bebf68e928c5220d3980
 
 ### What Vocal Solves:
 
@@ -32,8 +28,6 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
     <li>Governments can also promote and add issues that they want information about from local communities, questions such as 'What would be the most valuable improvement to this town? Or should we make this investment?'</li>
 </ol>
 
-<<<<<<< HEAD
-=======
 ### Screenshots
 
 <div style="margin: 0 auto">
@@ -62,13 +56,11 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
 
 <img src="./assets/vocal_help.png" style="max-width: 600px; margin: 0 auto; text-align: center"/>
 
-
 </div>
 
 ### Demo Video
 
 <a target="_blank" href="https://youtu.be/-_xxKBeUTdg">Original Demo Video</a>
->>>>>>> 281ade75cbeae8dd04b1bebf68e928c5220d3980
 
 ### Future Work
 
@@ -79,10 +71,8 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
 - Improve UI / Remaining Beta Bug Fixes
 
 ## Repository Contents:
-<<<<<<< HEAD
-=======
+
 * /slidedeck - Contains the pitch slidedeck for Vocal Coin.
->>>>>>> 281ade75cbeae8dd04b1bebf68e928c5220d3980
 * /whitepaper - vocal whitepaper tex and build output files such as the pdf.
 * /vocal - Front end and server code.
 * /vocalcontract - smart contract code and deployment logic (truffle).
@@ -91,11 +81,7 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
 
 ## Truffle Instructions:
 
-<<<<<<< HEAD
-Instructions to deploy contract to testnet.
-=======
 Instructions to deploy contract to Ropsten testnet.
->>>>>>> 281ade75cbeae8dd04b1bebf68e928c5220d3980
 
 ```
 cd vocal/vocalcontract
@@ -112,12 +98,11 @@ curl -v -H "Authorization: Bearer 123456789" -X POST  http://127.0.0.1:9007/api/
 ## Instructions for Users:
 * Sign up for a wallet at https://www.myetherwallet.com/ (on the Ropsten network) or use existing wallet if you have one. Make sure you
 use the Ropsten test network on the upper right corner if using myetherwallet.com. Or let Vocal create the wallet/address and manage it for you.
-<<<<<<< HEAD
+
 * Please make sure to remember your password and seed when signing up for one. If you lose your password, your coins will be lost forever.
 * Signing up for your wallet should give you a wallet address similar to 0xefb202e9a3cdf87abcde00000000d00000f64d75. It should start 0x and be a mix of letters and numbers.
 * The wallet address should be entered when signing up for an account on Vocal. It is needed to be able to receive VocalCoins for participation.
-=======
 * Sign up for an account on https://www.vocalcoin.com
 * Create your first issue, or being voting on other existing issues.
 * Explore and contribute to issues happening in your area, and worldwide.
->>>>>>> 281ade75cbeae8dd04b1bebf68e928c5220d3980
+
