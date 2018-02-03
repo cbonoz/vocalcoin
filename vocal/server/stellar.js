@@ -3,6 +3,7 @@ const library = (function () {
   const StellarSdk = require('stellar-sdk');
   const request = require('request');
   const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+  var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
   // create a completely new and unique pair of keys
   // see more about KeyPair objects: https://stellar.github.io/js-stellar-sdk/Keypair.html

@@ -13,17 +13,31 @@ const keyPair = stellar.createKeyPair();
 console.log('keyPair', keyPair.secret(), keyPair.publicKey())
 var account = null;
 
-stellar.createAccount(keyPair, (body) => {
-    account = body;
-    console.log('Account: ' + JSON.stringify(account));
+function testAccountCreation() {
 
-    // Get balances for the newly created account.
-    stellar.getBalances(keyPair, (account) => {
-        console.log('Balances for account: ' + keyPair.publicKey());
-        account.balances.forEach(function (balance) {
-            console.log('Type:', balance.asset_type, ', Balance:', balance.balance);
-        })
-    });;
+    stellar.createAccount(keyPair, (body) => {
+        account = body;
+        console.log('Account: ' + JSON.stringify(account));
 
-});
+        // Get balances for the newly created account.
+        stellar.getBalances(keyPair, (account) => {
+            console.log('Balances for account: ' + keyPair.publicKey());
+            account.balances.forEach(function (balance) {
+                console.log('Type:', balance.asset_type, ', Balance:', balance.balance);
+            })
+        });;
+    });
+}
 
+function createNewAsset(assetName) {
+
+    const issuerSecret = process.env.VOCAL_ISSUER;
+
+    // Keys for accounts to issue and receive the new asset
+    var issuingKeys = StellarSdk.Keypair.fromSecret(issuerSecret);
+    var receivingKeys = StellarSdk.Keypair.fromSecret(issuerSecret);
+
+    const vocalCoin = new StellarSdk.Asset(assetName, issuingKeys.publicKey());
+}
+
+createNewAsset('Vocal')
