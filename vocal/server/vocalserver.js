@@ -25,9 +25,10 @@ admin.initializeApp({
 });
 
 // Passport for middleware HTTP bearer authentication strategy for the blockchain routes
-var passport = require('passport');
+const passport = require('passport');
 const Strategy = require('passport-http-bearer').Strategy;
-var db = require('./db');
+const db = require('./db');
+const stellar = require('./stellar');
 
 passport.use(new Strategy(
     function (token, cb) {
@@ -149,35 +150,46 @@ function getAddressAndExecute(userId, cb) {
 }
 
 function modifyBalanceAndExecute(address, amount, cb) {
-    const query = vocal.modifyBalance(address, amount);
-    pool.query(query, (err, result) => {
-        console.log('modify balance', query, err, result)
-        if (err) {
+    var actionMessage;
+    var to;
+    var from;
+    if (amount > 0) {
+        actionMessage = address + " earned " + amount;
+        to = address;
+        from = stellar.VOCAL_ISSUER
+    } else if (amount < 0) {
+        actionMessage = address + " used " + amount;
+        to = stellar.VOCAL_ISSUER;
+        from = address;
+    } else {
+        console.error("0 value transaction request for", address)
+        return;
+    }
+
+    stellar.submitTransaction(
+        from,
+        to,
+        actionMessage,
+        amount,
+        (msg) => { 
+            console.log ('success: ' + msg );
+            cb();
+        },
+        (err) => { 
+            console.log ('failure: ' + err );
             console.error('modify balance error', err);
-            throw err
+            throw err;
         }
-        cb();
-    });
+    )
 }
 
 function getBalanceAndExecute(address, cb) {
-    const query = vocal.getBalance(address)
-    pool.query(query, (err, result) => {
-        console.log('getbalance', err, result)
-        if (err) {
-            console.error('getbalance error', err);
-            throw err;
-        }
-
-        const rows = result.rows;
-        if (rows) {
-            const balance = rows[0]['balance'];
-            console.log('balance', address, balance)
-            cb(balance);
-            return;
-        }
-        cb(0);
-    });
+     // Get balances for the newly created account from the stellar blockchain.
+     // TODO: Retrieve keypair from stellar address.
+     stellar.getBalances(keyPair, (account) => {
+        console.log('Balances for account: ' + keyPair.publicKey());
+        cb(stellar.getVocalBalance(account.balances));
+     });;
 }
 
 app.post('/api/vote', passport.authenticate('bearer', {

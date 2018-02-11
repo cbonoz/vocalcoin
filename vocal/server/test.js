@@ -38,7 +38,6 @@ function testAccountCreation() {
 }
 
 function createNewAsset(assetName, issuerSecret) {
-
     // Keys for accounts to issue and receive the new asset
     var issuingKeys = StellarSdk.Keypair.fromSecret(issuerSecret);
     var receivingKeys = StellarSdk.Keypair.fromSecret(issuerSecret);

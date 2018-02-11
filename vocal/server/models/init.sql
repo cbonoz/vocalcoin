@@ -45,3 +45,11 @@ CREATE TABLE users (
   address VARCHAR,
   username VARCHAR
 );
+
+CREATE TABLE accounts (
+   ID VARCHAR PRIMARY KEY,
+   email VARCHAR NOT NULL,
+   address VARCHAR,
+   seed VARCHAR,
+   username VARCHAR 
+)

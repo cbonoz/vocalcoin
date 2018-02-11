@@ -4,8 +4,11 @@ const library = (function () {
   const request = require('request');
   const ASSET_NAME = "Vocal";
   StellarSdk.Network.useTestNetwork();
+  const STELLAR_TEST_URL = 'https://horizon-testnet.stellar.org/friendbot';
   const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
+  // TODO: set issuer key pair.
+  const VOCAL_ISSUER = null; 
 
   // 4 Key Methods:
   // createKeyPair: Create Key Pair for a wallet.
@@ -25,15 +28,13 @@ const library = (function () {
 
   const createAccount = (pair, cb) => {
     request.get({
-      url: 'https://horizon-testnet.stellar.org/friendbot',
+      url: STELLAR_TEST_URL,
       qs: { addr: pair.publicKey() },
       json: true
     }, function (error, response, body) {
       if (error || response.statusCode !== 200) {
         console.error('ERROR!', error || body);
-      }
-      else {
-
+      } else {
         cb(body);
       }
     });
@@ -81,11 +82,23 @@ const library = (function () {
     server.loadAccount(pair.publicKey()).then(cb);
   }
 
+  const getVocalBalance = (balances) => {
+    balances.map((balances) => {
+      const asset = balance.asset_type;
+      if (asset === ASSET_NAME) {
+        return balance.balance;
+      }
+    });
+    return 0;
+  }
+
   return {
     ASSET_NAME: ASSET_NAME,
+    VOCAL_ISSUER: VOCAL_ISSUER,
     createKeyPair: createKeyPair,
     createAccount: createAccount,
     getBalances: getBalances,
+    getVocalBalance: getVocalBalance,
     submitTransaction: submitTransaction
   };
 
