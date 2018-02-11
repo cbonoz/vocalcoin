@@ -5,6 +5,9 @@
   "dependencies": {
     "axios": "^0.17.0",
     "firebase": "^4.6.2",
+    "glamor": "^2.20.40",
+    "imagemin": "^5.3.1",
+    "imagemin-webp": "^4.1.0",
     "react": "^16.1.1",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.1.1",
@@ -24,12 +27,17 @@
     "react-vis": "^1.7.10",
     "react-youtube": "^7.5.0",
     "socket.io-client": "^2.0.4",
+    "source-map-explorer": "^1.5.0",
     "universal-cookie": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer build/static/js/main.*"
+  },
+  "devDependencies": {
+    "react-image-webp": "^0.2.2"
   }
 }

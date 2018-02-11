@@ -9,7 +9,12 @@ import YouTube from 'react-youtube';
 import HelpSteps from './HelpSteps';
 
 import vocal from '../assets/vocal_trans_black.png';
+import webpVocal from '../optimized_media/vocal_trans_black.webp';
+
 import bgImage from '../assets/banner_10.png';
+import webpBgImage from '../optimized_media/banner_10.webp';
+
+import Image from 'react-image-webp';
 
 import { firebaseAuth } from '../utils/fire';
 
@@ -45,7 +50,7 @@ export default class Home extends Component {
         };
 
         const backgroundStyle = {
-            backgroundImage: `url(${bgImage})`,
+            backgroundImage: `url(${webpBgImage})`,
         };
 
         return (
@@ -55,7 +60,8 @@ export default class Home extends Component {
                         <Jumbotron className="jumbotron transparency-jumbotron" style={backgroundStyle}>
                             <Col xs={12} md={12}>
                                 <div className="static-modal-jumbotron opaque centered">
-                                    <img className="home-banner-image" src={vocal} />
+                                    {/*<img className="home-banner-image" src={vocal} />*/}
+                                    <Image className="home-banner-image" src={vocal} webp={webpVocal} />
                                     <h2 className="bold title-text animated fadeIn">
                                         {self.state.title}
                                     </h2>
