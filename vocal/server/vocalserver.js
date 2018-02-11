@@ -93,36 +93,10 @@ pool.on('error', (err, client) => {
     process.exit(-1)
 });
 
-function isBlank(str) {
-    return (!str || /^\s*$/.test(str));
-}
-
 // Endpoints //
 
 app.get('/api/hello', (req, res) => {
     return res.json("hello world");
-});
-
-/* Map endpoints */
-
-app.post('/api/issues/region', (req, res) => {
-    const body = req.body;
-    const lat1 = body.lat1;
-    const lat2 = body.lat2;
-    const lng1 = body.lng1;
-    const lng2 = body.lng2;
-
-    const query = vocal.getIssuesForRegionQuery(lat1, lng1, lat2, lng2);
-
-    pool.query(query, (err, result) => {
-        console.log('issues', err, result);
-        if (err) {
-            console.error('issues', err);
-            return res.status(500).json(err)
-        }
-        // Return the rows that lie within the bounds of the map view.
-        return res.json(result.rows);
-    });
 });
 
 /**
@@ -162,7 +136,7 @@ function modifyBalanceAndExecute(address, amount, cb) {
         to = stellar.VOCAL_ISSUER;
         from = address;
     } else {
-        const errorMessage = "0 value transaction request for " +  address;
+        const errorMessage = "0 value transaction request for " + address;
         console.error(errorMessage);
         throw errorMessage;
     }
@@ -172,26 +146,48 @@ function modifyBalanceAndExecute(address, amount, cb) {
         to,
         actionMessage,
         amount,
-        (msg) => { 
-            console.log ('success: ' + msg );
+        (msg) => {
+            console.log('success: ' + msg);
             cb();
         },
-        (err) => { 
-            console.log ('failure: ' + err );
-            console.error('modify balance error', err);
+        (err) => {
+            console.log('failure: ' + err);
+            console.error('stellar transaction error', err);
             throw err;
         }
     )
 }
 
 function getBalanceAndExecute(address, cb) {
-     // Get balances for the newly created account from the stellar blockchain.
-     // TODO: Retrieve keypair from stellar address.
-     stellar.getBalances(keyPair, (account) => {
+    // Get balances for the newly created account from the stellar blockchain.
+    // TODO: Retrieve keypair from stellar address.
+    stellar.getBalances(keyPair, (account) => {
         console.log('Balances for account: ' + keyPair.publicKey());
         cb(stellar.getVocalBalance(account.balances));
-     });;
+    });;
 }
+
+/* Map endpoints */
+
+app.post('/api/issues/region', (req, res) => {
+    const body = req.body;
+    const lat1 = body.lat1;
+    const lat2 = body.lat2;
+    const lng1 = body.lng1;
+    const lng2 = body.lng2;
+
+    const query = vocal.getIssuesForRegionQuery(lat1, lng1, lat2, lng2);
+
+    pool.query(query, (err, result) => {
+        console.log('issues', err, result);
+        if (err) {
+            console.error('issues', err);
+            return res.status(500).json(err)
+        }
+        // Return the rows that lie within the bounds of the map view.
+        return res.json(result.rows);
+    });
+});
 
 app.post('/api/vote', passport.authenticate('bearer', {
     session: false
@@ -215,7 +211,7 @@ app.post('/api/vote', passport.authenticate('bearer', {
             // if we already have a vote for this user and issue, return.
             const errorMessage = "user already voted on this issue";
             console.error(errorMessage)
-            return res.status(401).json({data: errorMessage});
+            return res.status(401).json({ data: errorMessage });
         }
 
         // Ok. Insert the vote into the DB.
@@ -251,7 +247,7 @@ app.post('/api/issue', passport.authenticate('bearer', {
                 // const balanceFromBlockchain = contract.getBalance(address);
                 if (balanceFromBlockchain < vocal.ISSUE_COST) {
                     const errorMessage = `Insufficient balance (${balanceFromBlockchain}), require ${vocal.ISSUE_COST}`;
-                    return res.status(401).json({data: errorMessage})
+                    return res.status(401).json({ data: errorMessage })
                 }
 
                 modifyBalanceAndExecute(address, -vocal.ISSUE_COST, () => {
@@ -271,10 +267,8 @@ app.post('/api/issue', passport.authenticate('bearer', {
             })
         });
     } catch (e) {
-        return res.json(e);
+        return res.status(500).json(e);
     }
-
-
 });
 
 app.post('/api/issue/delete', passport.authenticate('bearer', {
@@ -370,36 +364,51 @@ app.post('/api/signin', (req, res) => {
     const userId = body.userId;
     const email = body.email;
     const username = body.username;
-    try {
-        produceAddress(body.address, (address) => {
-            // Attempt to add the new user with address if set.
-            const query = vocal.getUserQuery(userId);
-            pool.query(query, (err, result) => {
-                console.log('get user', err, result)
 
-                // TODO: Fix the race condition here between getting the user and
-                // returning the auth token.
+    // Look up the user.
+    const query = vocal.getUserQuery(userId);
+    pool.query(query, (err, result) => {
+        console.log('get user', err, result)
+
+        if (err) {
+            console.error('get user error', err);
+            return res.status(500).json(err);
+        }
+
+        const rows = result.rows;
+        const user = rows[0];
+
+        if (rows instanceof Array && user && user['address'] && user['address'] !== 'undefined') {
+            // User already created with address.
+            console.log('found user', user);
+
+            // Return the auth token after the user is confirmed.
+            admin.auth().createCustomToken(userId).then((customToken) => {
+                // Send token back to client.
+                console.log(userId, customToken);
+                db.users.assignToken(userId, customToken);
+                return res.json({
+                    "token": customToken,
+                    "address": address
+                });
+            }).catch((error) => {
+                console.error("Error creating custom token:", error);
+                return res.json(error);
+            });
+
+        } else {
+            // User does not exist
+            const username = body.username;
+            const keypair = stellar.createKeyPair();
+            const address = keypair.address;
+            const seed = keypair.seed;
+            const userQuery = vocal.insertUserQuery(userId, email, address, seed, username);
+            console.log('userQuery', userQuery);
+            pool.query(userQuery, (err, result) => {
+                console.log('insert user', err, JSON.stringify(result));
                 if (err) {
-                    console.error('get user error', err);
+                    console.error('create user error', err);
                     return res.status(500).json(err);
-                }
-
-                const rows = result.rows;
-                const user = rows[0];
-                if (rows instanceof Array && user && user['address'] && user['address'] !== 'undefined') {
-                    console.log('found user', user);
-                    // User already created with address.
-                } else {
-                    const username = body.username;
-                    const userQuery = vocal.insertUserQuery(userId, email, address, username);
-                    console.log('userQuery', userQuery);
-                    pool.query(userQuery, (err, result) => {
-                        console.log('insert user', err, JSON.stringify(result));
-                        if (err) {
-                            console.error('create user error', err);
-                            // TODO: fix and silently continue.
-                        }
-                    });
                 }
 
                 // Return the auth token after the user is confirmed.
@@ -415,13 +424,10 @@ app.post('/api/signin', (req, res) => {
                     console.error("Error creating custom token:", error);
                     return res.json(error);
                 });
-
             });
+        }
 
-        });
-    } catch (e) {
-        return res.json(e);
-    }
+    });
 });
 
 /* Query methods */
@@ -452,56 +458,9 @@ app.get('/api/address/:userId', passport.authenticate('bearer', {
             return res.json(address);
         });
     } catch (err) {
-        return res.json(err)
+        return res.status(500).json(err)
     }
 });
-
-// app.post('/api/vocal/modify', passport.authenticate('bearer', {
-//     session: false
-// }), (req, res) => {
-//     const body = req.body;
-//     const userId = body.userId;
-//     const amount = body.amount;
-//     try {
-//         getAddressAndExecute(userId, (address) => {
-//             const amount = vocal.calculateVocalCredit(userId);
-
-//             // TODO: this should manipulate the blockchain, and return a success response for adding amount to
-//             // the user's token balance.
-//             // i.e. some call like contract.sendVocal(amount, etc...) should be here.
-//             const query = vocal.modifyBalance(address, amount);
-//             pool.query(query, (err, result) => {
-//                 console.log('modify balance', query, err, result)
-//                 if (err) {
-//                     console.error('modify balance error', err);
-//                     return res.status(500).json(err);
-//                 }
-//                 return res.json(true);
-//             });
-
-//         });
-//     } catch (err) {
-//         return res.json(err)
-//     }
-// });
-
-app.post('/api/address/update', passport.authenticate('bearer', {
-    session: false
-}), (req, res) => {
-    const query = vocal.updateAddressQuery(userId, address)
-    pool.query(query, (err, result) => {
-        console.log('update address', err, result)
-        if (err) {
-            console.error('update address error', err);
-            return res.status(500).json(err);
-        }
-        // pool.end()
-        return res.json(result.rows);
-    });
-    // TODO: update this to change the registered public eth address of the give user (indicated by their userId).
-    return res.json(true);
-});
-
 
 /**
  * End of Blockchain Routes

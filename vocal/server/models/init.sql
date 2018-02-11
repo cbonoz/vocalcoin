@@ -41,15 +41,7 @@ CREATE TABLE events (
 CREATE TABLE users (
   ID VARCHAR PRIMARY KEY,
   email VARCHAR NOT NULL,
-  balance BIGINT NOT NULL,
   address VARCHAR,
-  username VARCHAR
+  seed VARCHAR,
+  username VARCHAR(16)
 );
-
-CREATE TABLE accounts (
-   ID VARCHAR PRIMARY KEY,
-   email VARCHAR NOT NULL,
-   address VARCHAR,
-   seed VARCHAR,
-   username VARCHAR 
-)

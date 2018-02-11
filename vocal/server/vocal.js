@@ -9,6 +9,10 @@ const library = (function () {
         return items[Math.floor(Math.random()*items.length)];
     }
 
+    function isBlank(str) {
+        return (!str || /^\s*$/.test(str));
+    }
+
     const formatDateTimeMs = (timeMs) => {
         const date = new Date(timeMs);
         return `${date.toDateString()} ${date.toLocaleTimeString()}`;
@@ -54,9 +58,9 @@ const library = (function () {
         return `SELECT * FROM users where ID='${userId}'`;
     }
 
-    function insertUserQuery(userId, email, address, username) {
-        return `INSERT INTO users(ID, email, address, username, balance) ` +
-            `values('${userId}', ${escape.literal(email)}, ${escape.literal(address)}, ${escape.literal(username)}, ${DEFAULT_BALANCE})`;
+    function insertUserQuery(userId, email, address, seed, username) {
+        return `INSERT INTO users(ID, email, address, seed, username) ` +
+            `values('${userId}', ${escape.literal(email)}, ${escape.literal(address)}, ${escape.literal(username)})`;
     }
 
     function getAddress(userId) {
@@ -90,6 +94,7 @@ const library = (function () {
         deleteIssueQuery: deleteIssueQuery,
         getRandom: getRandom,
         getBalance: getBalance,
+        isBlank: isBlank,
         modifyBalance: modifyBalance,
         getUserQuery: getUserQuery,
         getIssuesForRegionQuery: getIssuesForRegionQuery,
