@@ -1,5 +1,15 @@
 const library = (function () {
 
+  /*
+    stellar.js - Helper library for stellar blockchain transaction / query methods.
+
+    4 Key Methods:
+    createKeyPair: Create Key Pair for a wallet.
+    createAccount: Create Account (containing potentially multiple asset types).
+    submitTransaction: Submit Transaction between the source and the destination.
+    getBalances: Get Balances (amongst different stellar asset types) for the provided keyPair.
+  */
+
   const StellarSdk = require('stellar-sdk');
   const request = require('request');
   const ASSET_NAME = "Vocal";
@@ -9,16 +19,10 @@ const library = (function () {
 
   // TODO: set issuer key pair.
   const VOCAL_ISSUER = null; 
-
-  // 4 Key Methods:
-  // createKeyPair: Create Key Pair for a wallet.
-  // createAccount: Create Account (containing potentially multiple asset types).
-  // submitTransaction: Submit Transaction between the source and the destination.
-  // getBalances: Get Balances (amongst different stellar asset types) for the provided keyPair.
-
-  // create a completely new and unique pair of keys
-  // see more about KeyPair objects: https://stellar.github.io/js-stellar-sdk/Keypair.html
-
+  /**
+   * Create a completely new and unique pair of keys.
+   * See more about KeyPair objects: https://stellar.github.io/js-stellar-sdk/Keypair.html
+   */
   const createKeyPair = () => {
     const pair = StellarSdk.Keypair.random();
     // pair.secret();
