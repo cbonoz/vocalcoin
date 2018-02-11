@@ -30,6 +30,9 @@ const Strategy = require('passport-http-bearer').Strategy;
 const db = require('./db');
 const stellar = require('./stellar');
 
+const requirePostgres = false;
+const PORT = 9007;
+
 passport.use(new Strategy(
     function (token, cb) {
         db.users.findByToken(token, function (err, user) {
@@ -44,13 +47,9 @@ passport.use(new Strategy(
     }));
 
 // Variable and Server Setup //
-const prod = false;
 
 // custom libraries.
 const vocal = require('./vocal');
-const contract = require('./contract');
-
-const vocalContract = contract.vocalContract;
 
 const dbUser = process.env.ADMIN_DB_USER;
 const dbPass = process.env.ADMIN_DB_PASS;
@@ -64,18 +63,12 @@ const pool = new pg.Pool({
     connectionString: connectionString,
 })
 
-const PORT = 9007;
-
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(server, {
-    origins: '*:*'
-});
+const io = require('socket.io')(server, { origins: '*:*' });
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 // TODO: use reduced cors in production.
 // const whitelist = ['https://vocalcoin.com', 'https://www.vocalcoin.com'];
@@ -93,21 +86,9 @@ pool.on('error', (err, client) => {
     process.exit(-1)
 });
 
-// Endpoints //
-
 app.get('/api/hello', (req, res) => {
     return res.json("hello world");
 });
-
-/**
- * Start of Blockchain Routes.
- *
- * The below routes check for http bearer tokens. If one does not exist in the request,
- * access will be denied.
- *
- * Example curl command to test routes:
- * curl -v -H "Authorization: Bearer 123456789" -X POST http://127.0.0.1:9007/api/vote
- */
 
 function getAddressAndExecute(userId, cb) {
     const query = vocal.getAddress(userId);
@@ -123,41 +104,6 @@ function getAddressAndExecute(userId, cb) {
     });
 }
 
-function modifyBalanceAndExecute(address, amount, cb) {
-    var actionMessage;
-    var to;
-    var from;
-    if (amount > 0) {
-        actionMessage = address + " earned " + amount;
-        to = address;
-        from = stellar.VOCAL_ISSUER
-    } else if (amount < 0) {
-        actionMessage = address + " used " + amount;
-        to = stellar.VOCAL_ISSUER;
-        from = address;
-    } else {
-        const errorMessage = "0 value transaction request for " + address;
-        console.error(errorMessage);
-        throw errorMessage;
-    }
-
-    stellar.submitTransaction(
-        from,
-        to,
-        actionMessage,
-        amount,
-        (msg) => {
-            console.log('success: ' + msg);
-            cb();
-        },
-        (err) => {
-            console.log('failure: ' + err);
-            console.error('stellar transaction error', err);
-            throw err;
-        }
-    )
-}
-
 function getBalanceAndExecute(address, cb) {
     // Get balances for the newly created account from the stellar blockchain.
     // TODO: Retrieve keypair from stellar address.
@@ -165,6 +111,49 @@ function getBalanceAndExecute(address, cb) {
         console.log('Balances for account: ' + keyPair.publicKey());
         cb(stellar.getVocalBalance(account.balances));
     });;
+}
+
+function modifyBalanceAndExecute(userId, amount, cb) {
+    try {
+        var actionMessage;
+        var to;
+        var from;
+        getUserAndExecute(userId, (user) => {
+            if (amount > 0) {
+                to = user.address;
+                from = stellar.VOCAL_ISSUER_KEYPAIR;
+                actionMessage = to + " earned " + amount;
+            } else if (amount < 0) {
+                to = stellar.VOCAL_ISSUER_KEYPAIR.publicKey();
+                from = StellarSdk.Keypair.fromSecret(user.seed);
+                actionMessage = from + " used " + amount;
+            } else {
+                const errorMessage = "0 value transaction request for " + address;
+                console.error(errorMessage);
+                throw errorMessage;
+            }
+
+            console.log('modifyBalanceAndExecute', from, to, actionMessage);
+
+            stellar.submitTransaction(
+                from, // source key pair
+                to, // destination address
+                actionMessage,
+                amount,
+                (msg) => {
+                    console.log('success: ' + msg);
+                    cb();
+                },
+                (err) => {
+                    console.log('failure: ' + err);
+                    console.error('stellar transaction error', err);
+                    throw err;
+                }
+            )
+        });
+    } catch (e) {
+        return res.status(500).json(e);
+    }
 }
 
 /* Map endpoints */
@@ -358,6 +347,22 @@ function produceAddress(address, cb) {
     cb(addr);
 }
 
+function getUserAndExecute(userId, cb) {
+    const query = vocal.getUserQuery(userId);
+    pool.query(query, (err, result) => {
+        console.log('get user', err, result)
+
+        if (err) {
+            console.error('get user error', err);
+            throw err;
+        }
+
+        const rows = result.rows;
+        const user = rows[0];
+        cb(user);
+    });
+}
+
 app.post('/api/signin', (req, res) => {
     const body = req.body;
     console.log(body);
@@ -366,6 +371,7 @@ app.post('/api/signin', (req, res) => {
     const username = body.username;
 
     // Look up the user.
+
     const query = vocal.getUserQuery(userId);
     pool.query(query, (err, result) => {
         console.log('get user', err, result)
@@ -462,12 +468,7 @@ app.get('/api/address/:userId', passport.authenticate('bearer', {
     }
 });
 
-/**
- * End of Blockchain Routes
- */
-
 // Socket IO handlers //
-
 io.origins('*:*') // for latest version
 io.on('connection', function (client) {
     client.on('connect', function () {
@@ -485,11 +486,10 @@ io.on('connection', function (client) {
 });
 
 // DB Connection and Server start //
-
 pool.connect((err, client, done) => {
     if (err) {
         console.error('postgres connection error', err)
-        if (prod) {
+        if (requirePostgres) {
             console.error('exiting')
             return;
         }

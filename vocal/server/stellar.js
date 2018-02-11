@@ -18,7 +18,11 @@ const library = (function () {
   const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
   // TODO: set issuer key pair.
-  const VOCAL_ISSUER = null; 
+  const VOCAL_ISSUER_SEED = process.env.VOCAL_ISSUER_SECRET;
+  const VOCAL_ISSUER_KEYPAIR = StellarSdk.Keypair.fromSecret(VOCAL_ISSUER_SEED);
+
+  console.log('Vocal Issuer', VOCAL_ISSUER_SEED, VOCAL_ISSUER_KEYPAIR);
+
   /**
    * Create a completely new and unique pair of keys.
    * See more about KeyPair objects: https://stellar.github.io/js-stellar-sdk/Keypair.html
@@ -28,6 +32,10 @@ const library = (function () {
     // pair.secret();
     // pair.publicKey();
     return pair;
+  }
+
+  const getKeyPairFromSecret = (seed) => {
+    return StellarSdk.Keypair.fromSecret(seed);
   }
 
   const createAccount = (pair, cb) => {
@@ -98,10 +106,12 @@ const library = (function () {
 
   return {
     ASSET_NAME: ASSET_NAME,
-    VOCAL_ISSUER: VOCAL_ISSUER,
+    VOCAL_ISSUER_KEYPAIR: VOCAL_ISSUER_KEYPAIR,
+    VOCAL_ISSUER_SEED: VOCAL_ISSUER_SEED,
     createKeyPair: createKeyPair,
     createAccount: createAccount,
     getBalances: getBalances,
+    getKeyPairFromSecret: getKeyPairFromSecret,
     getVocalBalance: getVocalBalance,
     submitTransaction: submitTransaction
   };
