@@ -46,14 +46,6 @@ const library = (function () {
         return `UPDATE issues SET active = NOT active WHERE issue_id='${issueId}'`;
     }
 
-    function modifyBalance(address, amount) {
-        return `UPDATE users SET balance = balance+${amount} where address='${address}'`;
-    }
-
-    function getBalance(address) {
-        return `SELECT balance from users where address='${address}'`;
-    }
-
     function getUserQuery(userId) {
         return `SELECT * FROM users where ID='${userId}'`;
     }
@@ -93,9 +85,7 @@ const library = (function () {
         getAddress: getAddress,
         deleteIssueQuery: deleteIssueQuery,
         getRandom: getRandom,
-        getBalance: getBalance,
         isBlank: isBlank,
-        modifyBalance: modifyBalance,
         getUserQuery: getUserQuery,
         getIssuesForRegionQuery: getIssuesForRegionQuery,
         getIssuesForUserQuery: getIssuesForUserQuery,

@@ -106,10 +106,11 @@ function getAddressAndExecute(userId, cb) {
 
 function getBalanceAndExecute(address, cb) {
     // Get balances for the newly created account from the stellar blockchain.
-    // TODO: Retrieve keypair from stellar address.
     stellar.getBalances(keyPair, (account) => {
-        console.log('Balances for account: ' + keyPair.publicKey());
-        cb(stellar.getVocalBalance(account.balances));
+        // Select only the vocal coin balance.
+        const vocalBalance = stellar.getVocalBalance(account.balances);
+        console.log('Vocal balance for account: ' + keyPair.publicKey() + ": " + vocalBalance);
+        cb(vocalBalance);
     });;
 }
 
