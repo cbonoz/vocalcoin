@@ -75,29 +75,4 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
 * /slidedeck - Contains the pitch slidedeck for Vocal Coin.
 * /whitepaper - vocal whitepaper tex and build output files such as the pdf.
 * /vocal - Front end and server code.
-* /vocalcontract - smart contract code and deployment logic (truffle).
-*/assets - other images/resources
-
-
-## Truffle Instructions:
-
-Instructions to deploy contract to Ropsten testnet.
-
-```
-cd vocal/vocalcontract
-truffle compile
-truffle migrate --network ropsten
-```
-
-## Vocal Contract Address:
-0x6135004c5b2b44493779ce86d6739f57dde674e0
-
-## Example CURL command to test blockchain routes: 
-curl -v -H "Authorization: Bearer 123456789" -X POST  http://127.0.0.1:9007/api/vote
-
-## Instructions for Users:
-* Sign up for a wallet at https://www.myetherwallet.com/ (on the Ropsten network) or use existing wallet if you have one. Make sure you
-use the Ropsten test network on the upper right corner if using myetherwallet.com. Or let Vocal create the wallet/address and manage it for you.
-* Sign up for an account on https://www.vocalcoin.com
-* Create your first issue, or being voting on other existing issues.
-* Explore and contribute to issues happening in your area, and worldwide.
+* /assets - other images/resources

@@ -1,20 +1,28 @@
 const library = (function () {
 
+  /*
+    stellar.js - Helper library for stellar blockchain transaction / query methods.
+
+    4 Key Methods:
+    createKeyPair: Create Key Pair for a wallet.
+    createAccount: Create Account (containing potentially multiple asset types).
+    submitTransaction: Submit Transaction between the source and the destination.
+    getBalances: Get Balances (amongst different stellar asset types) for the provided keyPair.
+  */
+
   const StellarSdk = require('stellar-sdk');
   const request = require('request');
   const ASSET_NAME = "Vocal";
   StellarSdk.Network.useTestNetwork();
+  const STELLAR_TEST_URL = 'https://horizon-testnet.stellar.org/friendbot';
   const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
-  // 4 Key Methods:
-  // createKeyPair: Create Key Pair for a wallet.
-  // createAccount: Create Account (containing potentially multiple asset types).
-  // submitTransaction: Submit Transaction between the source and the destination.
-  // getBalances: Get Balances (amongst different stellar asset types) for the provided keyPair.
-
-  // create a completely new and unique pair of keys
-  // see more about KeyPair objects: https://stellar.github.io/js-stellar-sdk/Keypair.html
-
+  // TODO: set issuer key pair.
+  const VOCAL_ISSUER = null; 
+  /**
+   * Create a completely new and unique pair of keys.
+   * See more about KeyPair objects: https://stellar.github.io/js-stellar-sdk/Keypair.html
+   */
   const createKeyPair = () => {
     const pair = StellarSdk.Keypair.random();
     // pair.secret();
@@ -24,21 +32,19 @@ const library = (function () {
 
   const createAccount = (pair, cb) => {
     request.get({
-      url: 'https://horizon-testnet.stellar.org/friendbot',
+      url: STELLAR_TEST_URL,
       qs: { addr: pair.publicKey() },
       json: true
     }, function (error, response, body) {
       if (error || response.statusCode !== 200) {
         console.error('ERROR!', error || body);
-      }
-      else {
-
+      } else {
         cb(body);
       }
     });
   }
 
-  const submitTransaction = (sourceKeys, destinationId, amount, memo, success, failure) => {
+  const submitTransaction = (sourceKeyPair, destinationId, amount, memo, success, failure) => {
 
     // First, check to make sure that the destination account exists.
     // You could skip this, but if the account does not exist, you will be charged
@@ -50,7 +56,7 @@ const library = (function () {
       })
       // If there was no error, load up-to-date information on your account.
       .then(function () {
-        return server.loadAccount(sourceKeys.publicKey());
+        return server.loadAccount(sourceKeyPair.publicKey());
       })
       .then(function (sourceAccount) {
         // Start building the transaction.
@@ -68,7 +74,7 @@ const library = (function () {
           .addMemo(StellarSdk.Memo.text(memo)) // 'Test Transaction'
           .build();
         // Sign the transaction to prove you are actually the person sending it.
-        transaction.sign(sourceKeys);
+        transaction.sign(sourceKeyPair);
         // And finally, send it off to Stellar!
         return server.submitTransaction(transaction);
       })
@@ -80,11 +86,23 @@ const library = (function () {
     server.loadAccount(pair.publicKey()).then(cb);
   }
 
+  const getVocalBalance = (balances) => {
+    balances.map((balances) => {
+      const asset = balance.asset_type;
+      if (asset === ASSET_NAME) {
+        return balance.balance;
+      }
+    });
+    return 0;
+  }
+
   return {
     ASSET_NAME: ASSET_NAME,
+    VOCAL_ISSUER: VOCAL_ISSUER,
     createKeyPair: createKeyPair,
     createAccount: createAccount,
     getBalances: getBalances,
+    getVocalBalance: getVocalBalance,
     submitTransaction: submitTransaction
   };
 
