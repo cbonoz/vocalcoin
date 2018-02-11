@@ -5,9 +5,11 @@ const StellarSdk = require('stellar-sdk');
 // My Custom libraries
 const stellar = require('./stellar');
 
-
-const issuerSecret = process.env.VOCAL_ISSUER_SECRET;
-const issuerPublicKey = process.env.VOCAL_ISSUER_PUBKEY;
+const newKeyPair = stellar.createKeyPair();
+// const issuerSecret = process.env.VOCAL_ISSUER_SECRET;
+// const issuerPublicKey = process.env.VOCAL_ISSUER_PUBKEY;
+const issuerSecret =  newKeyPair.secret();
+const issuerPublicKey =  newKeyPair.publicKey();
 const keyPairObj = {'type': "ed25519", 'secretKey': issuerSecret, 'publicKey': issuerPublicKey};
 console.log(keyPairObj.secretKey, keyPairObj.publicKey);
 const issuerPair = new StellarSdk.Keypair(keyPairObj);
@@ -16,7 +18,6 @@ const keyPair = issuerPair;
 // var sql = escape("INSERT INTO issues(user_id, description, title, lat, lng, place, active, time) values('EQo9MtWq9wWd3LmPJaJUX8F25rG2', 'test', 'test title', 41.87515838725938, -87.6318856454468, %L, true, 1514591624548", "Boston Blackie's");
 // console.log(sql);
 
-// const keyPair = stellar.createKeyPair();
 console.log('keyPair', keyPair.secret(), keyPair.publicKey())
 var account = null;
 
@@ -37,7 +38,6 @@ function testAccountCreation() {
 }
 
 function createNewAsset(assetName, issuerSecret) {
-
 
     // Keys for accounts to issue and receive the new asset
     var issuingKeys = StellarSdk.Keypair.fromSecret(issuerSecret);
