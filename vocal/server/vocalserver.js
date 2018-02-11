@@ -162,8 +162,9 @@ function modifyBalanceAndExecute(address, amount, cb) {
         to = stellar.VOCAL_ISSUER;
         from = address;
     } else {
-        console.error("0 value transaction request for", address)
-        return;
+        const errorMessage = "0 value transaction request for " +  address;
+        console.error(errorMessage);
+        throw errorMessage;
     }
 
     stellar.submitTransaction(
