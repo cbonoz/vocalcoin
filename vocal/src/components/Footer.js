@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import vocal from '../assets/vocal_trans_white.png';
+import vocalWebp from '../optimized_media/vocal_trans_white.webp';
 
 export default class Footer extends Component {
 
@@ -23,7 +24,7 @@ export default class Footer extends Component {
 
                     <div className="footer-left">
 
-                        <h3><img alt="Vocal Coin" src={vocal} className="footer-image" /></h3>
+                        <h3><img alt="Vocal Coin" src={vocal} webp={vocalWebp} className="footer-image" /></h3>
                         <p className="footer-slogan">Distributed Political Currency</p>
 
                         <p className="footer-links">

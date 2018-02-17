@@ -3,6 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import LoginForm from './LoginForm';
 
 import vocal from '../../assets/vocal_title.png';
+import vocalWebp from '../../optimized_media/vocal_title.webp';
 
 export default class LoginModal extends Component {
 
@@ -19,7 +20,8 @@ export default class LoginModal extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         <div className="centered">
-                            <img src={vocal} className="centered login-image"/>
+                            {/*<img src={vocal} webp={vocalWebp} className="centered login-image"/>*/}
+                            <img webp={vocalWebp} className="centered login-image"/>
                             <LoginForm onLogin={this.props.close}/>
                         </div>
                     </Modal.Body>

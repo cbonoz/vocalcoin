@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/re
 import { toast } from 'react-toastify';
 
 import vocal from '../../assets/vocal_title.png';
+import vocalWebp from '../../optimized_media/vocal_title.webp';
 
 export default class IssueModal extends Component {
 
@@ -101,7 +102,7 @@ export default class IssueModal extends Component {
                     <Modal.Body>
                         <hr />
                         <div>
-                            <img src={vocal} className="modal-image" />
+                            <img src={vocal} webp={vocalWebp} className="modal-image" />
 
                             <form>
                                 <FormGroup bsSize="large" controlId="formBasicText" className="issue-form-group">

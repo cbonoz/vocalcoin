@@ -8,6 +8,8 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './components/Home';
 
+import asyncComponent from "./components/AsyncComponent";
+
 import api from './utils/api';
 
 import {
@@ -27,6 +29,16 @@ import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-vis/dist/style.css';
+
+// Adding AsyncComponents for code splitting
+// https://serverless-stack.com/chapters/code-splitting-in-create-react-app.html
+const AsyncDashboard = asyncComponent(() => import("./components/dash/Dashboard"));
+const AsyncMapPage = asyncComponent(() => import("./components/dash/MapPage"));
+const AsyncWhitePaper = asyncComponent(() => import("./components/WhitePaper"));
+const AsyncFAQ = asyncComponent(() => import("./components/FAQ"));
+const AsyncFooter = asyncComponent(() => import("./components/Footer"));
+const AsyncHeader = asyncComponent(() => import("./components/Header"));
+const AsyncHome = asyncComponent(() => import("./components/Home"));
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
@@ -104,16 +116,16 @@ class App extends Component {
       <div className="App">
         <Router>
           <div>
-            <Header authed={this.state.authed} />
+            <AsyncHeader authed={this.state.authed} />
             <Switch>
-              <Route authed={this.state.authed} path="/whitepaper" component={WhitePaper} />
-              <Route authed={this.state.authed} path="/faq" component={FAQ} />
-              <PublicRoute authed={this.state.authed} exact path="/" component={Home} />
-              <PrivateRoute authed={this.state.authed} path="/dashboard" component={Dashboard} />
-              <PrivateRoute currentUser={this.state.currentUser} authed={this.state.authed} path="/map" component={MapPage} />
+              <Route authed={this.state.authed} path="/whitepaper" component={AsyncWhitePaper} />
+              <Route authed={this.state.authed} path="/faq" component={AsyncFAQ} />
+              <PublicRoute authed={this.state.authed} exact path="/" component={AsyncHome} />
+              <PrivateRoute authed={this.state.authed} path="/dashboard" component={AsyncDashboard} />
+              <PrivateRoute currentUser={this.state.currentUser} authed={this.state.authed} path="/map" component={AsyncMapPage} />
               <Route authed={this.state.authed} render={() => <h1 className="centered">Page not found</h1>} />
             </Switch>
-            <Footer />
+            <AsyncFooter />
           </div>
         </Router>
         <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />

@@ -61,7 +61,7 @@ export default class Home extends Component {
                             <Col xs={12} md={12}>
                                 <div className="static-modal-jumbotron opaque centered">
                                     {/*<img className="home-banner-image" src={vocal} />*/}
-                                    <Image className="home-banner-image" src={vocal} webp={webpVocal} />
+                                    <Image className="home-banner-image" webp={webpVocal} />
                                     <h2 className="bold title-text animated fadeIn">
                                         {self.state.title}
                                     </h2>
