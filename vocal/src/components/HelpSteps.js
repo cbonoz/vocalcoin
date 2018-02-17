@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Row, Col, Grid } from 'react-bootstrap';
+import { Row, Col, Grid } from 'react-bootstrap';
 import HeaderBox from './data/HeaderBox';
 
 export default class HelpSteps extends Component {

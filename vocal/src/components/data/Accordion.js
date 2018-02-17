@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {  Well, Collapse, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Well, Collapse, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 export default class Accordion extends Component {
 

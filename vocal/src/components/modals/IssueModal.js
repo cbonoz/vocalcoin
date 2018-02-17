@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Modal, Popover, Tooltip, OverlayTrigger, ControlLabel, Form, FormGroup, FormControl } from 'react-bootstrap';
+import { Button, Modal, ControlLabel, FormGroup, FormControl } from 'react-bootstrap';
 import api from '../../utils/api';
 import helper from '../../utils/helper';
 

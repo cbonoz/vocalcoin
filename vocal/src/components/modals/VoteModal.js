@@ -9,8 +9,8 @@ import helper from './../../utils/helper';
 import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
 import { toast } from 'react-toastify';
 
-import vocal from '../../assets/vocal_title.png';
-import vocalWebp from '../../optimized_media/vocal_title.webp';
+// import vocal from '../../assets/vocal_title.png';
+// import vocalWebp from '../../optimized_media/vocal_title.webp';
 
 export default class VoteModal extends Component {
 

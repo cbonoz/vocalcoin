@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Jumbotron, Button, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Jumbotron, Button, Row, Col } from 'react-bootstrap';
 import ReactRotatingText from 'react-rotating-text';
 import HeaderBox from './data/HeaderBox';
 import SocketFeed from './SocketFeed';
