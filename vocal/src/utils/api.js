@@ -6,8 +6,9 @@ const library = (function () {
     const PORT = 9007;
     const MAX_EVENTS = 8;
 
-    const BASE_URL = "https://www.vocalcoin.com"
+    const BASE_URL = process.env.VOCAL_BASE_URL;
     // const BASE_URL = `https://www.vocalcoin.com:${PORT}`;
+    console.log('base url', BASE_URL);
     const socket = require('socket.io-client')(BASE_URL);
 
     const getHeaders = () => {

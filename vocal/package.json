@@ -11,6 +11,7 @@
     "react": "^16.1.1",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.1.1",
+    "react-geolocated": "^2.3.0",
     "react-geolocation": "^1.0.3",
     "react-google-maps": "^9.4.1",
     "react-paginate": "^5.0.0",
@@ -37,9 +38,9 @@
     "analyze": "source-map-explorer build/static/js/main.*"
   },
   "devDependencies": {
-    "react-image-webp": "^0.2.2",
     "imagemin": "^5.3.1",
     "imagemin-webp": "^4.1.0",
+    "react-image-webp": "^0.2.2",
     "source-map-explorer": "^1.5.0"
   }
 }

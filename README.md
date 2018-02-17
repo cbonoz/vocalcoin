@@ -76,3 +76,6 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
 * /whitepaper - vocal whitepaper tex and build output files such as the pdf.
 * /vocal - Front end and server code.
 * /assets - other images/resources
+
+### Useful Links:
+* https://medium.com/@tacomanator/environments-with-create-react-app-7b645312c09d
