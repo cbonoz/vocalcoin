@@ -23,8 +23,7 @@ export default class Dashboard extends Component {
 
         this._renderCurrentPage = this._renderCurrentPage.bind(this);
         this.updateIssues = this.updateIssues.bind(this);
-        this._updateBalance = this._updateBalance.bind(this);
-        this.getAddress = this.getAddress.bind(this);
+        this.updateBalance = this.updateBalance.bind(this);
         this.updateCurrentPage = this.updateCurrentPage.bind(this);
     }
 
@@ -33,7 +32,7 @@ export default class Dashboard extends Component {
         self.removeListener = firebaseAuth().onAuthStateChanged((user) => {
             self.setState({ currentUser: user });
             self.updateIssues();
-            self.getAddress();
+            self.updateBalance();
         })
     }
 
@@ -59,31 +58,11 @@ export default class Dashboard extends Component {
         this.setState({ currentPage: currentPage });
     }
 
-    getAddress() {
+    updateBalance() {
         const self = this;
         const currentUser = self.state.currentUser;
-
-        // If I haven't retrieved the user yet, cancel.
-        if (!currentUser) {
-            return;
-        }
-
         const userId = currentUser.uid;
         self.setState({ loading: true, err: null })
-
-        api.getAddress(userId).then((data) => {
-            console.log(JSON.stringify(data));
-            self.setState({ loading: false, address: data });
-            self._updateBalance();
-        }).catch((err) => {
-            self.setState({ loading: false, err: err })
-        });
-    }
-
-    _updateBalance() {
-        const self = this;
-        const currentUser = self.state.currentUser;
-        const userId = currentUser.uid;
         api.getBalance(userId).then((res) => {
             self.setState({ balance: res + " vocal" });
             console.log('getBalance: ' + res);

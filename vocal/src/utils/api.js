@@ -6,7 +6,7 @@ const library = (function () {
     const PORT = 9007;
     const MAX_EVENTS = 8;
 
-    const BASE_URL = process.env.VOCAL_BASE_URL;
+    const BASE_URL = proces.env.VOCAL_BASE_URL || `http://localhost:9007`;
     // const BASE_URL = `https://www.vocalcoin.com:${PORT}`;
     console.log('base url', BASE_URL);
     const socket = require('socket.io-client')(BASE_URL);
@@ -139,6 +139,7 @@ const library = (function () {
 
     function getBalance(userId) {
         const url = `${BASE_URL}/api/balance/${userId}`;
+        console.log('getBalance', url);
         return axios.get(url, getHeaders()).then(response => response.data); 
     }
 
