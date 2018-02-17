@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Jumbotron, Button, Row, Col } from 'react-bootstrap';
-import ReactRotatingText from 'react-rotating-text';
 import HeaderBox from './data/HeaderBox';
 import SocketFeed from './SocketFeed';
 // import YouTube from 'react-youtube';
+// import ReactRotatingText from 'react-rotating-text';
 
 import HelpSteps from './HelpSteps';
 
@@ -23,20 +23,18 @@ export default class Home extends Component {
         super(props);
         this.state = {
             title: 'The Future is Vocal' ,
-            // slogan: 'Vocal is a currency platform that puts the advertising experience back in the hands of users.',
-            // slogan: 'Vocal is a currency platform for promoting civic engagement',
             slogan: "Vocal is a cryptocurrency platform for promoting social change and civic engagement.",
             words: ['building', 'sharing', 'discovering'],
             blocks: [],
             authed: this.props.authed
         }
-        this._onVideoReady = this._onVideoReady.bind(this);
+        // this._onVideoReady = this._onVideoReady.bind(this);
     }
 
-    _onVideoReady(event) {
-        // access to player in all event handlers via event.target
-        event.target.pauseVideo();
-    }
+    // _onVideoReady(event) {
+    //     // access to player in all event handlers via event.target
+    //     event.target.pauseVideo();
+    // }
 
     render() {
         const self = this;
@@ -75,9 +73,6 @@ export default class Home extends Component {
                                                     See our FAQ
                                                     {/* &nbsp;<i className="centered clear fa fa-refresh fa-spin" aria-hidden="true"></i> */}
                                                 </Button>
-                                                {/* <Link to="/faq">
-                                                    <p className="home-learn-more medium facebook-blue"><b>See our FAQ</b></p>
-                                                </Link> */}
                                             </div>
                                         </span>
                                     </div>
