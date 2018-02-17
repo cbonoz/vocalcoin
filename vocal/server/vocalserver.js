@@ -66,7 +66,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server, { origins: '*:*' });
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // TODO: use reduced cors in production.
 // const whitelist = ['https://vocalcoin.com', 'https://www.vocalcoin.com'];
@@ -102,14 +102,19 @@ function getAddressAndExecute(userId, cb) {
     });
 }
 
-function getBalanceAndExecute(address, cb) {
-    // Get balances for the newly created account from the stellar blockchain.
-    stellar.getBalances(keyPair, (account) => {
-        // Select only the vocal coin balance.
-        const vocalBalance = stellar.getVocalBalance(account.balances);
-        console.log('Vocal balance for account: ' + keyPair.publicKey() + ": " + vocalBalance);
-        cb(vocalBalance);
-    });;
+function getBalanceAndExecute(userId, cb) {
+    
+    getUserAndExecute(userId, (user) => {
+        const keyPair = stellar.getKeyPairFromSecret(user.seed);
+        console.log('got keypair', JSON.stringify(keyPair));
+        // Get balances for the newly created account from the stellar blockchain.
+        stellar.getBalances(keyPair, (account) => {
+            // Select only the vocal coin balance.
+            const vocalBalance = stellar.getVocalBalance(account.balances);
+            console.log('Vocal balance for account: ' + keyPair.publicKey() + ": " + vocalBalance);
+            cb(vocalBalance);
+        });
+    });
 }
 
 function modifyBalanceAndExecute(userId, amount, cb) {
@@ -230,30 +235,28 @@ app.post('/api/issue', passport.authenticate('bearer', {
     const issue = JSON.parse(body.issue);
     const userId = issue.userId;
     try {
-        getAddressAndExecute(userId, (address) => {
-            getBalanceAndExecute(address, (balanceFromBlockchain) => {
-                // const balanceFromBlockchain = contract.getBalance(address);
-                if (balanceFromBlockchain < vocal.ISSUE_COST) {
-                    const errorMessage = `Insufficient balance (${balanceFromBlockchain}), require ${vocal.ISSUE_COST}`;
-                    return res.status(401).json({ data: errorMessage })
-                }
+        getBalanceAndExecute(userId, (balanceFromBlockchain) => {
+            // const balanceFromBlockchain = contract.getBalance(address);
+            if (balanceFromBlockchain < vocal.ISSUE_COST) {
+                const errorMessage = `Insufficient balance (${balanceFromBlockchain}), require ${vocal.ISSUE_COST}`;
+                return res.status(401).json({ data: errorMessage })
+            }
 
-                modifyBalanceAndExecute(address, -vocal.ISSUE_COST, () => {
-                    // Now insert the new issue.
-                    const query = vocal.insertIssueQuery(issue);
-                    pool.query(query, (err, result) => {
-                        console.log('postIssue', err, result)
-                        if (err) {
-                            console.error('postIssue error', err);
-                            return res.status(500).json(err);
-                        }
-                        // pool.end()
-                        return res.json(result.rows);
-                    });
-                })
-
+            modifyBalanceAndExecute(address, -vocal.ISSUE_COST, () => {
+                // Now insert the new issue.
+                const query = vocal.insertIssueQuery(issue);
+                pool.query(query, (err, result) => {
+                    console.log('postIssue', err, result)
+                    if (err) {
+                        console.error('postIssue error', err);
+                        return res.status(500).json(err);
+                    }
+                    // pool.end()
+                    return res.json(result.rows);
+                });
             })
-        });
+
+        })
     } catch (e) {
         return res.status(500).json(e);
     }
@@ -386,6 +389,7 @@ app.post('/api/signin', (req, res) => {
         if (rows instanceof Array && user && user['address'] && user['address'] !== 'undefined') {
             // User already created with address.
             console.log('found user', user);
+            const address = user['address'];
 
             // Return the auth token after the user is confirmed.
             admin.auth().createCustomToken(userId).then((customToken) => {
@@ -405,8 +409,9 @@ app.post('/api/signin', (req, res) => {
             // User does not exist
             const username = body.username;
             const keypair = stellar.createKeyPair();
-            const address = keypair.address;
-            const seed = keypair.seed;
+            const address = keypair.publicKey();
+            const seed = keypair.secret();
+            console.log('createKeyPair', address, seed);
             const userQuery = vocal.insertUserQuery(userId, email, address, seed, username);
             console.log('userQuery', userQuery);
             pool.query(userQuery, (err, result) => {
@@ -442,12 +447,8 @@ app.get('/api/balance/:userId', passport.authenticate('bearer', {
 }), (req, res) => {
     const userId = req.params.userId;
     try {
-        getAddressAndExecute(userId, (address) => {
-            // const balanceFromBlockchain = contract.getBalance(address);
-            // return res.json(balanceFromBlockchain);
-            getBalanceAndExecute(address, (balance) => {
-                res.json(balance);
-            });
+        getBalanceAndExecute(userId, (balance) => {
+            res.json(balance);
         });
     } catch (err) {
         return res.json(err);

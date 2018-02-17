@@ -52,7 +52,7 @@ const library = (function () {
 
     function insertUserQuery(userId, email, address, seed, username) {
         return `INSERT INTO users(ID, email, address, seed, username) ` +
-            `values('${userId}', ${escape.literal(email)}, ${escape.literal(address)}, ${escape.literal(username)})`;
+            `values('${userId}', ${escape.literal(email)}, ${escape.literal(seed)}, ${escape.literal(address)}, ${escape.literal(username)})`;
     }
 
     function getAddress(userId) {
