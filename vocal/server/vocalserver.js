@@ -13,8 +13,6 @@ const https = require('https');
 const pg = require('pg');
 const path = require('path');
 const admin = require('firebase-admin')
-const ethers = require('ethers');
-const Wallet = ethers.Wallet;
 
 const serviceAccount = require("./db/vocalfb.json");
 const async = require('async');
@@ -30,7 +28,7 @@ const Strategy = require('passport-http-bearer').Strategy;
 const db = require('./db');
 const stellar = require('./stellar');
 
-const requirePostgres = false;
+const requirePostgres = true;
 const PORT = 9007;
 
 passport.use(new Strategy(
