@@ -26,7 +26,6 @@
     "react-tabs": "^2.1.1",
     "react-toastify": "^2.2.0",
     "react-vis": "^1.7.10",
-    "react-youtube": "^7.5.0",
     "socket.io-client": "^2.0.4",
     "universal-cookie": "^2.1.0"
   },
