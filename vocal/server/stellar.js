@@ -29,12 +29,12 @@ const library = (function () {
    */
   const createKeyPair = () => {
     return StellarSdk.Keypair.random();
-  }
+  };
 
   const getKeyPairFromSecret = (seed) => {
     console.log('keypair.fromSecret', seed);
     return StellarSdk.Keypair.fromSecret(seed);
-  }
+  };
 
   const createAccount = (pair, failure, success) => {
     request.get({
@@ -49,7 +49,7 @@ const library = (function () {
         success(body);
       }
     });
-  }
+  };
 
   const submitTransaction = (sourceKeyPair, destinationId, amount, memo, success, failure) => {
 
@@ -86,12 +86,12 @@ const library = (function () {
         return server.submitTransaction(transaction);
       })
       .then(success).catch(failure);
-  }
+  };
 
   const getBalances = (pair, cb) => {
     // the JS SDK uses promises for most actions, such as retrieving an account
     server.loadAccount(pair.publicKey()).then(cb);
-  }
+  };
 
   const getVocalBalance = (balances) => {
     balances.map((balance) => {
@@ -101,7 +101,7 @@ const library = (function () {
       }
     });
     return 0;
-  }
+  };
 
   return {
     ASSET_NAME: ASSET_NAME,

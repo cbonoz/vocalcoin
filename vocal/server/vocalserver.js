@@ -51,15 +51,13 @@ const vocal = require('./vocal');
 
 const dbUser = process.env.ADMIN_DB_USER;
 const dbPass = process.env.ADMIN_DB_PASS;
-const kPass = process.env.K_PASS;
 const dbName = 'vocal';
-// const connectionString = process.env.VOCAL_DATABASE_URL || `postgres://${dbUser}:${dbPass}@localhost:5432/${dbName}`;
 const connectionString = process.env.VOCAL_DATABASE_URL || `postgres://${dbUser}:${dbPass}@localhost:5432/${dbName}`;
 console.log('connectionString', connectionString);
 
 const pool = new pg.Pool({
-    connectionString: connectionString,
-})
+    connectionString: connectionString
+});
 
 const app = express();
 const server = require('http').createServer(app);
@@ -274,7 +272,7 @@ app.post('/api/issue/delete', passport.authenticate('bearer', {
     const query = vocal.deleteIssueQuery(userId, issueId);
 
     pool.query(query, (err, result) => {
-        console.log('delete issue', err, result)
+        console.log('delete issue', err, result);
         if (err) {
             console.error('delete issue error', err);
             return res.status(500).json(err);
@@ -500,9 +498,9 @@ io.on('connection', function (client) {
 // DB Connection and Server start //
 pool.connect((err, client, done) => {
     if (err) {
-        console.error('postgres connection error', err)
+        console.error('postgres connection error', err);
         if (requirePostgres) {
-            console.error('exiting')
+            console.error('exiting');
             return;
         }
         console.error('continuing with disabled postgres db');
@@ -511,4 +509,4 @@ pool.connect((err, client, done) => {
     server.listen(PORT, () => {
         console.log('Express server listening on localhost port: ' + PORT);
     });
-})
+});
