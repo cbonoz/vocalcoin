@@ -112,7 +112,7 @@ function getBalanceAndExecute(userId, cb) {
             // Select only the vocal coin balance.
             console.log('account', JSON.stringify(account));
             const vocalBalance = stellar.getVocalBalance(account.balances);
-            const retVal = {'address': keyPair.publicKey, 'balance': vocalBalance};
+            const retVal = {'address': keyPair.publicKey(), 'balance': vocalBalance};
             console.log('Vocal balance:', JSON.stringify(retVal));
             cb(retVal);
         });

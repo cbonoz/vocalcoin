@@ -69,10 +69,10 @@ body {
   padding: 5px;
 }
 
-.your-balance {
-  padding: 5px;
+.your-balance, .your-issues {
+  padding: 20px;
   font-size: large;
-  margin: 20px;
+  margin: 25px;
 }
 
 .home-video-heading {
