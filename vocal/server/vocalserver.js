@@ -12,7 +12,7 @@ const http = require('http');
 const https = require('https');
 const pg = require('pg');
 const path = require('path');
-const admin = require('firebase-admin')
+const admin = require('firebase-admin');
 
 const serviceAccount = require("./db/vocalfb.json");
 const async = require('async');
@@ -119,9 +119,9 @@ function getBalanceAndExecute(userId, cb) {
 
 function modifyBalanceAndExecute(userId, amount, cb) {
     try {
-        var actionMessage;
-        var to;
-        var from;
+        let actionMessage;
+        let to;
+        let from;
         getUserAndExecute(userId, (user) => {
             if (amount > 0) {
                 to = user.address;

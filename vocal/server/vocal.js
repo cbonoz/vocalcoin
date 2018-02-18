@@ -1,13 +1,13 @@
 const library = (function () {
     const escape = require('pg-escape');
 
-    const REWARD_VALUE = 5;
+    const VOTE_REWARD = 5;
     const ISSUE_COST = 50;
     const DEFAULT_BALANCE = 50;
 
     const getRandom = (items) => {
         return items[Math.floor(Math.random()*items.length)];
-    }
+    };
 
     function isBlank(str) {
         return (!str || /^\s*$/.test(str));
@@ -16,12 +16,12 @@ const library = (function () {
     const formatDateTimeMs = (timeMs) => {
         const date = new Date(timeMs);
         return `${date.toDateString()} ${date.toLocaleTimeString()}`;
-    }
+    };
 
     // TODO: update this to not simply return a constant (make a dynamic credit amount).
     const calculateVocalCredit = (userId) => {
-        return REWARD_VALUE;
-    }
+        return VOTE_REWARD;
+    };
 
     function insertVoteQuery(vote) {
         return `INSERT INTO votes(issue_id, user_id, lat, lng, time, message, agree) ` +
@@ -98,7 +98,9 @@ const library = (function () {
         updateAddressQuery: updateAddressQuery,
         toggleActiveForIssueId: toggleActiveForIssueId,
         formatDateTimeMs: formatDateTimeMs,
-        ISSUE_COST: ISSUE_COST
+        ISSUE_COST: ISSUE_COST,
+        VOTE_REWARD: VOTE_REWARD,
+        DEFAULT_BALANCE: DEFAULT_BALANCE
     }
 
 })();
