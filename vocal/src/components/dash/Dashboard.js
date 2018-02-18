@@ -32,7 +32,7 @@ export default class Dashboard extends Component {
         self.removeListener = firebaseAuth().onAuthStateChanged((user) => {
             self.setState({ currentUser: user });
             self.updateIssues();
-            self.updateBalance();
+            // self.updateBalance();
         })
     }
 
@@ -46,8 +46,9 @@ export default class Dashboard extends Component {
             self.setState({ loading: true, err: null });
             const userId = self.state.currentUser.uid;
             api.getIssuesForUserId(userId).then((data) => {
+                console.log('got issues', data);
                 const yourIssues = data;
-                self.setState({ loading: true, issues: yourIssues });
+                self.setState({ loading: true, issues: yourIssues, loading: false });
             }).catch((err) => {
                 self.setState({ issues: [], loading: false, err: err });
             });
@@ -64,11 +65,15 @@ export default class Dashboard extends Component {
         const userId = currentUser.uid;
         self.setState({ loading: true, err: null })
         api.getBalance(userId).then((res) => {
-            self.setState({ balance: res + " vocal" });
+            const retVal = JSON.parse(res);
+            const vocalBalance = retVal['balance'];
+            const vocalAddress = retVal['address'];
+
+            self.setState({ balance: vocalBalance, address: vocalAddress});
             console.log('getBalance: ' + res);
         }).catch((err) => {
             console.error('getBalance error', JSON.stringify(err));
-            self.setState({ balance: "Temporary error retrieving balance" });
+            self.setState({ balance: "", address: "Temporary error retrieving Account" });
         });
     }
 

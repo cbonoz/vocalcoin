@@ -103,16 +103,18 @@ function getAddressAndExecute(userId, cb) {
 }
 
 function getBalanceAndExecute(userId, cb) {
-    
+
     getUserAndExecute(userId, (user) => {
         const keyPair = stellar.getKeyPairFromSecret(user.seed);
         console.log('got keypair', JSON.stringify(keyPair));
         // Get balances for the newly created account from the stellar blockchain.
         stellar.getBalances(keyPair, (account) => {
             // Select only the vocal coin balance.
+            console.log('account', JSON.stringify(account));
             const vocalBalance = stellar.getVocalBalance(account.balances);
-            console.log('Vocal balance for account: ' + keyPair.publicKey() + ": " + vocalBalance);
-            cb(vocalBalance);
+            const retVal = {'address': keyPair.publicKey, 'balance': vocalBalance};
+            console.log('Vocal balance:', JSON.stringify(retVal));
+            cb(retVal);
         });
     });
 }
@@ -412,29 +414,39 @@ app.post('/api/signin', (req, res) => {
             const address = keypair.publicKey();
             const seed = keypair.secret();
             console.log('createKeyPair', address, seed);
-            const userQuery = vocal.insertUserQuery(userId, email, address, seed, username);
-            console.log('userQuery', userQuery);
-            pool.query(userQuery, (err, result) => {
-                console.log('insert user', err, JSON.stringify(result));
-                if (err) {
-                    console.error('create user error', err);
-                    return res.status(500).json(err);
-                }
 
-                // Return the auth token after the user is confirmed.
-                admin.auth().createCustomToken(userId).then((customToken) => {
-                    // Send token back to client.
-                    console.log(userId, customToken);
-                    db.users.assignToken(userId, customToken);
-                    return res.json({
-                        "token": customToken,
-                        "address": address
+            stellar.createAccount(keypair, 
+                (accErr) => {
+                    console.error('create account error', accErr);
+                    return res.status(500).json(accErr);
+                },
+                (accRes) => {
+                    const userQuery = vocal.insertUserQuery(userId, email, address, seed, username);
+                    console.log('userQuery', userQuery);
+                    pool.query(userQuery, (err, result) => {
+                        console.log('insert user', err, JSON.stringify(result));
+                        if (err) {
+                            console.error('create user error', err);
+                            return res.status(500).json(err);
+                        }
+        
+                        // Return the auth token after the user is confirmed.
+                        admin.auth().createCustomToken(userId).then((customToken) => {
+                            // Send token back to client.
+                            console.log(userId, customToken);
+                            db.users.assignToken(userId, customToken);
+                            return res.json({
+                                "token": customToken,
+                                "address": address
+                            });
+                        }).catch((error) => {
+                            console.error("Error creating custom token:", error);
+                            return res.json(error);
+                        });
                     });
-                }).catch((error) => {
-                    console.error("Error creating custom token:", error);
-                    return res.json(error);
-                });
-            });
+                }
+            );
+
         }
 
     });
@@ -447,8 +459,8 @@ app.get('/api/balance/:userId', passport.authenticate('bearer', {
 }), (req, res) => {
     const userId = req.params.userId;
     try {
-        getBalanceAndExecute(userId, (balance) => {
-            res.json(balance);
+        getBalanceAndExecute(userId, (retVal) => {
+            res.json(retVal);
         });
     } catch (err) {
         return res.json(err);

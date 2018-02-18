@@ -28,17 +28,15 @@ const library = (function () {
    * See more about KeyPair objects: https://stellar.github.io/js-stellar-sdk/Keypair.html
    */
   const createKeyPair = () => {
-    const pair = StellarSdk.Keypair.random();
-    // pair.secret();
-    // pair.publicKey();
-    return pair;
+    return StellarSdk.Keypair.random();
   }
 
   const getKeyPairFromSecret = (seed) => {
+    console.log('keypair.fromSecret', seed);
     return StellarSdk.Keypair.fromSecret(seed);
   }
 
-  const createAccount = (pair, cb) => {
+  const createAccount = (pair, failure, success) => {
     request.get({
       url: STELLAR_TEST_URL,
       qs: { addr: pair.publicKey() },
@@ -46,8 +44,9 @@ const library = (function () {
     }, function (error, response, body) {
       if (error || response.statusCode !== 200) {
         console.error('ERROR!', error || body);
+        failure(error || body);
       } else {
-        cb(body);
+        success(body);
       }
     });
   }
@@ -95,7 +94,7 @@ const library = (function () {
   }
 
   const getVocalBalance = (balances) => {
-    balances.map((balances) => {
+    balances.map((balance) => {
       const asset = balance.asset_type;
       if (asset === ASSET_NAME) {
         return balance.balance;
