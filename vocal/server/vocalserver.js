@@ -496,17 +496,23 @@ io.on('connection', function (client) {
 });
 
 // DB Connection and Server start //
-pool.connect((err, client, done) => {
-    if (err) {
-        console.error('postgres connection error', err);
-        if (requirePostgres) {
-            console.error('exiting');
-            return;
-        }
-        console.error('continuing with disabled postgres db');
-    }
 
-    server.listen(PORT, () => {
-        console.log('Express server listening on localhost port: ' + PORT);
+stellar.getBalances(stellar.VOCAL_ISSUER_KEYPAIR, (vocalIssuerAccount) => {
+    console.log('Vocal Issuer Account Balance', JSON.stringify(stellar.getVocalBalance(vocalIssuerAccount.balances)));
+
+
+    pool.connect((err, client, done) => {
+        if (err) {
+            console.error('postgres connection error', err);
+            if (requirePostgres) {
+                console.error('exiting');
+                return;
+            }
+            console.error('continuing with disabled postgres db');
+        }
+
+        server.listen(PORT, () => {
+            console.log('Express server listening on localhost port: ' + PORT);
+        });
     });
 });

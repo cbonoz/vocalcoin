@@ -14,13 +14,14 @@ const library = (function () {
     const request = require('request');
     const ASSET_NAME = "Vocal";
     StellarSdk.Network.useTestNetwork();
-    const STELLAR_TEST_URL = 'https://horizon-testnet.stellar.org/friendbot';
-    const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+    const STELLAR_FRIENDBOT_TEST_URL = 'https://horizon-testnet.stellar.org/friendbot';
+    const STELLAR_TEST_URL = 'https://horizon-testnet.stellar.org';
+    const server = new StellarSdk.Server(STELLAR_TEST_URL);
 
-    // TODO: set issuer key pair.
+    const vocal = require('./vocal');
+
     const VOCAL_ISSUER_SEED = process.env.VOCAL_ISSUER_SECRET;
     const VOCAL_ISSUER_KEYPAIR = StellarSdk.Keypair.fromSecret(VOCAL_ISSUER_SEED);
-
     console.log('Vocal Issuer', VOCAL_ISSUER_SEED, VOCAL_ISSUER_KEYPAIR);
 
     /**
@@ -38,16 +39,28 @@ const library = (function () {
 
     const createAccount = (pair, failure, success) => {
         request.get({
-            url: STELLAR_TEST_URL,
+            url: STELLAR_FRIENDBOT_TEST_URL,
             qs: {addr: pair.publicKey()},
             json: true
         }, (error, response, body) => {
             if (error || response.statusCode !== 200) {
                 const errorMessage = error || body;
-                console.error('ERROR!', errorMessage);
+                console.error('createAccount error', errorMessage);
                 failure(errorMessage);
             } else {
-                success(body);
+                // Add the default balance to the newly created account.
+                submitTransaction(VOCAL_ISSUER_KEYPAIR, pair.publicKey(), vocal.DEFAULT_BALANCE, "Default Balance",
+                    (defaultBalanceSuccess) => {
+                        "use strict";
+                        success(body);
+                    },
+                    (defaultBalanceFailure) => {
+                        "use strict";
+                        console.error('submitTransaction defaultBalance error', defaultBalanceFailure);
+                        failure(defaultBalanceFailure);
+                    }
+                );
+
             }
         });
     };
@@ -108,6 +121,8 @@ const library = (function () {
         ASSET_NAME: ASSET_NAME,
         VOCAL_ISSUER_KEYPAIR: VOCAL_ISSUER_KEYPAIR,
         VOCAL_ISSUER_SEED: VOCAL_ISSUER_SEED,
+        STELLAR_TEST_URL: STELLAR_TEST_URL,
+        server: server,
         createKeyPair: createKeyPair,
         createAccount: createAccount,
         getBalances: getBalances,

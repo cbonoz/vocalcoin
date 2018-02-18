@@ -1,34 +1,15 @@
-
 const escape = require('pg-escape');
 const StellarSdk = require('stellar-sdk');
 
 // My Custom libraries
 const stellar = require('./stellar');
-
-const newKeyPair = stellar.createKeyPair();
-// const issuerSecret = process.env.VOCAL_ISSUER_SECRET;
-// const issuerPublicKey = process.env.VOCAL_ISSUER_PUBKEY;
-var issuerSecret =  newKeyPair.secret();
-var issuerPublicKey =  newKeyPair.publicKey();
-
-issuerSecret = JSON.stringify(issuerSecret);
-
-// const issuerSecret = 'GAIJT4VI7JX3XJYAE6LXGZQCHTQBSDMTI2EGZET3H25HZ6VRQMDY2BA3'
-
-
-const keyPair = stellar.getKeyPairFromSecret(issuerSecret);
-// console.log('keyPair', keyPair)
+const STARTING_BALANCE = "1000000000.00";
 
 // const keyPairObj = {'type': "ed25519", 'secretKey': issuerSecret, 'publicKey': issuerPublicKey};
 // console.log(keyPairObj.secretKey, keyPairObj.publicKey);
 // const issuerPair = new StellarSdk.Keypair(keyPairObj);
 // const keyPair = issuerPair;
 
-// var sql = escape("INSERT INTO issues(user_id, description, title, lat, lng, place, active, time) values('EQo9MtWq9wWd3LmPJaJUX8F25rG2', 'test', 'test title', 41.87515838725938, -87.6318856454468, %L, true, 1514591624548", "Boston Blackie's");
-// console.log(sql);
-
-console.log('keyPair', keyPair.secret(), keyPair.publicKey())
-// var account = null;
 
 // function testAccountCreation() {
 
@@ -46,13 +27,31 @@ console.log('keyPair', keyPair.secret(), keyPair.publicKey())
 //     });
 // }
 
-// function createNewAsset(assetName, issuerSecret) {
-//     // Keys for accounts to issue and receive the new asset
-//     var issuingKeys = StellarSdk.Keypair.fromSecret(issuerSecret);
-//     var receivingKeys = StellarSdk.Keypair.fromSecret(issuerSecret);
+const vocalCoin = new StellarSdk.Asset(stellar.ASSET_NAME, stellar.VOCAL_ISSUER_KEYPAIR.publicKey());
+trustTransaction(vocalCoin);
 
-//     const vocalCoin = new StellarSdk.Asset(assetName, issuingKeys.publicKey());
-// }
+function trustTransaction(customAsset) {
+    "use strict";
+    const server = stellar.server;
+    const receivingKeys = stellar.VOCAL_ISSUER_KEYPAIR;
+
+    // First, the receiving account must trust the asset
+    server.loadAccount(receivingKeys.publicKey()).then(function (receiver) {
+        // The `changeTrust` operation creates (or alters) a trustline
+        // The `limit` parameter below is optional
+        const transaction = new StellarSdk.TransactionBuilder(receiver)
+            .addOperation(StellarSdk.Operation.changeTrust({
+                asset: customAsset,
+                limit: STARTING_BALANCE
+            }))
+            .build();
+        transaction.sign(receivingKeys);
+        return server.submitTransaction(transaction);
+    }).catch((err) => {
+        console.error(err);
+    });
+}
+
 
 // createNewAsset(stellar.ASSET_NAME);
 
