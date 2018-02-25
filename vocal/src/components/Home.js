@@ -1,21 +1,14 @@
 import React, { Component } from 'react'
 import { Jumbotron, Button, Row, Col } from 'react-bootstrap';
-import HeaderBox from './data/HeaderBox';
-import SocketFeed from './SocketFeed';
-// import YouTube from 'react-youtube';
 // import ReactRotatingText from 'react-rotating-text';
 
 import HelpSteps from './HelpSteps';
 
-import vocal from '../assets/vocal_trans_black.png';
 import webpVocal from '../optimized_media/vocal_trans_black.webp';
 
-import bgImage from '../assets/banner_10.png';
 import webpBgImage from '../optimized_media/banner_10.webp';
 
 import Image from 'react-image-webp';
-
-import { firebaseAuth } from '../utils/fire';
 
 export default class Home extends Component {
 
@@ -28,22 +21,13 @@ export default class Home extends Component {
             blocks: [],
             authed: this.props.authed
         }
-        // this._onVideoReady = this._onVideoReady.bind(this);
     }
-
-    // _onVideoReady(event) {
-    //     // access to player in all event handlers via event.target
-    //     event.target.pauseVideo();
-    // }
 
     render() {
         const self = this;
         const videoOpts = {
             height: '390',
             width: '640',
-            playerVars: { // https://developers.google.com/youtube/player_parameters
-                autoplay: 0
-            }
         };
 
         const backgroundStyle = {
@@ -79,27 +63,11 @@ export default class Home extends Component {
 
                                 </div>
                             </Col>
-                            {/* <Col xs={12} md={3} className="home-right-col">
-                                <ListGroup>
-                                    <HeaderBox header={"What's Happening"}>
-                                        <SocketFeed />
-                                    </HeaderBox>
-                                </ListGroup>
-                            </Col>
-                            <Col xsHidden md={1} /> */}
                         </Jumbotron>
                     </Row>
                 </div>
                 <Row>
                     <Col xs={12} md={12}>
-                        {/* <div className="home-video-section centered">
-                            <h1 className='facebook-blue centered home-video-heading'>How it Works</h1>
-                            <YouTube
-                                videoId="-_xxKBeUTdg"
-                                opts={videoOpts}
-                                onVideoReady={this._onVideoReady}
-                            />
-                        </div> */}
                     </Col>
                 </Row>
                 <HelpSteps maxSize={12} />
