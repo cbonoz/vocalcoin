@@ -4,19 +4,6 @@ import vocalWebp from '../optimized_media/vocal_trans_white.webp';
 
 export default class Footer extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            inputValue: ''
-        };
-    }
-
-    updateInputValue(evt) {
-        this.setState({
-            inputValue: evt.target.value
-        });
-    }
-
     render() {
         return (
             <footer >
@@ -32,10 +19,9 @@ export default class Footer extends Component {
                             <a href="/faq">FAQ</a>&nbsp;-&nbsp;
                             <a href="/whitepaper">Whitepaper</a>&nbsp;-&nbsp;
                             <a href="mailto:blackshoalgroup@gmail.com">Contact</a>
-                            {/* <a href="/contact">Contact</a> */}
                         </p>
 
-                        <p className="footer-company-name">Vocal Project &copy; 2017</p>
+                        <p className="footer-company-name">Vocal Project &copy; 2018</p>
 
                         <div className="footer-icons">
                             <a href="/"><i className="fa fa-facebook"></i></a>
@@ -45,16 +31,6 @@ export default class Footer extends Component {
                         </div>
 
                     </div>
-
-                    {/* <div className="footer-right">
-                        <p>Contact Us</p>
-                        <form>
-                            <textarea onChange={evt => this.updateInputValue(evt)} value={this.state.inputValue} name="message" placeholder="Message" ></textarea>
-                            <a target="_top" href={`mailto:blackshoalgroup@gmail.com?Subject=Hello&body=${this.state.inputValue}`}>
-                                <button>Send</button>
-                            </a>
-                        </form>
-        </div>*/}
                 </div>
 
             </footer>

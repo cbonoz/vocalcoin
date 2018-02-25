@@ -1,46 +1,36 @@
-var StellarSdk = require('stellar-sdk');
-StellarSdk.Network.useTestNetwork();
-var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+// Libraries.
 
-// Keys for accounts to issue and receive the new asset
-var issuingKeys = StellarSdk.Keypair
-  .fromSecret('SDP33FNO3TPKQZP7C2CICBXXLOJ2LXKNA4YCUJPMRKUZXCGSXW6NQ6DJ');
-var receivingKeys = StellarSdk.Keypair
-  .fromSecret('SDSAVCRE5JRAI7UFAVLE5IMIZRD6N6WOJUWKY4GFN34LOBEEUS4W2T2D');
+const vocal = require('./vocal');
+const stellar = require('./stellar');
 
-// Create an object to represent the new asset
-var astroDollar = new StellarSdk.Asset('VOC', issuingKeys.publicKey());
+// Variables.
 
-// First, the receiving account must trust the asset
-server.loadAccount(receivingKeys.publicKey())
-  .then(function(receiver) {
-    var transaction = new StellarSdk.TransactionBuilder(receiver)
-      // The `changeTrust` operation creates (or alters) a trustline
-      // The `limit` parameter below is optional
-      .addOperation(StellarSdk.Operation.changeTrust({
-        asset: astroDollar,
-        limit: '1000.0'
-      }))
-      .build();
-    transaction.sign(receivingKeys);
-    return server.submitTransaction(transaction);
-  })
+const ISSUER_KEYPAIR = stellar.VOCAL_ISSUER_KEYPAIR;
+const newUserPair = stellar.createKeyPair();
 
-  // Second, the issuing account actually sends a payment using the asset
-  .then(function() {
-    return server.loadAccount(issuingKeys.publicKey())
-  })
-  .then(function(issuer) {
-    var transaction = new StellarSdk.TransactionBuilder(issuer)
-      .addOperation(StellarSdk.Operation.payment({
-        destination: receivingKeys.publicKey(),
-        asset: astroDollar,
-        amount: '10'
-      }))
-      .build();
-    transaction.sign(issuingKeys);
-    return server.submitTransaction(transaction);
-  })
-  .catch(function(error) {
-    console.error('Error!', JSON.stringify(error));
-  });
+function testCreateAccount() {
+    stellar.createAccount(newUserPair,
+        (err) => {
+            "use strict";
+            console.error(err)
+        },
+        (res) => {
+            "use strict";
+            stellar.testSubmit(ISSUER_KEYPAIR, newUserPair, "10.0");
+            // stellar.sendTransaction(ISSUER_KEYPAIR, newUserPair, 100, "test amount",
+            //
+            //     (defaultBalanceFailure) => {
+            //         "use strict";
+            //         console.error('submitTransaction defaultBalance error', defaultBalanceFailure);
+            //     },
+            //     (defaultBalanceSuccess) => {
+            //         "use strict";
+            //         console.log('success', defaultBalanceSuccess)
+            //     },
+            // );
+        }
+    );
+}
+
+testCreateAccount()
+

@@ -12,12 +12,18 @@ const library = (function () {
         let score = 0;
         votes.map((vote) => {
             score += vote.agree;
-        })
+        });
         return score;
     }
 
     function processError(err) {
-        if (err.hasOwnProperty('response')) {
+        if (typeof(err) === 'string') {
+            return err;
+        } else if (err.hasOwnProperty('message')) {
+            return err['message'];
+        } else if (err.hasOwnProperty('data')) {
+            return JSON.stringify(err['data']);
+        } else if (err.hasOwnProperty('response')) {
             let resp = '';
             try {
                 resp = JSON.parse(err['response']);
@@ -35,12 +41,9 @@ const library = (function () {
             const respString = JSON.stringify(resp);
             return respString.substr(0, Math.min(50, respString.length));
 
-        } else if (err.hasOwnProperty('data')) {
-            return JSON.stringify(err['data']);
-        } else if (err.hasOwnProperty('message')) {
-            return err['message'];
         }
-        return "There was an error connecting to the server";
+
+        return "There was an error connecting to the Vocal server";
         // const errString = JSON.stringify(err);
         // return errString.substr(0, Math.min(50, errString.length))
     }

@@ -145,13 +145,13 @@ function modifyBalanceAndExecute(userId, amount, cb) {
                 to, // destination.
                 amount,
                 actionMessage,
-                (msg) => {
-                    console.log('success: ' + msg);
-                    cb();
-                },
                 (err) => {
                     console.error('stellar transaction error', JSON.stringify(err));
                     throw err;
+                },
+                (msg) => {
+                    console.log('success: ' + msg);
+                    cb();
                 }
             )
         });
@@ -203,7 +203,7 @@ app.post('/api/vote', passport.authenticate('bearer', {
         if (result.rows.length > 0) {
             // if we already have a vote for this user and issue, return.
             const errorMessage = "user already voted on this issue";
-            console.error(errorMessage)
+            console.error(errorMessage);
             return res.status(401).json({data: errorMessage});
         }
 

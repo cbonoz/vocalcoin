@@ -7,7 +7,7 @@ export default class Loading extends Component {
         return (
             <div className="center-middle animated fadeIn">
                 <img src={vocalSquare}/>
-                <div>Loading...</div>
+                <div className="loading-text">Loading...</div>
             </div>
         )
     }
