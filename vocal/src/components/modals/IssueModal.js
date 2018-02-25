@@ -65,7 +65,7 @@ export default class IssueModal extends Component {
     postIssue() {
         const self = this;
         self.setState({ postIssueEnabled: false, error: null });
-        const issue = self._createIssueFromForm()
+        const issue = self._createIssueFromForm();
 
         api.postIssue(issue).then((res) => {
             self.setState({ postIssueEnabled: true });

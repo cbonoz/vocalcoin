@@ -150,7 +150,7 @@ const MapWithASearchBox = compose(
 
           // console.log('nextLocation', JSON.stringify(nextLocation));
 
-          this.setState({
+          self.setState({
             center: nextCenter,
             lastCenter: nextCenter,
             markers: nextMarkers,

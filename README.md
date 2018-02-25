@@ -78,4 +78,5 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
 * /assets - other images/resources
 
 ### Useful Links:
+* https://medium.com/@ashisherc/create-an-ico-on-stellar-network-with-custom-token-7b6aab349f33
 * https://medium.com/@tacomanator/environments-with-create-react-app-7b645312c09d

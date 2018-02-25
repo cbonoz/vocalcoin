@@ -1,5 +1,4 @@
 const library = (function () {
-
     /*
      stellar.js - Helper library for stellar blockchain transaction / query methods.
 
@@ -12,16 +11,29 @@ const library = (function () {
 
     const StellarSdk = require('stellar-sdk');
     const request = require('request');
-    const ASSET_NAME = "Vocal";
-    StellarSdk.Network.useTestNetwork();
+    const ASSET_NAME = "VOC";
+    const STARTING_BALANCE = "1000000000.00";
     const STELLAR_FRIENDBOT_TEST_URL = 'https://horizon-testnet.stellar.org/friendbot';
+    // To use the live network, set the hostname to 'horizon.stellar.org'
+    // const STELLAR_URL = 'horizon.stellar.org';
     const STELLAR_TEST_URL = 'https://horizon-testnet.stellar.org';
     const server = new StellarSdk.Server(STELLAR_TEST_URL);
 
     const vocal = require('./vocal');
 
+    // Uncomment the following line to build transactions for the live network. Be
+    // sure to also change the horizon hostname.
+    // StellarSdk.Network.usePublicNetwork();
+    StellarSdk.Network.useTestNetwork();
+
+    const getKeyPairFromSecret = (seed) => {
+        console.log('keypair.fromSecret', seed);
+        return StellarSdk.Keypair.fromSecret(seed);
+    };
+
     const VOCAL_ISSUER_SEED = process.env.VOCAL_ISSUER_SECRET;
-    const VOCAL_ISSUER_KEYPAIR = StellarSdk.Keypair.fromSecret(VOCAL_ISSUER_SEED);
+    const VOCAL_ISSUER_KEYPAIR = getKeyPairFromSecret(VOCAL_ISSUER_SEED);
+    const vocalCoin = new StellarSdk.Asset(ASSET_NAME, VOCAL_ISSUER_KEYPAIR.publicKey());
     console.log('Vocal Issuer', VOCAL_ISSUER_SEED, VOCAL_ISSUER_KEYPAIR);
 
     /**
@@ -31,16 +43,10 @@ const library = (function () {
     const createKeyPair = () => {
         return StellarSdk.Keypair.random();
     };
-
-    const getKeyPairFromSecret = (seed) => {
-        console.log('keypair.fromSecret', seed);
-        return StellarSdk.Keypair.fromSecret(seed);
-    };
-
     const createAccount = (pair, failure, success) => {
         request.get({
             url: STELLAR_FRIENDBOT_TEST_URL,
-            qs: {addr: pair.publicKey()},
+            qs: { addr: pair.publicKey() },
             json: true
         }, (error, response, body) => {
             if (error || response.statusCode !== 200) {
@@ -49,7 +55,7 @@ const library = (function () {
                 failure(errorMessage);
             } else {
                 // Add the default balance to the newly created account.
-                submitTransaction(VOCAL_ISSUER_KEYPAIR, pair.publicKey(), vocal.DEFAULT_BALANCE, "Default Balance",
+                sendTransaction(VOCAL_ISSUER_KEYPAIR, pair, vocal.DEFAULT_BALANCE, "Default Balance",
                     (defaultBalanceSuccess) => {
                         "use strict";
                         success(body);
@@ -65,41 +71,39 @@ const library = (function () {
         });
     };
 
-    const submitTransaction = (sourceKeyPair, destinationId, amount, memo, success, failure) => {
+    // https://www.stellar.org/developers/guides/issuing-assets.html
+    // You don’t need to do anything to declare your asset on the network (see idea of trustline).
+    const sendTransaction = (sendingKeys, receivingKeys, amount, memo, success, failure) => {
 
-        // First, check to make sure that the destination account exists.
-        // You could skip this, but if the account does not exist, you will be charged
-        // the transaction fee when the transaction fails.
-        server.loadAccount(destinationId)
-        // If the account is not found, surface a nicer error message for logging.
-            .catch(StellarSdk.NotFoundError, function (error) {
-                throw new Error('The destination account does not exist!');
+        // First, the receiving account must trust the asset
+        server.loadAccount(receivingKeys.publicKey()).then(function (receiver) {
+                const transaction = new StellarSdk.TransactionBuilder(receiver)
+                    // The `changeTrust` operation creates (or alters) a trustline
+                    // The `limit` parameter below is optional
+                    .addOperation(StellarSdk.Operation.changeTrust({
+                        asset: vocalCoin
+                        // limit: '1000'
+                    }))
+                    .build();
+                transaction.sign(receivingKeys);
+                return server.submitTransaction(transaction)
             })
-            // If there was no error, load up-to-date information on your account.
+            // Second, the issuing account actually sends a payment using the asset
             .then(function () {
-                return server.loadAccount(sourceKeyPair.publicKey());
+                return server.loadAccount(sendingKeys.publicKey())
             })
-            .then(function (sourceAccount) {
-                // Start building the transaction.
-                transaction = new StellarSdk.TransactionBuilder(sourceAccount)
+            .catch(failure)
+            .then(function (issuer) {
+                const transaction = new StellarSdk.TransactionBuilder(issuer)
                     .addOperation(StellarSdk.Operation.payment({
-                        destination: destinationId,
-                        // Because Stellar allows transaction in many currencies, you must
-                        // specify the asset type. The special "native" asset represents Lumens.
-                        // asset: StellarSdk.Asset.native(),
-                        asset: ASSET_NAME,
+                        destination: receivingKeys.publicKey(),
+                        asset: vocalCoin,
                         amount: amount
                     }))
-                    // A memo allows you to add your own metadata to a transaction. It's
-                    // optional and does not affect how Stellar treats the transaction.
-                    .addMemo(StellarSdk.Memo.text(memo)) // 'Test Transaction'
                     .build();
-                // Sign the transaction to prove you are actually the person sending it.
-                transaction.sign(sourceKeyPair);
-                // And finally, send it off to Stellar!
-                return server.submitTransaction(transaction);
-            })
-            .then(success).catch(failure);
+                transaction.sign(sendingKeys);
+                return server.submitTransaction(transaction).then(success).catch(failure);
+            }).catch(failure);
     };
 
     const getBalances = (pair, cb) => {
@@ -128,7 +132,7 @@ const library = (function () {
         getBalances: getBalances,
         getKeyPairFromSecret: getKeyPairFromSecret,
         getVocalBalance: getVocalBalance,
-        submitTransaction: submitTransaction
+        sendTransaction: sendTransaction
     };
 
 })();

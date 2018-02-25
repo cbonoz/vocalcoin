@@ -17,31 +17,30 @@ const library = (function () {
     }
 
     function processError(err) {
-        return JSON.stringify(err);
-        // return "There was an error connecting to the server";
-        // if (err.hasOwnProperty('response')) {
-        //     let resp = '';
-        //     try {
-        //         resp = JSON.parse(err['response']);
-        //     } catch (e) {
-        //         resp = err;
-        //     }
-        //     if (resp.hasOwnProperty('data')) {
-        //         const data = resp['data'];
-        //         if (data.hasOwnProperty('name')) {
-        //             return data['name'];
-        //         }
-        //     } else if (resp.hasOwnProperty('name')) {
-        //         return JSON.stringify(resp['name']);
-        //     }
-        //     const respString = JSON.stringify(resp);
-        //     return respString.substr(0, Math.min(50, respString.length));
+        if (err.hasOwnProperty('response')) {
+            let resp = '';
+            try {
+                resp = JSON.parse(err['response']);
+            } catch (e) {
+                resp = err;
+            }
+            if (resp.hasOwnProperty('data')) {
+                const data = resp['data'];
+                if (data.hasOwnProperty('name')) {
+                    return data['name'];
+                }
+            } else if (resp.hasOwnProperty('name')) {
+                return JSON.stringify(resp['name']);
+            }
+            const respString = JSON.stringify(resp);
+            return respString.substr(0, Math.min(50, respString.length));
 
-        // } else if (err.hasOwnProperty('data')) {
-        //     return JSON.stringify(err['data']);
-        // } else if (err.hasOwnProperty('message')) {
-        //     return err['message'];
-        // }
+        } else if (err.hasOwnProperty('data')) {
+            return JSON.stringify(err['data']);
+        } else if (err.hasOwnProperty('message')) {
+            return err['message'];
+        }
+        return "There was an error connecting to the server";
         // const errString = JSON.stringify(err);
         // return errString.substr(0, Math.min(50, errString.length))
     }

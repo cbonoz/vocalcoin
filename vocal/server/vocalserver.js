@@ -72,10 +72,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
-// Test Ethereum Network (INFURAnet)
-const infuraTestNet = "https://infuranet.infura.io/";
-const infuraAccessToken = process.env.INFURA_ACCESS_TOKEN;
-const infuraMnemonic = process.env.INFURA_MNEMONIC;
+const ISSUE_COST = vocal.ISSUE_COST;
 
 pool.on('error', (err, client) => {
     console.error('Unexpected error on idle client', err)
@@ -110,7 +107,7 @@ function getBalanceAndExecute(userId, cb) {
             // Select only the vocal coin balance.
             console.log('account', JSON.stringify(account));
             const vocalBalance = stellar.getVocalBalance(account.balances);
-            const retVal = {'address': keyPair.publicKey(), 'balance': vocalBalance};
+            const retVal = { 'address': keyPair.publicKey(), 'balance': vocalBalance };
             console.log('Vocal balance:', JSON.stringify(retVal));
             cb(retVal);
         });
@@ -124,33 +121,36 @@ function modifyBalanceAndExecute(userId, amount, cb) {
         let from;
         getUserAndExecute(userId, (user) => {
             if (amount > 0) {
-                to = user.address;
+                to = stellar.getKeyPairFromSecret(user.seed);
                 from = stellar.VOCAL_ISSUER_KEYPAIR;
-                actionMessage = to + " earned " + amount;
+                actionMessage = user.username + " earned " + amount;
             } else if (amount < 0) {
-                to = stellar.VOCAL_ISSUER_KEYPAIR.publicKey();
-                from = StellarSdk.Keypair.fromSecret(user.seed);
-                actionMessage = from + " used " + amount;
+                amount = -amount;
+                to = stellar.VOCAL_ISSUER_KEYPAIR;
+                from = stellar.getKeyPairFromSecret(user.seed);
+                actionMessage = user.username + " used " + amount;
             } else {
-                const errorMessage = "0 value transaction request for " + address;
+                const errorMessage = "Not completed: 0 value transaction request for " + user.username;
                 console.error(errorMessage);
                 throw errorMessage;
             }
 
-            console.log('modifyBalanceAndExecute', from, to, actionMessage);
+            // Convert the amount to a string for the stellar transaction.
+            amount = amount.toString();
+            console.log('amount: ' + amount + " " + typeof(amount));
+            console.log('modifyBalanceAndExecute', from.publicKey(), to.publicKey(), amount, actionMessage);
 
-            stellar.submitTransaction(
-                from, // source key pair
-                to, // destination address
-                actionMessage,
+            stellar.sendTransaction(
+                from, // source.
+                to, // destination.
                 amount,
+                actionMessage,
                 (msg) => {
                     console.log('success: ' + msg);
                     cb();
                 },
                 (err) => {
-                    console.log('failure: ' + err);
-                    console.error('stellar transaction error', err);
+                    console.error('stellar transaction error', JSON.stringify(err));
                     throw err;
                 }
             )
@@ -207,24 +207,21 @@ app.post('/api/vote', passport.authenticate('bearer', {
             return res.status(401).json({ data: errorMessage });
         }
 
-        // Ok. Insert the vote into the DB.
-        getAddressAndExecute(userId, (address) => {
+        const amount = vocal.calculateVocalCredit(userId);
+        // Credit the user.
+        modifyBalanceAndExecute(userId, amount, () => {
+            // Now add the vote.
             const voteQuery = vocal.insertVoteQuery(vote);
-            const amount = vocal.calculateVocalCredit(userId);
-            // Credit the user.
-            modifyBalanceAndExecute(address, amount, () => {
-                // Now add the vote.
-                pool.query(voteQuery, (err, result) => {
-                    console.log('postVote', err, result);
-                    if (err) {
-                        console.error('postVote error', err);
-                        return res.status(500).json(err);
-                    }
-                    // pool.end()
-                    return res.json(result.rows);
-                });
-            })
-        })
+            pool.query(voteQuery, (err, result) => {
+                console.log('postVote', err, result);
+                if (err) {
+                    console.error('postVote error', err);
+                    return res.status(500).json(err);
+                }
+                // pool.end()
+                return res.json(result.rows);
+            });
+        });
     });
 });
 
@@ -237,19 +234,20 @@ app.post('/api/issue', passport.authenticate('bearer', {
     try {
         getBalanceAndExecute(userId, (balanceFromBlockchain) => {
             // const balanceFromBlockchain = contract.getBalance(address);
-            if (balanceFromBlockchain < vocal.ISSUE_COST) {
-                const errorMessage = `Insufficient balance (${balanceFromBlockchain}), require ${vocal.ISSUE_COST}`;
-                return res.status(401).json({ data: errorMessage })
+            const balance = parseFloat(balanceFromBlockchain['balance']);
+            if (balance < ISSUE_COST) {
+                const errorMessage = `Insufficient balance (${balance}), require ${ISSUE_COST}`;
+                return res.status(401).json(new Error( errorMessage ));
             }
 
-            modifyBalanceAndExecute(address, -vocal.ISSUE_COST, () => {
+            modifyBalanceAndExecute(userId, -ISSUE_COST, () => {
                 // Now insert the new issue.
                 const query = vocal.insertIssueQuery(issue);
                 pool.query(query, (err, result) => {
-                    console.log('postIssue', err, result)
+                    console.log('postIssue', err, result);
                     if (err) {
                         console.error('postIssue error', err);
-                        return res.status(500).json(err);
+                        return res.status(500).json(new Error(err));
                     }
                     // pool.end()
                     return res.json(result.rows);
@@ -258,7 +256,7 @@ app.post('/api/issue', passport.authenticate('bearer', {
 
         })
     } catch (e) {
-        return res.status(500).json(e);
+        return res.status(500).json(new Error(e));
     }
 });
 
@@ -376,7 +374,7 @@ app.post('/api/signin', (req, res) => {
 
     const query = vocal.getUserQuery(userId);
     pool.query(query, (err, result) => {
-        console.log('get user', err, result)
+        console.log('get user', err, result);
 
         if (err) {
             console.error('get user error', err);
@@ -413,7 +411,7 @@ app.post('/api/signin', (req, res) => {
             const seed = keypair.secret();
             console.log('createKeyPair', address, seed);
 
-            stellar.createAccount(keypair, 
+            stellar.createAccount(keypair,
                 (accErr) => {
                     console.error('create account error', accErr);
                     return res.status(500).json(accErr);
@@ -427,7 +425,7 @@ app.post('/api/signin', (req, res) => {
                             console.error('create user error', err);
                             return res.status(500).json(err);
                         }
-        
+
                         // Return the auth token after the user is confirmed.
                         admin.auth().createCustomToken(userId).then((customToken) => {
                             // Send token back to client.
@@ -479,7 +477,7 @@ app.get('/api/address/:userId', passport.authenticate('bearer', {
 });
 
 // Socket IO handlers //
-io.origins('*:*') // for latest version
+io.origins('*:*'); // for latest version
 io.on('connection', function (client) {
     client.on('connect', function () {
         console.log('user connect');

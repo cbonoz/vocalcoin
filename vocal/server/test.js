@@ -1,71 +1,46 @@
-const escape = require('pg-escape');
-const StellarSdk = require('stellar-sdk');
+var StellarSdk = require('stellar-sdk');
+StellarSdk.Network.useTestNetwork();
+var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
-// My Custom libraries
-const stellar = require('./stellar');
-const STARTING_BALANCE = "1000000000.00";
+// Keys for accounts to issue and receive the new asset
+var issuingKeys = StellarSdk.Keypair
+  .fromSecret('SDP33FNO3TPKQZP7C2CICBXXLOJ2LXKNA4YCUJPMRKUZXCGSXW6NQ6DJ');
+var receivingKeys = StellarSdk.Keypair
+  .fromSecret('SDSAVCRE5JRAI7UFAVLE5IMIZRD6N6WOJUWKY4GFN34LOBEEUS4W2T2D');
 
-// const keyPairObj = {'type': "ed25519", 'secretKey': issuerSecret, 'publicKey': issuerPublicKey};
-// console.log(keyPairObj.secretKey, keyPairObj.publicKey);
-// const issuerPair = new StellarSdk.Keypair(keyPairObj);
-// const keyPair = issuerPair;
+// Create an object to represent the new asset
+var astroDollar = new StellarSdk.Asset('VOC', issuingKeys.publicKey());
 
+// First, the receiving account must trust the asset
+server.loadAccount(receivingKeys.publicKey())
+  .then(function(receiver) {
+    var transaction = new StellarSdk.TransactionBuilder(receiver)
+      // The `changeTrust` operation creates (or alters) a trustline
+      // The `limit` parameter below is optional
+      .addOperation(StellarSdk.Operation.changeTrust({
+        asset: astroDollar,
+        limit: '1000.0'
+      }))
+      .build();
+    transaction.sign(receivingKeys);
+    return server.submitTransaction(transaction);
+  })
 
-// function testAccountCreation() {
-
-//     stellar.createAccount(keyPair, (body) => {
-//         account = body;
-//         console.log('Account: ' + JSON.stringify(account));
-
-//         // Get balances for the newly created account.
-//         stellar.getBalances(keyPair, (account) => {
-//             console.log('Balances for account: ' + keyPair.publicKey());
-//             account.balances.forEach(function (balance) {
-//                 console.log('Type:', balance.asset_type, ', Balance:', balance.balance);
-//             })
-//         });;
-//     });
-// }
-
-const vocalCoin = new StellarSdk.Asset(stellar.ASSET_NAME, stellar.VOCAL_ISSUER_KEYPAIR.publicKey());
-trustTransaction(vocalCoin);
-
-function trustTransaction(customAsset) {
-    "use strict";
-    const server = stellar.server;
-    const receivingKeys = stellar.VOCAL_ISSUER_KEYPAIR;
-
-    // First, the receiving account must trust the asset
-    server.loadAccount(receivingKeys.publicKey()).then(function (receiver) {
-        // The `changeTrust` operation creates (or alters) a trustline
-        // The `limit` parameter below is optional
-        const transaction = new StellarSdk.TransactionBuilder(receiver)
-            .addOperation(StellarSdk.Operation.changeTrust({
-                asset: customAsset,
-                limit: STARTING_BALANCE
-            }))
-            .build();
-        transaction.sign(receivingKeys);
-        return server.submitTransaction(transaction);
-    }).catch((err) => {
-        console.error(err);
-    });
-}
-
-
-// createNewAsset(stellar.ASSET_NAME);
-
-// testAccountCreation();
-
-// const destinationId = "dfasfsadf";
-
-// stellar.submitTransaction(issuerPair, destinationId, 10, 'Test Transaction', 
-//     (success) => {
-//         console.log('tx success', success);
-//     },
-//     (failure) => {
-//         console.log('tx failure', failure);
-//     }
-// );
-
-
+  // Second, the issuing account actually sends a payment using the asset
+  .then(function() {
+    return server.loadAccount(issuingKeys.publicKey())
+  })
+  .then(function(issuer) {
+    var transaction = new StellarSdk.TransactionBuilder(issuer)
+      .addOperation(StellarSdk.Operation.payment({
+        destination: receivingKeys.publicKey(),
+        asset: astroDollar,
+        amount: '10'
+      }))
+      .build();
+    transaction.sign(issuingKeys);
+    return server.submitTransaction(transaction);
+  })
+  .catch(function(error) {
+    console.error('Error!', JSON.stringify(error));
+  });
