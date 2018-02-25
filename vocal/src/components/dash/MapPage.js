@@ -25,7 +25,7 @@ import { MarkerClusterer } from "react-google-maps/lib/components/addons/MarkerC
 
 import { MarkerWithLabel } from "react-google-maps/lib/components/addons/MarkerWithLabel";
 
-const google = window.google
+const google = window.google;
 
 const MapWithASearchBox = compose(
   withProps({

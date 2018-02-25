@@ -61,10 +61,10 @@ const pool = new pg.Pool({
 
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(server, { origins: '*:*' });
+const io = require('socket.io')(server, {origins: '*:*'});
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 // TODO: use reduced cors in production.
 // const whitelist = ['https://vocalcoin.com', 'https://www.vocalcoin.com'];
@@ -107,7 +107,7 @@ function getBalanceAndExecute(userId, cb) {
             // Select only the vocal coin balance.
             console.log('account', JSON.stringify(account));
             const vocalBalance = stellar.getVocalBalance(account.balances);
-            const retVal = { 'address': keyPair.publicKey(), 'balance': vocalBalance };
+            const retVal = {'address': keyPair.publicKey(), 'balance': vocalBalance};
             console.log('Vocal balance:', JSON.stringify(retVal));
             cb(retVal);
         });
@@ -204,7 +204,7 @@ app.post('/api/vote', passport.authenticate('bearer', {
             // if we already have a vote for this user and issue, return.
             const errorMessage = "user already voted on this issue";
             console.error(errorMessage)
-            return res.status(401).json({ data: errorMessage });
+            return res.status(401).json({data: errorMessage});
         }
 
         const amount = vocal.calculateVocalCredit(userId);
@@ -237,7 +237,7 @@ app.post('/api/issue', passport.authenticate('bearer', {
             const balance = parseFloat(balanceFromBlockchain['balance']);
             if (balance < ISSUE_COST) {
                 const errorMessage = `Insufficient balance (${balance}), require ${ISSUE_COST}`;
-                return res.status(401).json(new Error( errorMessage ));
+                return res.status(401).json(new Error(errorMessage));
             }
 
             modifyBalanceAndExecute(userId, -ISSUE_COST, () => {
@@ -382,9 +382,9 @@ app.post('/api/signin', (req, res) => {
         }
 
         const rows = result.rows;
-        const user = rows[0];
 
-        if (rows instanceof Array && user && user['address'] && user['address'] !== 'undefined') {
+        if (rows instanceof Array && rows.length && rows[0] && rows[0]['address']) {
+            const user = rows[0];
             // User already created with address.
             console.log('found user', user);
             const address = user['address'];

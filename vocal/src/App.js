@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import Dashboard from './components/dash/Dashboard';
 import MapPage from './components/dash/MapPage';
@@ -13,19 +13,19 @@ import asyncComponent from "./components/AsyncComponent";
 import api from './utils/api';
 
 import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
+    BrowserRouter as Router,
+    Redirect,
+    Route,
+    Switch,
 } from 'react-router-dom';
 
 import './App.css';
 import './footer.css';
 
-import { firebaseAuth } from './utils/fire';
+import {firebaseAuth} from './utils/fire';
 
-import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
-import { toast } from 'react-toastify';
+import {ToastContainer} from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
+import {toast} from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-vis/dist/style.css';
@@ -39,99 +39,106 @@ const AsyncFAQ = asyncComponent(() => import("./components/FAQ"));
 const AsyncFooter = asyncComponent(() => import("./components/Footer"));
 const AsyncHeader = asyncComponent(() => import("./components/Header"));
 const AsyncHome = asyncComponent(() => import("./components/Home"));
+const AsyncLoading = asyncComponent(() => import("./components/Loading"));
 
-function PrivateRoute({ component: Component, authed, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => authed === true
-        ? <Component {...props} />
-        : <Redirect to={{ pathname: '/', state: { from: props.location } }} />} />
-  );
+function PrivateRoute({component: Component, authed, ...rest}) {
+    return (
+        <Route
+            {...rest}
+            render={(props) => authed === true
+                ? <Component {...props} />
+                : <Redirect to={{pathname: '/', state: {from: props.location}}}/>}/>
+    );
 }
 
-function PublicRoute({ component: Component, authed, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => authed === false
-        ? <Component {...props} />
-        : <Redirect to='/map' />} />
-  );
+function PublicRoute({component: Component, authed, ...rest}) {
+    return (
+        <Route
+            {...rest}
+            render={(props) => authed === false
+                ? <Component {...props} />
+                : <Redirect to='/map'/>}/>
+    );
 }
 
 class App extends Component {
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      authed: false,
-      loading: true,
-      currentUser: null
-    };
-  }
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            authed: false,
+            loading: true,
+            currentUser: null
+        };
+    }
 
-  componentDidMount() {
-    const self = this;
-    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
-      if (user) {
-        // console.log('user:', JSON.stringify(user));
-        const userId = user.uid;
-        const address = localStorage.getItem("address");
-        api.postUserQuery(user, address).then((data) => {
-          // console.log('retrieved user data', JSON.stringify(data));
-          localStorage.setItem("address", data["address"]);
-          localStorage.setItem("tok", data["token"]);
+    componentDidMount() {
+        const self = this;
+        this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
+            console.log('auth state changed, user:', user);
+            if (user) {
+                // console.log('user:', JSON.stringify(user));
+                const userId = user.uid;
+                const address = localStorage.getItem("address");
+                api.postUserQuery(user, address).then((data) => {
+                    // console.log('retrieved user data', JSON.stringify(data));
+                    localStorage.setItem("address", data["address"]);
+                    localStorage.setItem("tok", data["token"]);
 
-          if (!self.state.authed) { // show if there is a change in state.
-            toast(<div>Logged in: <b>{user.displayName || user.email.split('@')[0]}</b></div>);
-          }
+                    if (!self.state.authed) { // show if there is a change in state.
+                        toast(<div>Logged in: <b>{user.displayName || user.email.split('@')[0]}</b></div>);
+                    }
 
-          self.setState({ authed: true, loading: false, currentUser: user });
-        }).catch((err) => {
-          console.error('error retrieving userId', err);
-          const errorAuthed = true;
-          self.setState({ authed: errorAuthed, loading: false, currentUser: user });
-        });
+                    self.setState({authed: true, loading: false, currentUser: user});
+                }).catch((err) => {
+                    console.error('error retrieving userId', err);
+                    const errorAuthed = true;
+                    self.setState({authed: errorAuthed, loading: false, currentUser: user});
+                });
 
-      } else {
-        if (this.state.authed) {
-          toast(<div><b>Logged out, come again soon.</b></div>);
-        }
-        this.setState({
-          authed: false,
-          loading: false,
-          currentUser: user
+            } else {
+                if (self.state.authed) {
+                    toast(<div><b>Logged out, come again soon.</b></div>);
+                }
+                self.setState({
+                    authed: false,
+                    loading: false,
+                    currentUser: user
+                })
+            }
         })
-      }
-    })
-  }
+    }
 
-  componentWillUnmount() {
-    this.removeListener()
-  }
+    componentWillUnmount() {
+        this.removeListener()
+    }
 
-  render() {
-    return (
-      <div className="App">
-        <Router>
-          <div>
-            <AsyncHeader authed={this.state.authed} />
-            <Switch>
-              <Route authed={this.state.authed} path="/whitepaper" component={AsyncWhitePaper} />
-              <Route authed={this.state.authed} path="/faq" component={AsyncFAQ} />
-              <PublicRoute authed={this.state.authed} exact path="/" component={AsyncHome} />
-              <PrivateRoute authed={this.state.authed} path="/dashboard" component={AsyncDashboard} />
-              <PrivateRoute currentUser={this.state.currentUser} authed={this.state.authed} path="/map" component={AsyncMapPage} />
-              <Route authed={this.state.authed} render={() => <h1 className="centered">Page not found</h1>} />
-            </Switch>
-            <AsyncFooter />
-          </div>
-        </Router>
-        <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
-      </div>
-    );
-  }
+    render() {
+        const self = this;
+        return (
+            <div className="App">
+                {self.state.loading && <AsyncLoading/>}
+                <Router history="">
+                    {!self.state.loading && <div>
+                        <AsyncHeader authed={this.state.authed}/>
+                        <Switch>
+                            <Route authed={this.state.authed} path="/whitepaper" component={AsyncWhitePaper}/>
+                            <Route authed={this.state.authed} path="/faq" component={AsyncFAQ}/>
+                            <PublicRoute authed={this.state.authed} exact path="/" component={AsyncHome}/>
+                            <PrivateRoute authed={this.state.authed} path="/dashboard" component={AsyncDashboard}/>
+                            <PrivateRoute currentUser={this.state.currentUser} authed={this.state.authed} path="/map"
+                                          component={AsyncMapPage}/>
+                            <Route authed={this.state.authed}
+                                   render={() => <h1 className="centered">Page not found</h1>}/>
+                        </Switch>
+                        <AsyncFooter />
+                    </div>}
+                </Router>
+
+                <ToastContainer position={toast.POSITION.BOTTOM_RIGHT}/>
+            </div>
+        );
+    }
 }
 
 export default App;
