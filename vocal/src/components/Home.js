@@ -25,10 +25,6 @@ export default class Home extends Component {
 
     render() {
         const self = this;
-        const videoOpts = {
-            height: '390',
-            width: '640',
-        };
 
         const backgroundStyle = {
             backgroundImage: `url(${webpBgImage})`,

@@ -5,7 +5,7 @@ import vocalWebp from '../optimized_media/vocal_trans_white.webp';
 export default class Footer extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             inputValue: ''
         };
