@@ -12,7 +12,7 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
 
 - Engagement in politics is declining in younger demographics, engaging in political issues can seem intimidating, and sometimes not immediately accessible*.
 - Often little transparency into others opinions and issues happening around me.
-- Vocal offers an immutable ledger of votes and issue creation (using the Ethereum blockchain) that serves as proof of when votes/issues were created.
+- Vocal offers an immutable ledger of votes and issue creation (using the Stellar blockchain) that serves as proof of when votes/issues were created.
 - Lack of a universal incentive system for political participation. We now propose/create that system through the use of Vocal coin - which can be redeemed for agenda promotion, issue creation (and other things to come) through a traceable currency.
 - No widely accessible platform for political engagement and discovery on a local / map scale.
 - Yelp-like platform enables map-search of active political issues. Quickly and easily find the issues that are most pertinent to you and your community, without having to sift through a huge world of political agendas and issues.
@@ -67,7 +67,6 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
 
 - Better sorting/searching/filtering of issues on the map. i.e. finding by categories or creators.
 - Implement remaining use cases for Vocal coin
-- Potentially make Vocal purchase-able on the Ethereum blockchain. One unit of Vocal today might be redeemable for some amount of political value, but might be worth much more in the future (offers speculative value).
 - Interaction/Trading between users
 - Improve UI / Remaining Beta Bug Fixes
 
@@ -80,3 +79,4 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
 ### Useful Links:
 * https://medium.com/@ashisherc/create-an-ico-on-stellar-network-with-custom-token-7b6aab349f33
 * https://medium.com/@tacomanator/environments-with-create-react-app-7b645312c09d
+* https://poliha.github.io/stellar-tokens/
