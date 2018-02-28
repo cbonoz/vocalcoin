@@ -11,7 +11,7 @@ const library = (function () {
 
     const StellarSdk = require('stellar-sdk');
     const request = require('request');
-    const ASSET_NAME = "VOC";
+    const ASSET_NAME = "VOCAL";
     const STARTING_BALANCE = "1000000000.00";
     const STELLAR_FRIENDBOT_TEST_URL = 'https://horizon-testnet.stellar.org/friendbot';
     // To use the live network, set the hostname to 'horizon.stellar.org'
@@ -50,8 +50,8 @@ const library = (function () {
 
     const createAccount = (pair, failure, success) => {
         request.get({
-            url: STELLAR_FRIENDBOT_TEST_URL,
-            qs: {addr: pair.publicKey()},
+            url: STELLAR_TEST_URL,
+            qs: { addr: pair.publicKey() },
             json: true
         }, (error, response, body) => {
             if (error || response.statusCode !== 200) {
@@ -59,56 +59,23 @@ const library = (function () {
                 console.error('createAccount error', errorMessage);
                 failure(errorMessage);
             } else {
+                console.log('create acc success');
+                success(pair.publicKey(), body);
                 // Add the default balance to the newly created account.
-                sendTransaction(VOCAL_ISSUER_KEYPAIR, pair, vocal.DEFAULT_BALANCE, "Default Balance",
-                    (defaultBalanceFailure) => {
-                        "use strict";
-                        console.error('submitTransaction defaultBalance error', defaultBalanceFailure);
-                        failure(defaultBalanceFailure);
-                    },
-                    (defaultBalanceSuccess) => {
-                        "use strict";
-                        success(body);
-                    },
-                );
+                // sendPayment(VOCAL_ISSUER_KEYPAIR, pair, vocal.DEFAULT_BALANCE, "Default Balance",
+                //     (defaultBalanceFailure) => {
+                //         "use strict";
+                //         console.error('submitTransaction defaultBalance error', defaultBalanceFailure);
+                //         failure(defaultBalanceFailure);
+                //     },
+                //     (defaultBalanceSuccess) => {
+                //         "use strict";
+                //         success(body);
+                //     },
+                // );
 
             }
         });
-    };
-
-    // https://www.stellar.org/developers/guides/issuing-assets.html
-    // You don’t need to do anything to declare your asset on the network (see idea of trustline).
-    const sendTransaction = (sendingKeys, receivingKeys, amount, memo, failure, success) => {
-
-        // First, the receiving account must trust the asset
-        server.loadAccount(receivingKeys.publicKey()).then(function (receiver) {
-            const transaction = new StellarSdk.TransactionBuilder(receiver)
-            // The `changeTrust` operation creates (or alters) a trustline
-            // The `limit` parameter below is optional
-                .addOperation(StellarSdk.Operation.changeTrust({
-                    asset: vocalAsset
-                    // limit: '1000'
-                }))
-                .build();
-            transaction.sign(receivingKeys);
-            return server.submitTransaction(transaction)
-        })
-        // Second, the issuing account actually sends a payment using the asset
-            .then(function () {
-                return server.loadAccount(sendingKeys.publicKey())
-            })
-            .catch(failure)
-            .then(function (issuer) {
-                const transaction = new StellarSdk.TransactionBuilder(issuer)
-                    .addOperation(StellarSdk.Operation.payment({
-                        destination: receivingKeys.publicKey(),
-                        asset: vocalAsset,
-                        amount: amount
-                    }))
-                    .build();
-                transaction.sign(sendingKeys);
-                return server.submitTransaction(transaction).then(success).catch(failure);
-            }).catch(failure);
     };
 
     const getBalances = (pair, cb) => {
@@ -126,46 +93,103 @@ const library = (function () {
         return 0;
     };
 
-
-    function testSubmit(issuingKeys, receivingKeys, amount) {
-        "use strict";
-        amount = amount.toString();
+    // Make it so that the receiving account "trusts" our custom asset
+    function trustToken(assetName, issuingAccountPublicKey, receivingAccountKeyPair, callback) {
+        // Create an object to represent the new asset
+        var customToken = new StellarSdk.Asset(assetName, issuingAccountPublicKey);
 
         // First, the receiving account must trust the asset
-        server.loadAccount(receivingKeys.publicKey())
-            .then(function(receiver) {
+        server.loadAccount(receivingAccountKeyPair.publicKey())
+            .then(function (receiver) {
                 var transaction = new StellarSdk.TransactionBuilder(receiver)
-                // The `changeTrust` operation creates (or alters) a trustline
-                // The `limit` parameter below is optional
+
+                    // The `changeTrust` operation creates (or alters) a trustline
+                    // The `limit` parameter below is optional
                     .addOperation(StellarSdk.Operation.changeTrust({
-                        asset: vocalAsset,
-                        limit: '1000'
+                        asset: customToken,
+                        limit: STARTING_BALANCE
                     }))
                     .build();
-                transaction.sign(receivingKeys);
+
+                transaction.sign(receivingAccountKeyPair);
+
                 return server.submitTransaction(transaction);
             })
-
-            // Second, the issuing account actually sends a payment using the asset
-            .then(function() {
-                return server.loadAccount(issuingKeys.publicKey())
+            .then(function () {
+                callback();
             })
-            .then(function(issuer) {
+            .catch(function (error) {
+                callback(error);
+            });
+    }
+
+    // amount must be a string
+    function sendPayment(assetName, fromKeys, receivingKeyPair, amount, failure, success) {
+        var asset;
+        if (assetName == "Lumens" || assetName == "XLM") {
+            asset = StellarSdk.Asset.native(); // Lumens.
+        } else if (assetName == ASSET_NAME) {
+            const issuerPublicKey = VOCAL_ISSUER_KEYPAIR.publicKey();
+            if (issuerPublicKey == undefined) {
+                console.log("Cannot handle payment with " + assetName + ". Input their issuer public key into the config.json file.");
+                return;
+            }
+            asset = new StellarSdk.Asset(assetName, issuerPublicKey);
+        } else {
+            console.error('unexpected asset', assetName)
+        }
+
+        // Could be a custom asset
+        // var asset = new StellarSdk.Asset(assetName, test1KeyPair.public);
+
+        server.loadAccount(fromKeys.publicKey())
+            .then(function (issuer) {
                 var transaction = new StellarSdk.TransactionBuilder(issuer)
                     .addOperation(StellarSdk.Operation.payment({
-                        destination: receivingKeys.publicKey(),
-                        asset: vocalAsset,
+                        destination: receivingKeyPair.publicKey(),
+                        asset: asset,
                         amount: amount
                     }))
                     .build();
-                transaction.sign(issuingKeys);
+
+                transaction.sign(fromKeys);
+
                 return server.submitTransaction(transaction);
             })
-            .catch(function(error) {
-                console.error('Error!', error);
+            .then(function () {
+                success();
+            })
+            .catch(function (error) {
+                failure(error);
             });
-
     }
+
+function logBalances(publicKey, callback) {
+    server.loadAccount(publicKey).then(function (acct) {
+        var balances = acct.balances;
+        console.log("----------------")
+        console.log(acct._baseAccount._accountId); // 
+        for (var i in balances) {
+
+            console.log(""); // extra newline
+
+            var b = balances[i];
+            if (b.asset_type == 'native') {
+                // Lumens
+                console.log("Lumens");
+                console.log("Balance: " + b.balance);
+            }
+            else {
+                console.log(b.asset_code);
+                console.log("Balance: " + b.balance);
+                console.log("Limit: " + b.limit);
+                console.log("Issuer: " + b.asset_issuer);
+            }
+        }
+
+        if (callback) callback();
+    });
+}
 
     return {
         ASSET_NAME: ASSET_NAME,
@@ -176,13 +200,14 @@ const library = (function () {
         STELLAR_TEST_URL: STELLAR_TEST_URL,
         server: server,
         vocalAsset: vocalAsset,
-        testSubmit: testSubmit,
+        trustToken: trustToken,
+        sendPayment: sendPayment,
         createKeyPair: createKeyPair,
         createAccount: createAccount,
         getBalances: getBalances,
+        logBalances: logBalances,
         getKeyPairFromSecret: getKeyPairFromSecret,
         getVocalBalance: getVocalBalance,
-        sendTransaction: sendTransaction
     };
 
 })();

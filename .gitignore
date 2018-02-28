@@ -28,6 +28,8 @@ test/
 
 vocal/node_modules
 vocal/server/node_modules
+vocal/server/testconfig.js
+vocal/server/testtoken.js
 vocalcontracts/node_modules
 vocalcontracts/node_modules/
 
