@@ -33,6 +33,10 @@ const library = (function () {
 
     const VOCAL_ISSUER_SEED = process.env.VOCAL_ISSUER_SECRET;
     const VOCAL_ISSUER_KEYPAIR = getKeyPairFromSecret(VOCAL_ISSUER_SEED);
+
+    const VOCAL_SOURCE_SEED = process.env.VOCAL_SOURCE_SECRET;
+    const VOCAL_SOURCE_KEYPAIR = getKeyPairFromSecret(VOCAL_SOURCE_SEED);
+
     const vocalAsset = new StellarSdk.Asset(ASSET_NAME, VOCAL_ISSUER_KEYPAIR.publicKey());
     console.log('Vocal Issuer', VOCAL_ISSUER_SEED, VOCAL_ISSUER_KEYPAIR);
 
@@ -167,6 +171,8 @@ const library = (function () {
         ASSET_NAME: ASSET_NAME,
         VOCAL_ISSUER_KEYPAIR: VOCAL_ISSUER_KEYPAIR,
         VOCAL_ISSUER_SEED: VOCAL_ISSUER_SEED,
+        VOCAL_SOURCE_KEYPAIR: VOCAL_SOURCE_KEYPAIR,
+        VOCAL_SOURCE_SEED: VOCAL_SOURCE_SEED,
         STELLAR_TEST_URL: STELLAR_TEST_URL,
         server: server,
         vocalAsset: vocalAsset,

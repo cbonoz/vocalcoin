@@ -6,6 +6,7 @@ const stellar = require('./stellar');
 // Variables.
 
 const ISSUER_KEYPAIR = stellar.VOCAL_ISSUER_KEYPAIR;
+const SOURCE_KEYPAIR = stellar.VOCAL_SOURCE_KEYPAIR;
 const newUserPair = stellar.createKeyPair();
 
 function testCreateAccount() {
