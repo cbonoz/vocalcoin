@@ -3,7 +3,6 @@ import Accordion from './data/Accordion';
 import { firebaseAuth } from './../utils/fire';
 
 export default class FAQ extends Component {
-
     constructor(props) {
         super(props)
         this.state = {

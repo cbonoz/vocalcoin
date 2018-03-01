@@ -3,8 +3,6 @@ import { Row, Col } from 'react-bootstrap';
 import PdfViewer from './data/PdfViewer';
 
 export default class WhitePaper extends Component {
-
- 
     render() {
         const self = this;
         return (
@@ -16,7 +14,7 @@ export default class WhitePaper extends Component {
                     <Col xsHidden md={3} />
                     <Col xs={12} md={6}>
                         <div className="centered">
-                            <PdfViewer/>
+                            <PdfViewer />
                         </div>
                     </Col>
                     <Col xsHidden md={3} />

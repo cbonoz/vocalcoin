@@ -36,7 +36,7 @@ export default class Dashboard extends Component {
             self.getAddress();
         })
     }
-    
+
     componentWillUnmount() {
         this.removeListener();
     }
@@ -50,7 +50,7 @@ export default class Dashboard extends Component {
                 const yourIssues = data;
                 self.setState({ loading: true, issues: yourIssues });
             }).catch((err) => {
-                self.setState( {issues: [], loading: false, err: err});
+                self.setState({ issues: [], loading: false, err: err });
             });
         }
     }
@@ -69,21 +69,21 @@ export default class Dashboard extends Component {
         }
 
         const userId = currentUser.uid;
-        self.setState( {loading: true, err: null})
+        self.setState({ loading: true, err: null })
 
         api.getAddress(userId).then((data) => {
             console.log(JSON.stringify(data));
             self.setState({ loading: false, address: data });
             self._updateBalance();
         }).catch((err) => {
-            self.setState({ loading: false, err: err})
+            self.setState({ loading: false, err: err })
         });
     }
 
     _updateBalance() {
         const self = this;
         const currentUser = self.state.currentUser;
-          const userId = currentUser.uid;
+        const userId = currentUser.uid;
         api.getBalance(userId).then((res) => {
             self.setState({ balance: res + " vocal" });
             console.log('getBalance: ' + res);
