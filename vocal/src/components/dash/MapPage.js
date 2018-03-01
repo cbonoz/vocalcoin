@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button } from 'react-bootstrap';
 import IssueModal from './../modals/IssueModal';
 import VoteModal from './../modals/VoteModal';
-import {geolocated} from 'react-geolocated';
+import { geolocated } from 'react-geolocated';
 import maputil from '../../utils/maputil';
 import api from '../../utils/api';
 import helper from '../../utils/helper';
@@ -15,7 +15,7 @@ import {
   GoogleMap,
 } from "react-google-maps";
 
-import _ from "lodash";
+import get from "lodash.get";
 import { compose, withProps, lifecycle } from "recompose";
 import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
 import { toast } from 'react-toastify';
@@ -67,22 +67,22 @@ const MapWithASearchBox = compose(
           const self = this;
           if (trigger) {
             const isOpen = this.state.showVoteModal;
-            self.setState( {showVoteModal: !isOpen});
+            self.setState({ showVoteModal: !isOpen });
           }
 
-          self.setState( {currentIssue: issue, hasVoted: false });
+          self.setState({ currentIssue: issue, hasVoted: false });
           if (self.state.showVoteModal) {
             const userId = self.props.currentUser.uid;
             const issueId = issue.id;
             console.log('check voted', userId, issueId);
-            
-            self.setState( {error: null});
+
+            self.setState({ error: null });
 
             api.getHasVoted(userId, issueId).then((res) => {
-                console.log('hasvoted', res)
-                self.setState({ hasVoted: res });
+              console.log('hasvoted', res)
+              self.setState({ hasVoted: res });
             }).catch((err) => {
-                self.setState({ hasVoted: false, error: err });
+              self.setState({ hasVoted: false, error: err });
             });
           }
         },
@@ -139,13 +139,13 @@ const MapWithASearchBox = compose(
             position: place.geometry.location,
           }));
 
-          const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
+          const nextCenter = get(nextMarkers, '0.position', this.state.center);
           let nextLocation = null;
 
           places.map((place) => {
-              if (place.geometry.location === nextCenter) {
-                nextLocation = place.name;
-              }
+            if (place.geometry.location === nextCenter) {
+              nextLocation = place.name;
+            }
           });
 
           // console.log('nextLocation', JSON.stringify(nextLocation));
@@ -206,7 +206,7 @@ const MapWithASearchBox = compose(
         </div>
       </SearchBox>
 
-       {/* gridSize={60}> */}
+      {/* gridSize={60}> */}
       <MarkerClusterer
         onClick={props.onMarkerClustererClick}
         icon={{
@@ -224,16 +224,16 @@ const MapWithASearchBox = compose(
             key={index}
             position={marker.position}
             labelAnchor={new google.maps.Point(125, 0)}
-            labelStyle={{backgroundColor: "#fff", fontSize: "16px", padding: "5px", width: "250px", margin: "0 auto"}}>
-              <div>
-                Creating an issue will appear here.
+            labelStyle={{ backgroundColor: "#fff", fontSize: "16px", padding: "5px", width: "250px", margin: "0 auto" }}>
+            <div>
+              Creating an issue will appear here.
               </div>
           </MarkerWithLabel>
         )}
 
         {/* From issues in region */}
         {props.issues.map((issue, index) => {
-          const position = {lat: issue.lat, lng: issue.lng};
+          const position = { lat: issue.lat, lng: issue.lng };
           const createdAt = helper.formatDateTimeMs(issue.time);
           // TODO: determine if DblClick should have different behavior from single.
           return (<MarkerWithLabel
@@ -242,13 +242,13 @@ const MapWithASearchBox = compose(
             onClick={() => props.triggerVoteModal(issue, true)}
             onDblClick={() => props.triggerVoteModal(issue, true)}
             labelAnchor={new google.maps.Point(125, 80)}
-            labelStyle={{backgroundColor: "#fff", color: "#3b5998", fontSize: "12px", 'padding-left': "8px", 'padding-right': "8px", width: "250px" }}>
-              {/* Label content */}
-              <div>
-                Active Issue:<br/><b>{helper.capitalize(issue.title)}</b><br/>
-                Started: <b>{createdAt}</b>
-              
-              </div>
+            labelStyle={{ backgroundColor: "#fff", color: "#3b5998", fontSize: "12px", 'padding-left': "8px", 'padding-right': "8px", width: "250px" }}>
+            {/* Label content */}
+            <div>
+              Active Issue:<br /><b>{helper.capitalize(issue.title)}</b><br />
+              Started: <b>{createdAt}</b>
+
+            </div>
 
           </MarkerWithLabel>)
         })}
@@ -272,7 +272,7 @@ const MapWithASearchBox = compose(
 
     </GoogleMap>
   </div>
-  );
+);
 
 class MapPage extends Component {
 
@@ -294,7 +294,7 @@ class MapPage extends Component {
   componentWillUnmount() {
     this.removeListener();
   }
-  
+
   render() {
     return (
       <div>
@@ -314,4 +314,3 @@ export default geolocated({
   suppressLocationOnMount: false,
   geolocationProvider: navigator.geolocation
 })(MapPage);
-

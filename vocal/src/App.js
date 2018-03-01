@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-
-import Dashboard from './components/dash/Dashboard';
-import MapPage from './components/dash/MapPage';
-import WhitePaper from './components/WhitePaper';
-import FAQ from './components/FAQ';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import Home from './components/Home';
-
-import api from './utils/api';
-
+import { ToastContainer, toast } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
 import {
   BrowserRouter as Router,
   Redirect,
@@ -17,16 +7,22 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import './App.css';
-import './footer.css';
+import { LoadableWhitePaper } from './components/LoadableWhitePaper';
+import { LoadableHome } from './components/LoadableHome';
+import { LoadableDashboard } from './components/dash/LoadableDashboard';
+import { LoadableMapPage } from './components/dash/LoadableMapPage';
+import { LoadableFAQ } from './components/LoadableFAQ';
+import Footer from './components/Footer';
+import Header from './components/Header';
 
 import { firebaseAuth } from './utils/fire';
+import api from './utils/api';
 
-import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
-import { toast } from 'react-toastify';
-
+import './App.css';
+import './footer.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-vis/dist/style.css';
+
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
@@ -49,9 +45,8 @@ function PublicRoute({ component: Component, authed, ...rest }) {
 }
 
 class App extends Component {
-
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.state = {
       authed: false,
       loading: true,
@@ -106,11 +101,11 @@ class App extends Component {
           <div>
             <Header authed={this.state.authed} />
             <Switch>
-              <Route authed={this.state.authed} path="/whitepaper" component={WhitePaper} />
-              <Route authed={this.state.authed} path="/faq" component={FAQ} />
-              <PublicRoute authed={this.state.authed} exact path="/" component={Home} />
-              <PrivateRoute authed={this.state.authed} path="/dashboard" component={Dashboard} />
-              <PrivateRoute currentUser={this.state.currentUser} authed={this.state.authed} path="/map" component={MapPage} />
+              <Route authed={this.state.authed} path="/whitepaper" component={LoadableWhitePaper} />
+              <Route authed={this.state.authed} path="/faq" component={LoadableFAQ} />
+              <PublicRoute authed={this.state.authed} exact path="/" component={LoadableHome} />
+              <PrivateRoute authed={this.state.authed} path="/dashboard" component={LoadableDashboard} />
+              <PrivateRoute currentUser={this.state.currentUser} authed={this.state.authed} path="/map" component={LoadableMapPage} />
               <Route authed={this.state.authed} render={() => <h1 className="centered">Page not found</h1>} />
             </Switch>
             <Footer />
