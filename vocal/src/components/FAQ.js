@@ -30,7 +30,6 @@ export default class FAQ extends Component {
             },
             {
                 question: "Explain the cryptocurrency component of Vocal",
-                // answer: "Vocal is a currency platform that puts the advertising experience back in the hands of users by rewarding them for engaging with advertisers."
                 answer: "Each vote and issue that is created is recorded as a transaction on an immutable and hidden blockchain. This blockchain is immutable and will later serve as an auditable history of user activity on the platform. This data is stored on the Stellar blockchain."
             },
         ]

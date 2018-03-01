@@ -9,9 +9,16 @@ export default class LoginModal extends Component {
 
     constructor(props) {
         super(props)
+        this.state = {
+            // previewBuild: process.env.REACT_VOCAL_PREVIEW_BUILD || false
+            previewBuild: false
+        }
+        console.log('preview', this.state.previewBuild);
     }
 
     render() {
+        const self = this;
+        const previewBuild = self.state.previewBuild;
         return (
             <div>
                 <Modal show={this.props.showModal} onHide={this.props.close}>
@@ -22,7 +29,8 @@ export default class LoginModal extends Component {
                         <div className="centered">
                             {/*<img src={vocal} webp={vocalWebp} className="centered login-image"/>*/}
                             <img webp={vocalWebp} className="centered login-image"/>
-                            <LoginForm onLogin={this.props.close}/>
+                            {previewBuild && <p className="preview-text">Coming Soon</p>}
+                            {!previewBuild && <LoginForm onLogin={this.props.close}/>}
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

@@ -1,9 +1,18 @@
-const records = { 
+// TODO: update to use proper JWT storing and validation.
+const records = {};
 
+// TODO: remove once stellar fully in place.
+const balances = {};
+exports.setBalance = function(userId, balance) {
+    balances[userId] = balance;
+}
+exports.getBalance = function(userId) {
+    return balances[userId];
 }
     
 exports.assignToken = function(userId, token) {
     records[token] = userId;
+    balances[userId] = 50; // TODO: remove once stellar fully in place.
 }
 
 exports.findByToken = function(token, cb) {

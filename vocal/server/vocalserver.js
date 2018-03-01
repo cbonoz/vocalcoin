@@ -106,7 +106,9 @@ function getBalanceAndExecute(userId, cb) {
         stellar.getBalances(keyPair, (account) => {
             // Select only the vocal coin balance.
             console.log('account', JSON.stringify(account));
-            const vocalBalance = stellar.getVocalBalance(account.balances);
+            // TODO: replace once stellar fully in place.
+            // const vocalBalance = stellar.getVocalBalance(account.balances);
+            const vocalBalance = db.users.getBalance(userId);
             const retVal = {'address': keyPair.publicKey(), 'balance': vocalBalance};
             console.log('Vocal balance:', JSON.stringify(retVal));
             cb(retVal);
@@ -140,20 +142,23 @@ function modifyBalanceAndExecute(userId, amount, cb) {
             console.log('amount: ' + amount + " " + typeof(amount));
             console.log('modifyBalanceAndExecute', from.publicKey(), to.publicKey(), amount, actionMessage);
 
-            stellar.sendTransaction(
-                from, // source.
-                to, // destination.
-                amount,
-                actionMessage,
-                (err) => {
-                    console.error('stellar transaction error', JSON.stringify(err));
-                    throw err;
-                },
-                (msg) => {
-                    console.log('success: ' + msg);
-                    cb();
-                }
-            )
+            // TODO: remove and replace with sendTransaction once stellar fully in place.
+            db.users.setBalance(userId, db.users.getBalance(userId) + amount);
+
+            // stellar.sendTransaction(
+            //     from, // source.
+            //     to, // destination.
+            //     amount,
+            //     actionMessage,
+            //     (err) => {
+            //         console.error('stellar transaction error', JSON.stringify(err));
+            //         throw err;
+            //     },
+            //     (msg) => {
+            //         console.log('success: ' + msg);
+            //         cb();
+            //     }
+            // );
         });
     } catch (e) {
         return res.status(500).json(e);
