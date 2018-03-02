@@ -1,4 +1,4 @@
-# Issuer Stellar Wallet credentials (for current testing purposes).
+# Issuer Neo Wallet credentials (for current testing purposes).
 # WIll need to hide this in production.
 
 keyPair SD3T3CYJCXLGA44YCDTQZM5WFCIKVSPFQOKGI7TYKI7VULYYJSWGUFSF GCKCTW5JW6SO5PAP47GMBM7O2WG4GWUL3IAKSHSVMA26ICK4E5QTFQ3Z

@@ -1,11 +1,11 @@
 # Fdb version 3
-["biber vocal"] 1506391710 "vocal.bcf" "vocal.bbl" "vocal" 1510110632
-  "vocal.bcf" 1510110632 95748 ce8224e22e5659ea65d965505ef2ffee ""
+["biber vocal"] 1506391710 "vocal.bcf" "vocal.bbl" "vocal" 1519951929
+  "vocal.bcf" 1519951929 95748 ce8224e22e5659ea65d965505ef2ffee ""
   (generated)
   "vocal.blg"
   "vocal.bbl"
-["pdflatex"] 1510110630 "/Users/cbuonocore/personal/coins/vocal/whitepaper/vocal.tex" "vocal.pdf" "vocal" 1510110632
-  "/Users/cbuonocore/personal/coins/vocal/whitepaper/vocal.tex" 1510110630 34966 95f7416436bd3111b685b72dcc36902c ""
+["pdflatex"] 1519951928 "/Users/cbuonocore/personal/coins/vocalcoin/whitepaper/vocal.tex" "vocal.pdf" "vocal" 1519951929
+  "/Users/cbuonocore/personal/coins/vocalcoin/whitepaper/vocal.tex" 1519951925 34876 f158ace60750102383551532a6695bdf ""
   "/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/adobe/helvetic/phvb7t.tfm" 1480098688 2240 eb56c13537f4d8a0bd3fafc25572b1bd ""
@@ -175,16 +175,16 @@
   "/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1495593472 2350277 a699055bee05bf8a40b0504752487295 ""
   "/usr/local/texlive/2017/texmf-var/web2c/pdftex/pdflatex.fmt" 1495593487 4129592 0e6cfee100d68e6d96b92c0258f2ff73 ""
   "/usr/local/texlive/2017/texmf.cnf" 1495593465 577 2b71d4d888f9e5560b2e99985915a9fa ""
-  "assets/architecture.png" 1506823865 91248 13bd6d17f106966f6921f95684026281 ""
-  "references.bib" 1510110631 438 b49917a9e0f334ea8f5a23dfc2c1354d ""
-  "vocal.aux" 1510110632 4309 801aa890feb91dcc2d8aa4791456c2a9 ""
-  "vocal.bbl" 1506823865 466 87c763802318ca007e475d2fb9c40fb5 "biber vocal"
-  "vocal.run.xml" 1510110632 2350 eb191f3d61fb91b37d125664b89042bb ""
-  "vocal.tex" 1510110630 34966 95f7416436bd3111b685b72dcc36902c ""
+  "assets/architecture.png" 1514694175 91248 13bd6d17f106966f6921f95684026281 ""
+  "references.bib" 1519951929 438 d96fa9cdc04a3e5d53e58b36684adf12 ""
+  "vocal.aux" 1519951929 4304 6224d414c754e24987589fa289222732 ""
+  "vocal.bbl" 1514694175 466 87c763802318ca007e475d2fb9c40fb5 "biber vocal"
+  "vocal.run.xml" 1519951929 2350 eb191f3d61fb91b37d125664b89042bb ""
+  "vocal.tex" 1519951925 34876 f158ace60750102383551532a6695bdf ""
   (generated)
+  "vocal.aux"
   "vocal.bcf"
   "vocal.pdf"
-  "vocal.aux"
+  "references.bib"
   "vocal.log"
   "vocal.run.xml"
-  "references.bib"

@@ -19,8 +19,8 @@ blockchains directly without a trusted gateway token. Markets may be able to sig
 cantly reduce spreads and encourage market assurance via decentralizing custody and
 increased transparency of market activity. This is achieved using smart contracts, protocol
 tokens enforcing correct market behavior of orderbook matching, a new construction
-of Stellar bonded external enforcement of clearinghouse activity, and commitments
-to historical exchange data for use with Stellar smart contracts.
+of Neo bonded external enforcement of clearinghouse activity, and commitments
+to historical exchange data for use with Neo smart contracts.
 
 Introduction: 
 

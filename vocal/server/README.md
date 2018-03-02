@@ -13,7 +13,7 @@ TODO: this may be better suited as a lambda function.
 
 
 ### Useful Links
-* https://tokenmarket.net/blog/creating-Stellar-smart-contract-transactions-in-client-side-javascript/
+* https://tokenmarket.net/blog/creating-Neo-smart-contract-transactions-in-client-side-javascript/
 https://github.com/ConsenSys/eth-lightwallet
 
 
@@ -21,4 +21,4 @@ https://github.com/ConsenSys/eth-lightwallet
 
 * Couldn't find package "web3-requestManager" on the "npm" registry<>
 
-https://github.com/Stellar/web3.js/issues/1171
+https://github.com/Neo/web3.js/issues/1171

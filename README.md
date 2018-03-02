@@ -12,7 +12,7 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
 
 - Engagement in politics is declining in younger demographics, engaging in political issues can seem intimidating, and sometimes not immediately accessible*.
 - Often little transparency into others opinions and issues happening around me.
-- Vocal offers an immutable ledger of votes and issue creation (using the Stellar blockchain) that serves as proof of when votes/issues were created.
+- Vocal offers an immutable ledger of votes and issue creation (using the Neo blockchain) that serves as proof of when votes/issues were created.
 - Lack of a universal incentive system for political participation. We now propose/create that system through the use of Vocal coin - which can be redeemed for agenda promotion, issue creation (and other things to come) through a traceable currency.
 - No widely accessible platform for political engagement and discovery on a local / map scale.
 - Yelp-like platform enables map-search of active political issues. Quickly and easily find the issues that are most pertinent to you and your community, without having to sift through a huge world of political agendas and issues.

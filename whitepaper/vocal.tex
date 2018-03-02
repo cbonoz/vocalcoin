@@ -386,7 +386,7 @@
     style and native cryptocurrencies). Unlike nearly all other decentralized exchange platforms, this allows for decentralized exchange of other blockchains and between multiple
     blockchains directly without a trusted gateway coin. Markets may be able to significantly reduce spreads and encourage market assurance via decentralizing custody and
     increased transparency of market activity. This is achieved using smart contracts, which enforce correct market behavior of order-book matching, and commitments
-    to historical exchange data for use with Stellar smart contracts.
+    to historical exchange data for use with Neo smart contracts.
     
     \hfill mds
     \hfill November, 2017
@@ -454,7 +454,7 @@
 
     \section{Design}
 
-    The Vocal coin is an ERC20 based currency, which will have an initial public offering which buys a predefined amount of advertisement credit. Once the coin has reached the required funding level, the Vocal market will open to public - enabling open trade and use of the coin on the Stellar blockchain.
+    The Vocal coin is an ERC20 based currency, which will have an initial public offering which buys a predefined amount of advertisement credit. Once the coin has reached the required funding level, the Vocal market will open to public - enabling open trade and use of the coin on the Neo blockchain.
 
     As users view advertisements, the vocal coin is recorded in the user's application and delivered every Sunday night to the user's wallet in a single transaction. 
     These records are proof of all Vocal coin transfers and are stored publicly on the Vocal blockchain. 
@@ -462,12 +462,12 @@
 
     \subsection{Blockchain Overview}
 
-    The above model for tracking and transacting Vocal coin implies a large volume of activity (carrying a large amount of additional weight on the network). At the time of this writing, not all of this activity will be able to take place on the Stellar main chain (due to known scaling limitations of the Stellar blockchain).
+    The above model for tracking and transacting Vocal coin implies a large volume of activity (carrying a large amount of additional weight on the network). At the time of this writing, not all of this activity will be able to take place on the Neo main chain (due to known scaling limitations of the Neo blockchain).
 
 
-    These scaling concerns may be mitigated by the upcoming Stellar blockchain improvements such as Metropolis (the next upgrade to the Stellar blockchain scaling system). However, we will plan to use a batched approach which provides both the benefit of reducing the cost of transacting for the end user on the main network and reduces the complexity of tracking public transactions.
+    These scaling concerns may be mitigated by the upcoming Neo blockchain improvements such as Metropolis (the next upgrade to the Neo blockchain scaling system). However, we will plan to use a batched approach which provides both the benefit of reducing the cost of transacting for the end user on the main network and reduces the complexity of tracking public transactions.
 
-   Vocal is largely a coin which will connect to other blockchains via public exchange - largely backed by the Stellar coin. Activity on other blockchains can interlink with this chain. The Vocal chain validates the activity of the behavior of all the participants on the main net (albeit if transactions are performed off the main chain these cannot be tracked, see the website LocalBitcoins.com as an example).
+   Vocal is largely a coin which will connect to other blockchains via public exchange - largely backed by the Neo coin. Activity on other blockchains can interlink with this chain. The Vocal chain validates the activity of the behavior of all the participants on the main net (albeit if transactions are performed off the main chain these cannot be tracked, see the website LocalBitcoins.com as an example).
 
     The Vocal coin itself is providing the computation and enforcement of the design via the smart contract protocol. Owning Vocal coin grants the user the right to validate this chain through transaction fees, payment, interchange, trading, and clearinghouse use. 
 
@@ -483,10 +483,10 @@
       \centering
     \end{figure}
 
-    % Vocal is deployed as a smart contract on the Stellar.
+    % Vocal is deployed as a smart contract on the Neo.
 
     % \subsection{Limitations}
-    % TODO:{discuss limitations of transactions per second on Stellar}
+    % TODO:{discuss limitations of transactions per second on Neo}
     % TODO:{Address these counter arguments and others for the coin.}
     
     \section{Coin Supply}
@@ -580,7 +580,7 @@
     % TODO:{Discussion of road map features and potential extensions of the protocol}
     
     \section{Conclusion}
-   Vocal is a coin that has potential both as a store of advertising value and as an accounting system for advertisement engagement. Taking inspiration from both the Bitcoin and Stellar mining models, one of Vocal's main goals is to create a coin ecosystem whose rewards stay consistent over time (but with greater potential for individual growth with a more early the entry point). The coin is designed to be easily accountable by transactions discoverable on the public Stellar (ERC20) blockchain.
+   Vocal is a coin that has potential both as a store of advertising value and as an accounting system for advertisement engagement. Taking inspiration from both the Bitcoin and Neo mining models, one of Vocal's main goals is to create a coin ecosystem whose rewards stay consistent over time (but with greater potential for individual growth with a more early the entry point). The coin is designed to be easily accountable by transactions discoverable on the public Neo (ERC20) blockchain.
 
    Vocal coin's initial offering will be done in early January 2018.
 
@@ -595,12 +595,12 @@
 
     \subsection{Acknowledgements}
 
-    We would like to express our gratitude to our mentors, advisors and to the many people in the Stellar community that have been so welcoming and generous with their knowledge. 
-    In particular, we would like to thank the folks in the Boston Cryptocurrency and Stellar developers meetup groups for their support and advice.
+    We would like to express our gratitude to our mentors, advisors and to the many people in the Neo community that have been so welcoming and generous with their knowledge. 
+    In particular, we would like to thank the folks in the Boston Cryptocurrency and Neo developers meetup groups for their support and advice.
 
     \subsection{ERC20 Vocal Protocol}
-   Vocal follows the ERC20 (Stellar-blockchain) protocol for recording transactions.
-    ERC20 establishes a standard contract ABI for coins on the Stellar blockchain and has become the de facto representation for all types of digital assets. ERC20 coins share the same contract interface, simplifying integration with external contracts.
+   Vocal follows the ERC20 (Neo-blockchain) protocol for recording transactions.
+    ERC20 establishes a standard contract ABI for coins on the Neo blockchain and has become the de facto representation for all types of digital assets. ERC20 coins share the same contract interface, simplifying integration with external contracts.
     Core ERC20 functions include:
 
     \begin{enumerate}
@@ -614,8 +614,8 @@
     EIP101 includes a proposal to change ether to follow the ERC20 coin standard. For now, a “wrapper” smart contract may be used as a proxy for ERC20 ether. For reference, see the Maker implementation or the Gnosis implementation.
     \subsubsection{Contract ABI}
     EIP50 proposes an extension to the contract ABI to support structs. This would allow the community to establish standard Order and Signature data structures, simplifying our contract interface and integrations with external contracts.
-    \subsubsection{Stellar Name Service}
-    EIP137 or Stellar Name Service (ENS) will be used to resolve human-readable names, such as “myname.eth,” into machine-readable identifiers that may represent Stellar addresses, Swarm and/or IPFS content hashes or other identifiers. It can also be used to associate metadata with names, such as contract ABIs or whois information. ENS will be used by 0x protocol to create more intuitive message formats that optionally reference Makers, Takers and Relayers by name.
+    \subsubsection{Neo Name Service}
+    EIP137 or Neo Name Service (ENS) will be used to resolve human-readable names, such as “myname.eth,” into machine-readable identifiers that may represent Neo addresses, Swarm and/or IPFS content hashes or other identifiers. It can also be used to associate metadata with names, such as contract ABIs or whois information. ENS will be used by 0x protocol to create more intuitive message formats that optionally reference Makers, Takers and Relayers by name.
     % \cite{Voit2012b}
  
     
