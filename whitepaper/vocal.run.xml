@@ -57,7 +57,6 @@
       <file>standard.bbx</file>
       <file>authoryear.cbx</file>
       <file>biblatex.cfg</file>
-      <file>american.lbx</file>
       <file>english.lbx</file>
     </requires>
   </internal>
@@ -80,7 +79,7 @@
       <file>vocal.bcf</file>
     </requires>
     <requires type="editable">
-      <file>references.bib</file>
+      <file>vocal.bib</file>
     </requires>
   </external>
 </requests>

@@ -1,12 +1,12 @@
 <img src='./assets/vocal_trans_black.png' style="margin: 0 auto;"/>
 
 # Vocal Coin
-A Minimally Viable Distributed Political Currency.
+A Distributed Political Currency.
 ---
 
-Vocal is a currency platform for promoting social change and civic engagement.
+Vocal is a currency and economy for promoting social change and civic engagement.
 
-We have an open beta website at https://www.vocalcoin.com (enter https://vocalcoin.com manually in browser window if page doesn't load initially).
+We have an open beta website at <a href="https://www.vocalcoin.com">vocalcoin.com</a>
 
 ### What Vocal Solves:
 
@@ -77,6 +77,5 @@ We have an open beta website at https://www.vocalcoin.com (enter https://vocalco
 * /assets - other images/resources
 
 ### Useful Links:
-* https://medium.com/@ashisherc/create-an-ico-on-stellar-network-with-custom-token-7b6aab349f33
 * https://medium.com/@tacomanator/environments-with-create-react-app-7b645312c09d
-* https://poliha.github.io/stellar-tokens/
+* https://github.com/CityOfZion/neon-js

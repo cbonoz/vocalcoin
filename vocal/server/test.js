@@ -1,22 +1,22 @@
 // Libraries.
 
 const vocal = require('./vocal');
-const stellar = require('./stellar');
+const neolib = require('./neolib');
 
 // Variables.
 
-const ISSUER_KEYPAIR = stellar.VOCAL_ISSUER_KEYPAIR;
-const SOURCE_KEYPAIR = stellar.VOCAL_SOURCE_KEYPAIR;
-const newUserPair = stellar.createKeyPair();
+const ISSUER_KEYPAIR = neolib.VOCAL_ISSUER_KEYPAIR;
+const SOURCE_KEYPAIR = neolib.VOCAL_SOURCE_KEYPAIR;
+const newUserPair = neolib.createKeyPair();
 
-stellar.createAccount(ISSUER_KEYPAIR,
+neolib.createAccount(ISSUER_KEYPAIR,
     (err1) => { console.error(err1); },
     (res1) => {
-        stellar.createAccount(newUserPair,
+        neolib.createAccount(newUserPair,
             (err2) => { console.error(err2); },
             (res2) => {
                 console.log('created', res2);
-                stellar.trustToken(stellar.ASSET_NAME, ISSUER_KEYPAIR.publicKey(), newUserPair, function (error) {
+                neolib.trustToken(neolib.ASSET_NAME, ISSUER_KEYPAIR.publicKey(), newUserPair, function (error) {
                     if (error) { console.error('Error!', error); return; }
 
                     console.log("Sucessfully trusted.");

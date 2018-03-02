@@ -15,6 +15,7 @@
   "author": "Vocal",
   "license": "Apache-2.0",
   "dependencies": {
+    "@cityofzion/neon-js": "^3.3.2",
     "async": "^2.6.0",
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",
@@ -27,6 +28,6 @@
     "pg-escape": "^0.2.0",
     "request": "^2.83.0",
     "socket.io": "^2.0.4",
-    "stellar-sdk": "^0.8.0"
+    "neolib-sdk": "^0.8.0"
   }
 }

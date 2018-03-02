@@ -26,7 +26,7 @@ admin.initializeApp({
 const passport = require('passport');
 const Strategy = require('passport-http-bearer').Strategy;
 const db = require('./db');
-const stellar = require('./stellar');
+const neolib = require('./neolib');
 
 const requirePostgres = true;
 const PORT = 9007;
@@ -100,14 +100,14 @@ function getAddressAndExecute(userId, cb) {
 function getBalanceAndExecute(userId, cb) {
 
     getUserAndExecute(userId, (user) => {
-        const keyPair = stellar.getKeyPairFromSecret(user.seed);
+        const keyPair = neolib.getKeyPairFromSecret(user.seed);
         console.log('got keypair', JSON.stringify(keyPair));
-        // Get balances for the newly created account from the stellar blockchain.
-        stellar.getBalances(keyPair, (account) => {
+        // Get balances for the newly created account from the neolib blockchain.
+        neolib.getBalances(keyPair, (account) => {
             // Select only the vocal coin balance.
             console.log('account', JSON.stringify(account));
-            // TODO: replace once stellar fully in place.
-            // const vocalBalance = stellar.getVocalBalance(account.balances);
+            // TODO: replace once neolib fully in place.
+            // const vocalBalance = neolib.getVocalBalance(account.balances);
             const vocalBalance = db.users.getBalance(userId);
             const retVal = {'address': keyPair.publicKey(), 'balance': vocalBalance};
             console.log('Vocal balance:', JSON.stringify(retVal));
@@ -123,13 +123,13 @@ function modifyBalanceAndExecute(userId, amount, cb) {
         let from;
         getUserAndExecute(userId, (user) => {
             if (amount > 0) {
-                to = stellar.getKeyPairFromSecret(user.seed);
-                from = stellar.VOCAL_ISSUER_KEYPAIR;
+                to = neolib.getKeyPairFromSecret(user.seed);
+                from = neolib.VOCAL_ISSUER_KEYPAIR;
                 actionMessage = user.username + " earned " + amount;
             } else if (amount < 0) {
                 amount = -amount;
-                to = stellar.VOCAL_ISSUER_KEYPAIR;
-                from = stellar.getKeyPairFromSecret(user.seed);
+                to = neolib.VOCAL_ISSUER_KEYPAIR;
+                from = neolib.getKeyPairFromSecret(user.seed);
                 actionMessage = user.username + " used " + amount;
             } else {
                 const errorMessage = "Not completed: 0 value transaction request for " + user.username;
@@ -137,21 +137,21 @@ function modifyBalanceAndExecute(userId, amount, cb) {
                 throw errorMessage;
             }
 
-            // Convert the amount to a string for the stellar transaction.
+            // Convert the amount to a string for the neolib transaction.
             amount = amount.toString();
             console.log('amount: ' + amount + " " + typeof(amount));
             console.log('modifyBalanceAndExecute', from.publicKey(), to.publicKey(), amount, actionMessage);
 
-            // TODO: remove and replace with sendTransaction once stellar fully in place.
+            // TODO: remove and replace with sendTransaction once neolib fully in place.
             db.users.setBalance(userId, db.users.getBalance(userId) + amount);
 
-            // stellar.sendTransaction(
+            // neolib.sendTransaction(
             //     from, // source.
             //     to, // destination.
             //     amount,
             //     actionMessage,
             //     (err) => {
-            //         console.error('stellar transaction error', JSON.stringify(err));
+            //         console.error('neolib transaction error', JSON.stringify(err));
             //         throw err;
             //     },
             //     (msg) => {
@@ -340,18 +340,6 @@ app.get('/api/votes/:issueId', passport.authenticate('bearer', {
     });
 });
 
-function produceAddress(address, cb) {
-    console.log('produce address', address);
-    if (address && address !== 'undefined') {
-        cb(address)
-    }
-    console.log('creating new vault');
-    // TODO: preserve private key.
-    const w = Wallet.createRandom();
-    const addr = w.address;
-    cb(addr);
-}
-
 function getUserAndExecute(userId, cb) {
     const query = vocal.getUserQuery(userId);
     pool.query(query, (err, result) => {
@@ -411,12 +399,12 @@ app.post('/api/signin', (req, res) => {
         } else {
             // User does not exist
             const username = body.username;
-            const keypair = stellar.createKeyPair();
+            const keypair = neolib.createKeyPair();
             const address = keypair.publicKey();
             const seed = keypair.secret();
             console.log('createKeyPair', address, seed);
 
-            stellar.createAccount(keypair,
+            neolib.createAccount(keypair,
                 (accErr) => {
                     console.error('create account error', accErr);
                     return res.status(500).json(accErr);
@@ -500,8 +488,8 @@ io.on('connection', function (client) {
 
 // DB Connection and Server start //
 
-stellar.getBalances(stellar.VOCAL_ISSUER_KEYPAIR, (vocalIssuerAccount) => {
-    console.log('Vocal Issuer Account Balance', JSON.stringify(stellar.getVocalBalance(vocalIssuerAccount.balances)));
+neolib.getBalances(neolib.VOCAL_ISSUER_KEYPAIR, (vocalIssuerAccount) => {
+    console.log('Vocal Issuer Account Balance', JSON.stringify(neolib.getVocalBalance(vocalIssuerAccount.balances)));
 
 
     pool.connect((err, client, done) => {
