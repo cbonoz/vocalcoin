@@ -102,14 +102,14 @@ function getBalanceAndExecute(userId, cb) {
     getUserAndExecute(userId, (user) => {
         console.log('got user', JSON.stringify(user));
         // Get balances for the newly created account from the neolib blockchain.
-        neolib.getAssetBalance(user.address, neolib.VOCAL_NAME,
+        neolib.getAssetBalance(user.address, neolib.VOCAL_SYMBOL,
             (filledBalance) => {
                 "use strict";
                 console.log('getAssetBalance', address, JSON.stringify(filledBalance));
                 const symbols = filledBalance.assetSymbols;
                 if (symbols) {
                     // We retrieve the unspent coins from the assets object using the symbol
-                    const vocalBalance = filledBalance.assets[neolib.VOCAL_NAME];
+                    const vocalBalance = filledBalance.assets[neolib.VOCAL_SYMBOL];
                     if (vocalBalance) {
                         const retVal = {'address': user.address, 'balance': vocalBalance.unspent};
                         console.log('Vocal balance:', JSON.stringify(retVal));

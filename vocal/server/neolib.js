@@ -4,7 +4,8 @@ const library = (function () {
     const neonjs = require('@cityofzion/neon-js');
 
     const NEO_NETWORK = 'TestNet'; // Active network, MainNet or TestNet.
-    const VOCAL_NAME = "VOCAL";
+    const VOCAL_NAME = "Vocal Coin";
+    const VOCAL_SYMBOL = "VOCAL";
     const NEO_ISSUER_ADDRESS = process.env.VOCAL_NEO_ISSUER_ADDRESS;
     const NEO_ISSUER_SECRET = process.env.VOCAL_NEO_ISSUER_SECRET;
     const NEO_ISSUER_PUBKEY = process.env.VOCAL_NEO_ISSUER_PUBKEY;
@@ -23,15 +24,14 @@ const library = (function () {
     const api = neonjs.api;
     const tx = neonjs.tx;
 
-    function createVocalToken(success, failure) {
+    // TODO: current plan is to deploy the contract from python using the wallet credentials specified in the env
+    // and then invoke methods from javascript after the contract/coin has been deployed (such as transferring and
+    // balance inquiries using the issuer account).
+    function createNewToken(assetName, decimals, symbol, totalSupply, success, failure) {
         const scriptHash = TEST_SCRIPT_HASH;
 
-        const name = 'Vocal Token';
-        const decimals = 2;
-        const symbol = VOCAL_NAME;
-        const totalSupply = 100000000.00;
-
-        const getName = { scriptHash, operation: 'name', args: [name] };
+        // TODO: args should be a hex string
+        const getName = { scriptHash, operation: 'name', args: [assetName] };
         const getDecimals = { scriptHash, operation: 'decimals', args: [decimals] };
         const getSymbol = { scriptHash, operation: 'symbol', args: [symbol] };
         const getTotalSupply = { scriptHash, operation: 'totalSupply', args: [totalSupply] };
@@ -135,6 +135,7 @@ const library = (function () {
     };
 
     return {
+        VOCAL_SYMBOL: VOCAL_SYMBOL,
         VOCAL_NAME: VOCAL_NAME,
         NEO_ISSUER_ADDRESS: NEO_ISSUER_ADDRESS,
         NEO_ISSUER_SECRET: NEO_ISSUER_SECRET,
@@ -143,7 +144,7 @@ const library = (function () {
         createAccountFromPrivateKey: createAccountFromPrivateKey,
         createKeyPair: createKeyPair,
         createPrivateKey: createPrivateKey,
-        createVocalToken: createVocalToken,
+        createNewToken: createNewToken,
         decryptKey: decryptKey,
         encryptKey: encryptKey,
         getAssetBalance: getAssetBalance,
