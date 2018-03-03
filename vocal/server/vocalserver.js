@@ -116,20 +116,24 @@ function getBalanceAndExecute(userId, cb) {
     });
 }
 
+// Sends or Pulls money between the specified userId and the master (issuer) NEO account for Vocal.
 function modifyBalanceAndExecute(userId, amount, cb) {
     try {
         let actionMessage;
-        let to;
-        let from;
+        let sourceAddress;
+        let sourceKey;
+        let destAddress;
         getUserAndExecute(userId, (user) => {
             if (amount > 0) {
-                to = neolib.getKeyPairFromSecret(user.seed);
-                from = neolib.VOCAL_ISSUER_KEYPAIR;
+                sourceAddress = neolib.NEO_ISSUER_ADDRESS;
+                sourceKey = neolib.NEO_ISSUER_SECRET;
+                destAddress = user.address;
                 actionMessage = user.username + " earned " + amount;
             } else if (amount < 0) {
                 amount = -amount;
-                to = neolib.VOCAL_ISSUER_KEYPAIR;
-                from = neolib.getKeyPairFromSecret(user.seed);
+                sourceAddress = user.address;
+                sourceKey = neolib.decryptKey(user.seed); // seed is encrypted on the user DB object.
+                destAddress = neolib.NEO_ISSUER_ADDRESS;
                 actionMessage = user.username + " used " + amount;
             } else {
                 const errorMessage = "Not completed: 0 value transaction request for " + user.username;
@@ -142,23 +146,15 @@ function modifyBalanceAndExecute(userId, amount, cb) {
             console.log('amount: ' + amount + " " + typeof(amount));
             console.log('modifyBalanceAndExecute', from.publicKey(), to.publicKey(), amount, actionMessage);
 
-            // TODO: remove and replace with sendTransaction once neolib fully in place.
-            db.users.setBalance(userId, db.users.getBalance(userId) + amount);
-
-            // neolib.sendTransaction(
-            //     from, // source.
-            //     to, // destination.
-            //     amount,
-            //     actionMessage,
-            //     (err) => {
-            //         console.error('neolib transaction error', JSON.stringify(err));
-            //         throw err;
-            //     },
-            //     (msg) => {
-            //         console.log('success: ' + msg);
-            //         cb();
-            //     }
-            // );
+            neolib.sendTransaction(sourceAddress, sourceKey, destAddress, amount, actionMessage,
+                (msg) => {
+                    console.log('success: ' + msg);
+                    cb();
+                }, (err) => {
+                    console.error('neolib transaction error', JSON.stringify(err));
+                    throw err;
+                }
+            );
         });
     } catch (e) {
         return res.status(500).json(e);
@@ -399,10 +395,13 @@ app.post('/api/signin', (req, res) => {
         } else {
             // User does not exist
             const username = body.username;
-            const keypair = neolib.createKeyPair();
-            const address = keypair.publicKey();
-            const seed = keypair.secret();
-            console.log('createKeyPair', address, seed);
+            const seed = neolib.createPrivateKey();
+            const keypair = neolib.createKeyPair(seed);
+            const publicKey = keypair.publicKey;
+            const address = keypair.address;
+            console.log('createNewUser', address, seed, publicKey);
+
+            const encSeed = neolib.encryptKey(seed);
 
             neolib.createAccount(keypair,
                 (accErr) => {
@@ -410,7 +409,7 @@ app.post('/api/signin', (req, res) => {
                     return res.status(500).json(accErr);
                 },
                 (accRes) => {
-                    const userQuery = vocal.insertUserQuery(userId, email, address, seed, username);
+                    const userQuery = vocal.insertUserQuery(userId, email, address, encSeed, username);
                     console.log('userQuery', userQuery);
                     pool.query(userQuery, (err, result) => {
                         console.log('insert user', err, JSON.stringify(result));

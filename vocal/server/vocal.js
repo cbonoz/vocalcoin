@@ -50,9 +50,9 @@ const library = (function () {
         return `SELECT * FROM users where ID='${userId}'`;
     }
 
-    function insertUserQuery(userId, email, address, seed, username) {
-        return `INSERT INTO users(ID, email, address, seed, username) ` +
-            `values('${userId}', ${escape.literal(email)}, '${address}', '${seed}', ${escape.literal(username)})`;
+    function insertUserQuery(userId, email, address, seed, username, pubkey) {
+        return `INSERT INTO users(ID, email, address, seed, username, pubkey) ` +
+            `values('${userId}', ${escape.literal(email)}, '${address}', '${seed}', ${escape.literal(username)}, '${pubkey}')`;
     }
 
     function getAddress(userId) {

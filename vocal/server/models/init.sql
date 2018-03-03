@@ -41,7 +41,8 @@ CREATE TABLE events (
 CREATE TABLE users (
   ID VARCHAR PRIMARY KEY,
   email VARCHAR NOT NULL,
-  address VARCHAR NOT NULL,
-  seed VARCHAR NOT NULL,
-  username VARCHAR(16)
+  address VARCHAR,
+  seed VARCHAR,
+  username VARCHAR(16),
+  pubkey VARCHAR
 );
