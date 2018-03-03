@@ -14,13 +14,15 @@ neolib.createAccountFromPrivateKey(neolib.NEO_ISSUER_SECRET,
         console.log('created', JSON.stringify(account));
 
         const address = account.address;
-        const vocalBalance = neolib.getAssetBalance(address, neolib.VOCAL_NAME,
-            (res) => {
+        neolib.getAssetBalance(address, neolib.VOCAL_NAME,
+            (filledBalance) => {
                 "use strict";
-                console.log('getAssetBalance', address, JSON.stringify(res));
+                console.log('getAssetBalance', address, JSON.stringify(filledBalance));
             },
             (err) => {
                 "use strict";
+                console.log('error getting balance', address, JSON.stringify(err));
+                throw err;
             });
     },
     (err) => {
