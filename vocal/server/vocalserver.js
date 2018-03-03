@@ -100,19 +100,12 @@ function getAddressAndExecute(userId, cb) {
 function getBalanceAndExecute(userId, cb) {
 
     getUserAndExecute(userId, (user) => {
-        const keyPair = neolib.getKeyPairFromSecret(user.seed);
-        console.log('got keypair', JSON.stringify(keyPair));
+        console.log('got user', JSON.stringify(user));
         // Get balances for the newly created account from the neolib blockchain.
-        neolib.getBalances(keyPair, (account) => {
-            // Select only the vocal coin balance.
-            console.log('account', JSON.stringify(account));
-            // TODO: replace once neolib fully in place.
-            // const vocalBalance = neolib.getVocalBalance(account.balances);
-            const vocalBalance = db.users.getBalance(userId);
-            const retVal = {'address': keyPair.publicKey(), 'balance': vocalBalance};
-            console.log('Vocal balance:', JSON.stringify(retVal));
-            cb(retVal);
-        });
+        const vocalBalance = neolib.getAssetBalance(user.address);
+        const retVal = {'address': user.address, 'balance': vocalBalance};
+        console.log('Vocal balance:', JSON.stringify(retVal));
+        cb(retVal);
     });
 }
 
@@ -487,22 +480,17 @@ io.on('connection', function (client) {
 
 // DB Connection and Server start //
 
-neolib.getBalances(neolib.VOCAL_ISSUER_KEYPAIR, (vocalIssuerAccount) => {
-    console.log('Vocal Issuer Account Balance', JSON.stringify(neolib.getVocalBalance(vocalIssuerAccount.balances)));
-
-
-    pool.connect((err, client, done) => {
-        if (err) {
-            console.error('postgres connection error', err);
-            if (requirePostgres) {
-                console.error('exiting');
-                return;
-            }
-            console.error('continuing with disabled postgres db');
+pool.connect((err, client, done) => {
+    if (err) {
+        console.error('postgres connection error', err);
+        if (requirePostgres) {
+            console.error('exiting');
+            return;
         }
+        console.error('continuing with disabled postgres db');
+    }
 
-        server.listen(PORT, () => {
-            console.log('Express server listening on localhost port: ' + PORT);
-        });
+    server.listen(PORT, () => {
+        console.log('Express server listening on localhost port: ' + PORT);
     });
 });

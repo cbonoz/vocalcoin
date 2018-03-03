@@ -1,9 +1,7 @@
 // https://github.com/CityOfZion/neon-js
-// ES6 not currently enabled.
-// import Neon from '@cityofzion/neon-js';
-// import { rpc, tx } from '@cityofzion/neon-js';
-// import { wallet, api } from '@cityofzion/neon-js';
+
 const library = (function () {
+    const neonjs = require('@cityofzion/neon-js');
 
     const NEO_NETWORK = 'TestNet'; // Active network, MainNet or TestNet.
     const VOCAL_NAME = "VOCAL";
@@ -15,30 +13,29 @@ const library = (function () {
     const TEST_SCRIPT_HASH = '5b7074e873973a6ed3708862f219a6fbf4d1c411'; // TestNet RPX
 
     // // Example code for ES5.
-    var neonjs = require('@cityofzion/neon-js')
 
     // Semantic Style by using default import
-    const Neon = neonjs.default
-    const query = Neon.create.query()
+    const Neon = neonjs.default;
+    const query = Neon.create.query();
 
     // Named imports are available too
-    const wallet = neonjs.wallet
-    const tx = neonjs.tx
+    const wallet = neonjs.wallet;
+    const tx = neonjs.tx;
 
     function createVocalToken(success, failure) {
         const scriptHash = TEST_SCRIPT_HASH;
 
-        const name = 'Vocal Token'
-        const decimals = 2
-        const symbol = VOCAL_NAME
-        const totalSupply = 100000000.00
+        const name = 'Vocal Token';
+        const decimals = 2;
+        const symbol = VOCAL_NAME;
+        const totalSupply = 100000000.00;
 
-        const getName = { scriptHash, operation: 'name', args: [name] }
-        const getDecimals = { scriptHash, operation: 'decimals', args: [decimals] }
-        const getSymbol = { scriptHash, operation: 'symbol', args: [symbol] }
-        const getTotalSupply = { scriptHash, operation: 'totalSupply', args: [totalSupply] }
+        const getName = { scriptHash, operation: 'name', args: [name] };
+        const getDecimals = { scriptHash, operation: 'decimals', args: [decimals] };
+        const getSymbol = { scriptHash, operation: 'symbol', args: [symbol] };
+        const getTotalSupply = { scriptHash, operation: 'totalSupply', args: [totalSupply] };
 
-        const script = Neon.create.script([getName, getDecimals, getSymbol, getTotalSupply])
+        const script = Neon.create.script([getName, getDecimals, getSymbol, getTotalSupply]);
 
         rpc.Query.invokeScript(script)
             .execute(RPC_URL)
@@ -50,21 +47,22 @@ const library = (function () {
             });
     }
 
+    // Synchronous method.
     function getAssetBalance(address, assetName) {
         if (!assetName) {
             assetName = VOCAL_NAME;
         }
         console.log('getBalance', address, assetName);
-        Neon.create.balance({ net: NEO_NETWORK, address: address })
+        Neon.create.balance({ net: NEO_NETWORK, address: address });
 
         // This form is useless as it is an empty balance.
-        const balance = new wallet.Balance({ net: NEO_NETWORK, address: address })
+        const balance = new wallet.Balance({ net: NEO_NETWORK, address: address });
         // We get a useful balance that can be used to fill a transaction through api
-        const filledBalance = api.getBalanceFrom(address, api.neonDB)
+        const filledBalance = api.getBalanceFrom(address, api.neonDB);
         // This contains all symbols of assets available in this balance
-        const symbols = filledBalance.assetSymbols
+        const symbols = filledBalance.assetSymbols;
         // We retrieve the unspent coins from the assets object using the symbol
-        const coins = filledBalance.assets[assetName].unspent
+        const coins = filledBalance.assets[assetName].unspent;
         // We can verify the information retrieved using verifyAssets. NOTE: this is an expensive call.
         // filledBalance.verifyAssets(RPC_URL)
 
@@ -94,7 +92,7 @@ const library = (function () {
     }
 
     function createKeyPair(privateKey) {
-        const account = Neon.create.account(privateKey)
+        const account = Neon.create.account(privateKey);
         // let publicKey = account.publicKey
         // let address = account.address
         return account;
