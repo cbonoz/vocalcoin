@@ -4,6 +4,7 @@ import firebase from 'firebase'
   // Initialize Firebase
   var config = {
     apiKey: process.env.REACT_APP_VOCAL_FIRE_KEY,
+    // apiKey: "AIzaSyDkBvLQ7Ls1OWENVHbo8SiXDGUhqsf4DrA",
     authDomain: "vocalcoin-69799.firebaseapp.com",
     databaseURL: "https://vocalcoin-69799.firebaseio.com",
     projectId: "vocalcoin-69799",

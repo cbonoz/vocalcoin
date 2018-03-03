@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.17.0",
+    "create-react-app": "^1.5.2",
     "firebase": "^4.6.2",
     "glamor": "^2.20.40",
     "preact": "^8.2.7",
@@ -36,9 +37,11 @@
     "analyze": "source-map-explorer build/static/js/main.*"
   },
   "devDependencies": {
+    "babel-preset-react-optimize": "^1.0.1",
     "imagemin": "^5.3.1",
     "imagemin-webp": "^4.1.0",
     "react-image-webp": "^0.2.2",
-    "source-map-explorer": "^1.5.0"
+    "source-map-explorer": "^1.5.0",
+    "why-did-you-update": "^0.1.1"
   }
 }
