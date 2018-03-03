@@ -102,29 +102,30 @@ function getBalanceAndExecute(userId, cb) {
     getUserAndExecute(userId, (user) => {
         console.log('got user', JSON.stringify(user));
         // Get balances for the newly created account from the neolib blockchain.
-        neolib.getAssetBalance(user.address, neolib.VOCAL_SYMBOL,
-            (filledBalance) => {
-                "use strict";
-                console.log('getAssetBalance', address, JSON.stringify(filledBalance));
-                const symbols = filledBalance.assetSymbols;
-                if (symbols) {
-                    // We retrieve the unspent coins from the assets object using the symbol
-                    const vocalBalance = filledBalance.assets[neolib.VOCAL_SYMBOL];
-                    if (vocalBalance) {
-                        const retVal = {'address': user.address, 'balance': vocalBalance.unspent};
-                        console.log('Vocal balance:', JSON.stringify(retVal));
-                        cb(retVal);
-                    } else {
-                        cb(null);
-                    }
+        neolib.getAssetBalance(user.address, neolib.VOCAL_SYMBOL).then((filledBalance) => {
+            console.log('getAssetBalance', address, JSON.stringify(filledBalance));
+            const symbols = filledBalance.assetSymbols;
+            if (symbols) {
+                // We retrieve the unspent coins from the assets object using the vocal symbol.
+                const assets = filledBalance.assets;
+
+                let vocalBalance;
+                if (assets.hasOwnProperty(neolib.VOCAL_SYMBOL)) {
+                    vocalBalance = assets[neolib.VOCAL_SYMBOL]
                 } else {
-                    cb(null);
+                    // No vocal assets.
+                    vocalBalance = 0;
                 }
-            },
-            (err) => {
-                "use strict";
-                throw err;
-            });
+                const retVal = {'address': user.address, 'balance': vocalBalance.unspent};
+                console.log('Vocal balance:', JSON.stringify(retVal));
+                cb(retVal);
+            } else {
+                cb(null);
+            }
+        }).catch((err) => {
+            "use strict";
+            throw err;
+        });
     });
 }
 
