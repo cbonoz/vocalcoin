@@ -1,12 +1,11 @@
 # Fdb version 3
-["biber vocal"] 1519952259 "vocal.bcf" "vocal.bbl" "vocal" 1519952300
-  "vocal.bcf" 1519952300 94008 f29e92f3e462d7853f3d8d577d993e9c ""
-  "vocal.bib" 1519952299 434 a5ca0ea7b63a2cf606c183074ed0811c ""
+["biber vocal"] 1519958385 "vocal.bcf" "vocal.bbl" "vocal" 1519958390
+  "vocal.bcf" 1519958390 93957 020d5b08b3e57bc8f118766c655532b6 ""
   (generated)
   "vocal.bbl"
   "vocal.blg"
-["pdflatex"] 1519952299 "/Users/cbuonocore/personal/coins/vocalcoin/whitepaper/vocal.tex" "vocal.pdf" "vocal" 1519952300
-  "/Users/cbuonocore/personal/coins/vocalcoin/whitepaper/vocal.tex" 1519952298 24966 c1261ee4a9a164be58d5beb2f75ab14a ""
+["pdflatex"] 1519958389 "/Users/cbuonocore/personal/coins/vocalcoin/whitepaper/vocal.tex" "vocal.pdf" "vocal" 1519958390
+  "/Users/cbuonocore/personal/coins/vocalcoin/whitepaper/vocal.tex" 1519958383 23355 49e6e0b8a15e2ac6db612fe02d0e06a5 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1480098689 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -188,15 +187,15 @@
   "/usr/local/texlive/2017/texmf-var/web2c/pdftex/pdflatex.fmt" 1495593487 4129592 0e6cfee100d68e6d96b92c0258f2ff73 ""
   "/usr/local/texlive/2017/texmf.cnf" 1495593465 577 2b71d4d888f9e5560b2e99985915a9fa ""
   "assets/architecture.png" 1514694175 91248 13bd6d17f106966f6921f95684026281 ""
-  "vocal.aux" 1519952300 4301 48ee52e601f10e3ba9cfce2916a219b2 ""
-  "vocal.bbl" 1519952266 1577 bc81add9330fdacc2579b791fce657e6 "biber vocal"
-  "vocal.bib" 1519952299 434 a5ca0ea7b63a2cf606c183074ed0811c ""
-  "vocal.run.xml" 1519952300 2313 249d762cc1931bd92a4fcf35caa1a29b ""
-  "vocal.tex" 1519952298 24966 c1261ee4a9a164be58d5beb2f75ab14a ""
+  "vocal.aux" 1519958390 3840 d0d661f03ecafd5f8954d54ef3cb2a13 ""
+  "vocal.bbl" 1519958386 466 87c763802318ca007e475d2fb9c40fb5 "biber vocal"
+  "vocal.bib" 1519958389 123 1537895172ac4f1360c95d7fbcf17d6d ""
+  "vocal.run.xml" 1519958390 2313 249d762cc1931bd92a4fcf35caa1a29b ""
+  "vocal.tex" 1519958383 23355 49e6e0b8a15e2ac6db612fe02d0e06a5 ""
   (generated)
-  "vocal.bcf"
-  "vocal.bib"
-  "vocal.pdf"
-  "vocal.run.xml"
-  "vocal.aux"
   "vocal.log"
+  "vocal.bib"
+  "vocal.aux"
+  "vocal.bcf"
+  "vocal.run.xml"
+  "vocal.pdf"

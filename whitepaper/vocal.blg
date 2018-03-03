@@ -1,15 +1,9 @@
 [0] Config.pm:354> INFO - This is Biber 2.7
 [0] Config.pm:357> INFO - Logfile is 'vocal.blg'
-[45] biber-darwin:303> INFO - === Thu Mar  1, 2018, 19:57:46
-[73] Biber.pm:359> INFO - Reading 'vocal.bcf'
-[167] Biber.pm:835> INFO - Found 1 citekeys in bib section 0
-[180] Biber.pm:3670> INFO - Processing section 0
-[195] Biber.pm:3840> INFO - Looking for bibtex format file 'vocal.bib' for section 0
-[197] bibtex.pm:1435> INFO - Decoding LaTeX character macros into UTF-8
-[203] bibtex.pm:1292> INFO - Found BibTeX data source 'vocal.bib'
-[215] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[215] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[215] Biber.pm:3499> INFO - Sorting list 'none/global/' of type 'entry' with scheme 'none' and locale 'en-US'
-[215] Biber.pm:3505> INFO - No sort tailoring available for locale 'en-US'
-[217] bbl.pm:608> INFO - Writing 'vocal.bbl' with encoding 'ascii'
-[217] bbl.pm:712> INFO - Output to vocal.bbl
+[47] biber-darwin:303> INFO - === Thu Mar  1, 2018, 21:39:46
+[81] Biber.pm:359> INFO - Reading 'vocal.bcf'
+[169] Biber.pm:835> INFO - Found 0 citekeys in bib section 0
+[175] Utils.pm:164> WARN - The file 'vocal.bcf' does not contain any citations!
+[180] bbl.pm:608> INFO - Writing 'vocal.bbl' with encoding 'ascii'
+[181] bbl.pm:712> INFO - Output to vocal.bbl
+[181] Biber.pm:109> INFO - WARNINGS: 1

@@ -16,38 +16,5 @@
   {}
 \endgroup
 
-
-\refsection{0}
-  \sortlist[entry]{none/global/}
-    \entry{Voit2012b}{thesis}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=cc6434e5b4df4f3c8dfbf018520653ed}{%
-           family={Voit},
-           familyi={V\bibinitperiod},
-           given={Karl},
-           giveni={K\bibinitperiod}}}%
-      }
-      \list{institution}{1}{%
-        {Graz University of Technology}%
-      }
-      \list{location}{1}{%
-        {Graz, Austria}%
-      }
-      \strng{namehash}{cc6434e5b4df4f3c8dfbf018520653ed}
-      \strng{fullhash}{cc6434e5b4df4f3c8dfbf018520653ed}
-      \strng{authornamehash}{cc6434e5b4df4f3c8dfbf018520653ed}
-      \strng{authorfullhash}{cc6434e5b4df4f3c8dfbf018520653ed}
-      \field{sortinit}{1}
-      \field{sortinithash}{27a2bc5dfb9ed0a0422134d636544b5d}
-      \field{labeldatesource}{year}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{month}{11}
-      \field{title}{TagTrees: Improving Personal Information Management using Associative Navigation}
-      \field{type}{phdthesis}
-      \field{year}{2012}
-    \endentry
-  \endsortlist
-\endrefsection
 \endinput
 
