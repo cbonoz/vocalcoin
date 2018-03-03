@@ -20,6 +20,7 @@ const library = (function () {
 
     // Named imports are available too
     const wallet = neonjs.wallet;
+    const api = neonjs.api;
     const tx = neonjs.tx;
 
     function createVocalToken(success, failure) {
@@ -48,21 +49,25 @@ const library = (function () {
     }
 
     // Synchronous method.
-    function getAssetBalance(address, assetName) {
-        if (!assetName) {
-            assetName = VOCAL_NAME;
-        }
+    function getAssetBalance(address, assetName, success, failure) {
         console.log('getBalance', address, assetName);
-        Neon.create.balance({ net: NEO_NETWORK, address: address });
-
         // This form is useless as it is an empty balance.
         const balance = new wallet.Balance({ net: NEO_NETWORK, address: address });
         // We get a useful balance that can be used to fill a transaction through api
-        const filledBalance = api.getBalanceFrom(address, api.neonDB);
+        // const filledBalance = api.getBalanceFrom(address, api.neonDB);
+        const filledBalance = api.getBalanceFrom(balance, api.neonDB);
+        filledBalance.then((res) => {
+            "use strict";
+            success(res);
+        }).catch((err) => {
+            "use strict";
+            failure(err);
+        })
         // This contains all symbols of assets available in this balance
         const symbols = filledBalance.assetSymbols;
         // We retrieve the unspent coins from the assets object using the symbol
-        const coins = filledBalance.assets[assetName].unspent;
+        const coins = undefined;
+        // const coins = filledBalance.assets[assetName].unspent;
         // We can verify the information retrieved using verifyAssets. NOTE: this is an expensive call.
         // filledBalance.verifyAssets(RPC_URL)
 
