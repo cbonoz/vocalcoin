@@ -4,8 +4,8 @@ const library = (function () {
     const neonjs = require('@cityofzion/neon-js');
 
     const NEO_NETWORK = 'TestNet'; // Active network, MainNet or TestNet.
-    const VOCAL_NAME = "Vocal Coin";
-    const VOCAL_SYMBOL = "VOCAL";
+    const VOCAL_NAME = "vocal";
+    const VOCAL_SYMBOL = "VOC";
     const NEO_ISSUER_ADDRESS = process.env.VOCAL_NEO_ISSUER_ADDRESS;
     const NEO_ISSUER_SECRET = process.env.VOCAL_NEO_ISSUER_SECRET;
     const NEO_ISSUER_PUBKEY = process.env.VOCAL_NEO_ISSUER_PUBKEY;
@@ -49,6 +49,7 @@ const library = (function () {
 
     // Synchronous method.
     function getAssetBalance(address, assetName) {
+        // TODO: this is going to need to be asynchronous through the deployed smart contract for Vocal.
         console.log('getBalance', address, assetName);
         const balance = new wallet.Balance({net: NEO_NETWORK, address: address});
         return api.getBalanceFrom(balance, api.neonDB);
@@ -70,6 +71,16 @@ const library = (function () {
         } else {
             failure(account);
         }
+    }
+
+    function createWalletFromAccount(a, name, cb) {
+        const w1 = Neon.create.wallet({name: name});
+        w1.addAccount(a);
+        w1.encryptAll(NEO_ENC_PASSWORD);
+        const walletFile = name + '.json';
+        w1.writeFile(walletFile);
+        console.log("created walletFile", walletFile);
+        cb(w1.export());
     }
 
     function createPrivateKey() {
@@ -118,8 +129,10 @@ const library = (function () {
         NEO_ISSUER_ADDRESS: NEO_ISSUER_ADDRESS,
         NEO_ISSUER_SECRET: NEO_ISSUER_SECRET,
         NEO_ISSUER_PUBKEY: NEO_ISSUER_PUBKEY,
-        createAccount: createAccount,
+        NEO_ENC_PASSWORD: NEO_ENC_PASSWORD,
         createAccountFromPrivateKey: createAccountFromPrivateKey,
+        createWalletFromAccount: createWalletFromAccount,
+        createAccount: createAccount,
         createKeyPair: createKeyPair,
         createPrivateKey: createPrivateKey,
         createNewToken: createNewToken,
