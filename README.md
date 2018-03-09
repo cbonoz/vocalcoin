@@ -6,7 +6,9 @@ A Distributed Political Currency.
 
 Vocal is a currency and economy for promoting social change and civic engagement.
 
-We have an open beta website at <a href="https://www.vocalcoin.com">vocalcoin.com</a>
+We have a running open beta website at <a href="https://www.vocalcoin.com">vocalcoin.com</a>
+
+Simply create a new account (email and pass) and you will get started with 50 Vocal coin.
 
 ### What Vocal Solves:
 
@@ -27,6 +29,10 @@ We have an open beta website at <a href="https://www.vocalcoin.com">vocalcoin.co
     <li>User redeems those vocal token for promoting his or her own initiatives (and/or social credit i.e. user gains publicity). Other opportunities for redemption can be possible in the future.</li>
     <li>Governments can also promote and add issues that they want information about from local communities, questions such as 'What would be the most valuable improvement to this town? Or should we make this investment?'</li>
 </ol>
+
+Vocal is not an investment vehicle, and is earned and spent by the individuals of the Vocal platform themselves. Currently Vocal can be earned by voting on existing issues (+5 Vocal per vote) and spent by creating new issues which you can track publicly (-50 Vocal). 
+
+Create an account at <a href="https://www.vocalcoin.com">vocalcoin.com</a> to get started.
 
 ### Screenshots
 
@@ -66,15 +72,16 @@ We have an open beta website at <a href="https://www.vocalcoin.com">vocalcoin.co
 ### Future Work
 
 - Better sorting/searching/filtering of issues on the map. i.e. finding by categories or creators.
-- Implement remaining use cases for Vocal coin
+- Implement remaining use cases for Vocal coin (other spending and earning opportunities).
 - Interaction/Trading between users
 - Improve UI / Remaining Beta Bug Fixes
 
 ## Repository Contents:
 * /slidedeck - Contains the pitch slidedeck for Vocal Coin.
+* /smartcontracts - NEP-5 smart contract files for Vocal Coin.
 * /whitepaper - vocal whitepaper tex and build output files such as the pdf.
 * /vocal - Front end and server code.
-* /assets - other images/resources
+* /assets - other images/resources used for github and presentation purposes.
 
 ### Useful Links:
 * https://medium.com/@tacomanator/environments-with-create-react-app-7b645312c09d
