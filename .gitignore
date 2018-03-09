@@ -15,6 +15,9 @@ package-lock.json
 /vocal/package-lock.json
 /vocal/server/package-lock.json
 /vocal/server/*wallet.json
+venv/
+venv
+sc/README.md
 
 # Docker
 Dockerfile

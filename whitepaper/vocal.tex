@@ -1,5 +1,3 @@
-
-
 \documentclass[conference]{IEEEtran}
   % \documentclass[journal,onecolumn]{IEEEtran}
     % Some Computer Society conferences also require the compsoc mode option,
@@ -12,9 +10,6 @@
     \usepackage{chronology}
     \usepackage{graphicx}
 
-    % Some very useful LaTeX packages include:
-    % (uncomment the ones you want to load)
-   
     \usepackage{xcolor}
 
     \newcommand{\cmmnt}[1]{}
@@ -34,42 +29,7 @@
       \begin{filecontents}{\jobname.bib}
       \end{filecontents}
       \addbibresource{\jobname.bib}
-    % cite.sty was written by Donald Arseneau
-    % V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
-    % \cite{} output to follow that of the IEEE. Loading the cite package will
-    % result in citation numbers being automatically sorted and properly
-    % "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
-    % cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
-    % \cite will automatically add leading space, if needed. Use cite.sty's
-    % noadjust option (cite.sty V3.8 and later) if you want to turn this off
-    % such as if a citation ever needs to be enclosed in parenthesis.
-    % cite.sty is already installed on most LaTeX systems. Be sure and use
-    % version 5.0 (2009-03-20) and later if using hyperref.sty.
-    % The latest version can be obtained at:
-    % http://www.ctan.org/pkg/cite
-    % The documentation is contained in the cite.sty file itself.
-    
-    % *** MATH PACKAGES ***
-    %
-    % \usepackage{amsmath}
-    % A popular package from the American Mathematical Society that provides
-    % many useful and powerful commands for dealing with mathematics.
-    %
-    % Note that the amsmath package sets \interdisplaylinepenalty to 10000
-    % thus preventing page breaks from occurring within multiline equations. Use:
-    %\interdisplaylinepenalty=2500
-    % after loading amsmath to restore such page breaks as IEEEtran.cls normally
-    % does. amsmath.sty is already installed on most LaTeX systems. The latest
-    % version and documentation can be obtained at:
-    % http://www.ctan.org/pkg/amsmath
-    
-    
-    % *** Do not adjust lengths that control margins, column widths, etc. ***
-    % *** Do not use packages that alter fonts (such as pslatex).         ***
-    % There should be no need to do such things with IEEEtran.cls V1.6 and later.
-    % (Unless specifically asked to do so by the journal or conference you plan
-    % to submit to, of course. )
-    
+
     
     % correct bad hyphenation here
     \hyphenation{op-tical net-works semi-conduc-tor}
@@ -90,42 +50,15 @@
     \IEEEauthorblockN{Chris Buonocore}
     \and
     \IEEEauthorblockN{Anup Vasudevan}
-    \and
-    \IEEEauthorblockN{Ahmad Jarara}
     }
-    
-    % conference papers do not typically use \thanks and this command
-    % is locked out in conference mode. If really needed, such as for
-    % the acknowledgment of grants, issue a \IEEEoverridecommandlockouts
-    % after \documentclass
-    
-    % for over three affiliations, or if they all won't fit within the width
-    % of the page, use this alternative format:
-    % 
-    %\author{\IEEEauthorblockN{Michael Shell\IEEEauthorrefmark{1},
-    %Homer Simpson\IEEEauthorrefmark{2},
-    %James Kirk\IEEEauthorrefmark{3}, 
-    %Montgomery Scott\IEEEauthorrefmark{3} and
-    %Eldon Tyrell\IEEEauthorrefmark{4}}
-    %\IEEEauthorblockA{\IEEEauthorrefmark{1}School of Electrical and Computer Engineering\\
-    %Georgia Institute of Technology,
-    %Atlanta, Georgia 30332--0250\\ Email: see http://www.michaelshell.org/contact.html}
-    %\IEEEauthorblockA{\IEEEauthorrefmark{2}Twentieth Century Fox, Springfield, USA\\
-    %Email: homer@thesimpsons.com}
-    %\IEEEauthorblockA{\IEEEauthorrefmark{3}Starfleet Academy, San Francisco, California 96678-2391\\
-    %Telephone: (800) 555--1212, Fax: (888) 555--1212}
-    %\IEEEauthorblockA{\IEEEauthorrefmark{4}Tyrell Inc., 123 Replicant Street, Los Angeles, California 90210--4321}}
-    
-    % use for special paper notices
-    %\IEEEspecialpapernotice{(Invited Paper)}
-    
+
     % make the title area
     \maketitle
     
     % As a general rule, do not put math, special symbols or citations
     % in the abstract
     \begin{abstract}
-      The inability to communicate directly to and from government is a fundamental roadblock to political effectiveness. Online communication via email and sites like change.org provide an interface but do not provide a mutual tool for prioritization of policy change. Residents require an easy to use platform to reach their policy makers, and those policy makers need a manageable amount of distinct concerns to satisfy their voters. Vocal answers two large issues with previous methods of encouraging political action: association of problem topics with the location they are relevant to, and democratic prioritization of important issues. Leveraging Neo to create a proof-of-stake blockchain provides a token economy: participating in a localized issue generates Vocal recognized ether, creating an issue consumes it. Vocal is a platform for mutually incentivized political communication and task prioritization.
+      The inability for the general public to communicate directly with government officials (and also other community members)is a fundamental roadblock to political effectiveness. Online communication via email and websites like change.org provide one form of an interface to do this, but do not provide a mutual tool for prioritization of policy change. Residents require an easy to use platform to reach their policy makers, and those policy makers need a manageable amount of distinct concerns to satisfy their voters. The Vocal coin system answers two large issues with previous methods of encouraging political action: association of problem topics with the location they are relevant to, and democratic prioritization of important issues. Leveraging Neo to create a proof-of-stake blockchain provides a token economy: participating in a localized issue generates Vocal recognized ether, creating an issue consumes it. Vocal is a platform for mutually incentivized political communication and task prioritization. Vocal is not an investment asset and will not have an ICO, it is rather an accounting and reward system for participants in the Vocal ecosystem - with a custom redemption system that is described later in this paper.
       %% \citation{Voit2012b}
       %% \cite{Voit2012b}
     
@@ -148,13 +81,15 @@
     \IEEEpeerreviewmaketitle
     \section{Introduction}
 
-    Politics has long been a business dominated by an older generation, with youth engagement dropping to lower and lower levels \cmmnt{(TODO: citation)}. There are websites currently in place designed to make voting and discovering new political and social issues more user friendly (see change.org\cmmnt{TODO: citation}), however, these websites tend to suffer from the inability to quickly find issues that are pertinent on a very local and individual level.
+    Politics has long been considered a field dominated by an older generation, with youth engagement seeming to drop to lower and lower levels.. There are websites currently in place designed to make voting and discovering new political and social issues more user friendly (see change.org), however, these websites tend to suffer from the inability to quickly find issues that are pertinent on a very local and individual level.
     
-    Vocal is a political currency platform designed to engage youth in new ways around political topics. Individuals interested in establishing correspondence with any tier of government can earn token by voting on existing issues. For each vote that a user submits, that user is turn rewarded with additional token that can be redeemed for the creation of new issues and/or the promotion of existing ones.
+    Vocal is a political currency platform designed to engage youth in new ways around political topics. Individuals interested in establishing correspondence with any tier of government can earn token by voting on existing issues. For each vote that a user submits, that user is turn rewarded with additional token that can be redeemed for the creation of new issues and/or the promotion of existing ones. To be clear, Vocal is not an investment asset, it is simply an accounting system used for rewarding political involvement.
 
-    This provides a rate limit that makes users consider what is genuinely valuable to communicate to their policy makers. There are two details worth investigating:
-  \subsubsection{Bootstrapping} How can the network effect hindering widespread adoption be mitigated?
-  \subsubsection{Crypto Tie In} What utility does the ethereum backed Vocal coin serve?
+    There is no Vocal ICO, coin is earned through individual user actions (such as voting) on the Vocalplatform.
+
+%    This provides a rate limit that makes users consider what is genuinely valuable to communicate to their policy makers. There are two details worth investigating:
+%  \subsubsection{Bootstrapping} How can the network effect hindering widespread adoption be mitigated?
+%  \subsubsection{Crypto Tie In} What utility does the ethereum backed Vocal coin serve?
 
     % no \IEEEPARstart
     \section{Scope of Use}
@@ -162,53 +97,38 @@
     We divide our consideration of the Vocal coin system from the perspective of a few different potential users.
 
     \subsubsection{Individuals}
-    These are residents dissatisfied with public policy affecting the region. Each resident is associated with a generated Vocal account. Users may support, reject, or create an issue. Each one of these actions are accepted by the Vocal network, and once made these decisions can't be reversed as the ethereum backed Vocal ledger is immutable. As it is now, it incentivizes research before endorsing an issue, provided this fact is made clear to the resident user.
+    Individuals in the Vocal context are community members interested in public policy affecting public regions. Each resident or community memberis associated with a generated Vocal account. Users may support, reject, or create an issue. Each one of these actions are accepted by the Vocal network, and once made these decisions can't be reversed as the ethereum backed Vocal ledger is immutable. As it is now, it incentivizes research before endorsing an issue, provided this fact is made clear to the resident user.
     Constituents are the ones that introduce Vocal as a platform to their community. The initial aim of Vocal is to grow a geographically clustered user base. This presents two immediate decisions: Vocal must prioritize ease of adoption so that any one who can access the internet has access to this platform, and must target a specific geographic area to bootstrap.
     The first means that Vocal coin must first abstract away all the details in the UI so that people don't have to set up software to communicate with the Neo based network. For now, this accomplishes the usability aspect. Each individual will have a private key, and thus an account, mapped to their platform activity, but it will at first be stored on Vocal's servers, and thus completely transparent. Only when sufficient abstraction exists should this key be exposed by default. This strategy may negate some of the benefits of decentralized consensus, but it's sacrificed temporarily to mitigate the technical on boarding cliff so that Vocal can become a household name for political organization. 
 
     \subsubsection{Political Constituents}
-    Constituents are the ones who may be interested in learning and getting transparency into particular issues and public opinion affecting a particular region. Vocal coin will be later redeemable for access into this information (as well as promotion of their own particular viewpoints and issues).
+    Constituents are the ones who may be interested in learning and getting transparency into particular issues and public opinion affecting a particular region. Vocal coin will be later redeemable for access into this information (as well as promotion of their own particular viewpoints and issues). Constituents have the ability to redeem Vocal coin for data and insight into local community issues.
 
     \subsubsection{Organizations}
     While differing in topology, political organizations have an attribute in common: regional jurisdiction. At first political organizations won't play a large role on the Vocal platform. In the ideal case we'd have some map of jurisidiction as it applies to multiple levels of government. In the United States, there is a hierarchy of governments, with no uniform way of communicating to them and critically identifying who is behind what policy. This weakness is particularly why a cryptocurrency backed ledger is vital: the developers of this platform cannot hope to market its utility effectively to every government system, but once a resident base has formed they can build their own government access protocols on top of the Vocal coin backbone.
 
     In particular, letting organizations occur as a result of user participation on the network addresses the network problem: Governments will not care about an empty platform. It is much more attractive to link policy makers to an active, vocal community. 
 
-    % \subsection{Free Market Model}
-
-    \section{Existing Work}
-    Open trade is a fundamental aspect of Vocal coin (and financial activity in general). There are a few other efforts which seek to build politically-focused currencies that are publicly trade-able.
-
-    \cmmnt{TODO: insert relevant other example of blockchain powered campaign.}
-
-    In contrast, Vocal's model is simpler. Vocal provides a medium for a mutually beneficial relationship between organizations, activists and the general public by providing an exchange of social campaign content that benefits both parties.
+    Open trade is a fundamental aspect of Vocal coin (and financial activity in general). There are a few other efforts which seek to build politically-focused currencies that are publicly trade-able. In contrast, Vocal's model is simpler. Vocal provides a medium for a mutually beneficial relationship between organizations, activists and the general public by providing an exchange of social campaign content that benefits both parties.
 
     \section{Vocal Coin}
 
     The Vocal coin is the main unit of exchange and credit in the Vocal ecosystem; however, the utility of Vocal extends to these primary areas:
 
-    The first means that Vocal coin must first abstract away all the details in the UI so that people don't have to set up software to communicate with the Neo based network. For now, this accomplishes the usability aspect. Each individual will have a private key, and thus an account, mapped to their platform activity, but it will at first be stored on Vocal's servers, and thus completely transparent. Only when sufficient abstraction exists should this key be exposed by default. This strategy may negate some of the benefits of decentralized consensus, but it's sacrificed temporarily to mitigate the technical on boarding cliff so that Vocal can become a household name for political organization. 
+    The first means that Vocal coin must first abstract away all the details in the UI so that people don't have to set up software to communicate with the Neo based network. For now, this accomplishes the usability aspect. Each individual will have a private key, and thus an account, mapped to their platform activity, but it will at first be stored on Vocal's servers, and thus completely transparent. Only when sufficient abstraction exists should this key be exposed by default. This strategy may negate some of the benefits of decentralized consensus, but it's sacrificed temporarily to mitigate the technical on boarding cliff so that Vocal can become a household name for political organization.
+
+    The two main initial usages of the Vocal coin are the following:
 
     \begin{enumerate}
-      \item As a main unit of bookkeeping for political campaign publishing and viewing.
-      \item As a store of value - the vocal coin may be able to redeem more or less in the future.
-      \item As a unit of purchase - the vocal coin can be redeemed for offers and services from public retailers.
+      \item As a unit of bookkeeping - tracks for Vocal platform activity and contribution.
+      \item As a unit of purchase - the vocal coin can be redeemed for promoting political agenda and gaining additional insight on active and past issues (see the section describing the Constituent user group)
     \end{enumerate}
-
-    \section{Design}
-
-    The Vocal coin is an Neo based currency, which will have an initial public offering which buys a predefined amount of social/political campaign credit. Once the coin has reached the required funding level, the Vocal market will open to public - enabling open trade and use of the coin on the Neo blockchain.
-
-    As users view and interact political campaign, the vocal coin is recorded in the user's application and delivered every Sunday night to the user's wallet in a single transaction.
-    These records are proof of all Vocal coin transfers and are stored publicly on the Vocal blockchain. This transparency is sorely needed in policy decisions, and can be used to make explicit the mechanisms of policy creation and modification.
 
     \subsection{Blockchain Overview}
 
-    The above model for tracking and transacting Vocal coin implies a large volume of activity (carrying a large amount of additional weight on the network). At the time of this writing, not all of this activity will be able to take place on the Neo main chain (due to known scaling limitations of the Neo blockchain).
+    The above model for tracking and transacting Vocal coin implies a large volume of activity (carrying a large amount of additional weight on the network). At the time of this writing, not all of this activity will be able to take place on the Neo main chain (due to known scaling limitations of the Neo blockchain). Additional discussion of the Neo blockchain is out of scope for this draft, but we encourage readers to investigate additional information on both NEP-5 and the Neo blockchain/protocol.
 
-    These scaling concerns may be mitigated by the upcoming Neo blockchain improvements such as Metropolis (the next upgrade to the Neo blockchain scaling system). However, we will plan to use a batched approach which provides both the benefit of reducing the cost of transacting for the end user on the main network and reduces the complexity of tracking public transactions.
-
-   Vocal is largely a coin which will connect to other blockchains via public exchange - largely backed by the Neo coin. Activity on other blockchains can interlink with this chain. The Vocal chain validates the activity of the behavior of all the participants on the main net (albeit if transactions are performed off the main chain these cannot be tracked, see the website LocalBitcoins.com as an example).
+   At it's core, Vocal is a coin which could connect to other blockchains via public exchange - largely backed by the Neo coin. Activity on other blockchains can interlink with this chain. The Vocal chain validates the activity of the behavior of all the participants on the main net (albeit if transactions are performed off the main chain these cannot be tracked). www.LocalBitcoins.com is one example of
 
     The Vocal coin itself is providing the computation and enforcement of the design via the smart contract protocol. Owning Vocal coin grants the user the right to validate this chain through transaction fees, payment, interchange, trading, and clearinghouse use. 
 
@@ -224,12 +144,8 @@
       \centering
     \end{figure}
 
-    % Vocal is deployed as a smart contract on the Neo.
+     Vocal is deployed as a smart contract on the Neo blockchain.
 
-    % \subsection{Limitations}
-    % TODO:{discuss limitations of transactions per second on Neo}
-    % TODO:{Address these counter arguments and others for the coin.}
-    
     \section{Coin Supply}
 
    Vocal coin follows a fixed coin distribution model as to be described in this section.
@@ -237,25 +153,21 @@
     \subsection{Total Cap}
    Vocal will be capped at a total circulating supply of $100,000,000$ $VOCAL$ coins. Coins will be earned by engaging with campaigns (either by interacting, voting or opening campaigns).
 
-     The coin quantity earned for each action will vary according to the total number of supply still remaining. In this sense, voting in campaigns has become the notion of mining - rewarding users for participation on the network.
-
-     As more coins are earned and held - the coin quantity reward granted will diminish; however, the corresponding market or redeemable value of the coin may correspondingly increase in value. This model lends itself similarly to Bitcoin. In that users will still be given roughly equivalent reward for the amount of work and early holders/participants are rewarded for their early entry point and involvement.
+     The coin quantity earned for each action will vary according to the total number of supply still remaining. In this sense, voting in campaigns has become the notion of mining - rewarding users for participation on the network. As more coins are earned and held - the coin quantity reward granted will diminish; however, the corresponding market or redeemable value of the coin may correspondingly increase in value. This model lends itself similarly to Bitcoin. In that users will still be given roughly equivalent reward for the amount of work and early holders/participants are rewarded for their early entry point and involvement.
 
     \section{Distribution}
 
-    The distribution of the coin will proceed as follows.
+    The distribution of the coin is initially allocated within a master Neo/Vocal issuer account and will later proceed as follows.
 
     \begin{enumerate}
-    \item Vocal Launch (50\%)
-   Vocal is inherently a publicly traded and earned coin that plays a critical role in the expansion of this new campaign engagement platform. We are fully committed to creating a sound governance structure and we plan to dedicate significant resources to the continued Research and Development of the platform.
-    \item Retained by Vocal Coin Org for future release (15\%)
-    The Vocal coin core development team will be able to sustain itself using funds raised through the coin launch. If the Vocal platform proves itself to be a fundamental technology as we believe it to be, the retained Vocal coins will allow the Vocal development team to sustain operations for many years.
-    \item Developer/Community Fund (15\%)
-    The Developer Fund will be used to make targeted capital injections into high potential projects and teams that are attempting to grow the Vocal Coin ecosystem, strategic partnerships, hackathon prizes and community development activities.
-    \item Founding Team (10\%)
-    The founding team’s allocation of Vocal will vest over a traditional 4 year vesting schedule with a one year cliff. This is standard practice for equity vesting and we believe the same standards should be applied to the coin offering. 
-    \item Early Backers and Advisors (10\%)
-    Our backer and advisors are valuable resources to the expansion and growth of the Vocal platform. This remaining 10\% will be reserved for them, as a continued incentive to offer guidance and sustain a coin that holds genuine utility.
+        \item Reserved for Vocal Community (60\%)
+       Vocal is inherently a publicly traded and earned coin that plays a critical role in the expansion of this new campaign engagement platform. We are fully committed to creating a sound governance structure and we plan to dedicate significant resources to the continued Research and Development of the platform. This allocation will be reserved and distributed as users earn coin by participating in voting on the Vocal web platform.
+        \item Retained by Vocal Coin Org for future release (15\%)
+        The Vocal coin core development team will be able to sustain itself using funds raised through the coin launch. If the Vocal platform proves itself to be a fundamental technology as we believe it to be, the retained Vocal coins will allow the Vocal development team to sustain operations for many years.
+        \item Developer/Community Incentive Fund (15\%)
+        The Developer Fund will be used to make targeted capital injections into high potential projects and teams that are attempting to grow the Vocal Coin ecosystem, strategic partnerships, prizes and community development activities.
+        \item Founding Team (10\%)
+        The founding team’s allocation of Vocal will vest over a traditional 4 year vesting schedule with a one year cliff. This is standard practice for equity vesting and we believe the same standards should be applied to the coin offering.
     \end{enumerate}
     
     % \subsection{Subsection Heading Here}
@@ -289,59 +201,32 @@
     \color{gray}
     \rule{\linewidth}{1pt}
     \ytl{Feb 2018}{Finish coin proposal and development}
-    \ytl{Apr 2018}{Finish v1 of client facing Vocal application}
-    \ytl{May 2018}{Vocal Coin Presale - Vocal application exits beta}
-    \ytl{June 2018}{Vocal Coin Presale}
-    \ytl{Nov 2018}{Coins redeemable for goods and services}
+    \ytl{Mar 2018}{Vocal contract deployed - users can create accounts on the Vocal web platform}
+    \ytl{Apr 2018}{Continue working on client facing Vocal application}
+    \ytl{May 2018}{Vocal application exits beta}
+    \ytl{Nov 2018}{Coins redeemable for data and political promotion}
     \ytl{Dev 2018}{Mobile application released for Android}
-    \ytl{2019}{TBD: Ongoing security and product development}
+    \ytl{2019}{TBD: Ongoing Vocal platform security and product development}
     \bigskip
     \rule{\linewidth}{1pt}%
     \end{minipage}%
     \end{table}
 
-    % \scalebox{1}{
-    %   \begin{tabular}{r |@{\foo} l}
-      
-    %   2017 & \\
-    %   September & Finish Development \\
-    %   November & Coin Presale \\ 
-    %   December & Public Coin Launch \\
-    %   2018 & \\
-    %   January & Accounting and Web Platform\\
-    %   April & Android Mobile App released\\
-    %   July & Coins redeemable for goods and services
-    %   December & Obtain retail partnerships for additional offers \\
-    %   2019 & \\
-    %   January -> & TBD \\
-      
-    %   \end{tabular}
-    % }
-    % TODO:{Discussion of road map features and potential extensions of the protocol}
-    
     \FloatBarrier
     \section{Conclusion}
-   Vocal is a coin that has potential both as a store of social or political campaign value and as an accounting system for political campaign engagement. Taking inspiration from both the Bitcoin and Neo mining models, one of Vocal's main goals is to create a coin ecosystem whose rewards stay consistent over time (but with greater potential for individual growth with a more early the entry point). The coin is designed to be easily accountable by transactions discoverable on the public ethereum (Neo) blockchain.
-
-    % TODO:{Summarize Vocal objectives} 
-    
-    % conference papers do not normally have an appendix
-    % use section* for acknowledgment
-    \section*{Appendix}
+   Vocal is a coin that has potential both as a store of social or political campaign value and as an accounting system for political campaign engagement. Taking inspiration from both the Bitcoin and Neo accounting models, one of Vocal's main goals is to create a coin ecosystem whose rewards stay consistent over time (but with greater potential for individual growth with a more early the entry point). The coin is designed to be easily accountable by transactions discoverable on the public Neo blockchain.
 
     \subsection{Founding Team}
-   Vocal was founded by Ahmad Jarara, Chris Buonocore and Anup Vasudevan. Ahmad Jarara is a software engineer who's worked in the New York and Boston area. He specializes
-   in building enterprise applications. Chris is a former consultant and now developer from silicon valley with over 8 years of development experience. He brings wealth of relevant
-   experience to take Vocal to consumers - holding expertise in creating and scaling mobile-based software platforms. Anup is a technical consultant with over 8
-   years of development experience - primarily web application development and big data pipelines.
+   Vocal was founded by Chris Buonocore and Anup Vasudevan. Chris is a former consultant and past developer from the bay area in California with over 9 years of programming experience.
+   He brings wealth of relevant experience to take Vocal to consumers - holding expertise in creating and scaling mobile-based software platforms. Anup is a technical consultant with over 8
+   years of development experience as well - primarily web application development and big data pipelines for financial applications.
 
-    \subsection{Neo Vocal Protocol}
+    \subsection{Neo Vocal Protocol - NEP5}
    Vocal follows the Neo (NEP5-blockchain) token protocol for recording transactions.
-    Neo establishes a standard contract ABI for coins on the Neo blockchain and has become the de facto representation for all types of digital assets. Neo coins share the same contract interface, simplifying integration with external contracts.
-    Core Neo functions include:
+    Neo establishes a standard contract AVM for coins on the Neo blockchain and has become the de facto representation for all types of digital assets. Neo coins share the same contract interface, simplifying integration with external contracts.
 
-    % trigger a \newpage just before the given reference
-    
+    Vocal is an open source project with server and client facing code available on github: https://github.com/cbonoz/vocalcoin. Contributions and feedback are welcome.
+
     % \end{thebibliography}
     \printbibliography
    
