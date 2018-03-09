@@ -98,80 +98,106 @@ function getAddressAndExecute(userId, cb) {
 }
 
 function getBalanceAndExecute(userId, cb) {
-
-    getUserAndExecute(userId, (user) => {
-        console.log('got user', JSON.stringify(user));
-        // Get balances for the newly created account from the neolib blockchain.
-        neolib.getAssetBalance(user.address, neolib.VOCAL_SYMBOL).then((filledBalance) => {
-            console.log('getAssetBalance', address, JSON.stringify(filledBalance));
-            const symbols = filledBalance.assetSymbols;
-            if (symbols) {
-                // We retrieve the unspent coins from the assets object using the vocal symbol.
-                const assets = filledBalance.assets;
-
-                let vocalBalance;
-                if (assets.hasOwnProperty(neolib.VOCAL_SYMBOL)) {
-                    vocalBalance = assets[neolib.VOCAL_SYMBOL]
-                } else {
-                    // No vocal assets.
-                    vocalBalance = 0;
-                }
-                const retVal = {'address': user.address, 'balance': vocalBalance.unspent};
-                console.log('Vocal balance:', JSON.stringify(retVal));
-                cb(retVal);
-            } else {
-                cb(null);
-            }
-        }).catch((err) => {
-            "use strict";
+    const query = vocal.getBalance(userId);
+    pool.query(query, (err, result) => {
+        console.log('getbalance', query, err, result);
+        if (err) {
+            console.error('getbalance error', err);
             throw err;
-        });
+        }
+
+        const rows = result.rows;
+        if (rows) {
+            const balance = rows[0]['balance'];
+            console.log('balance', address, balance);
+            cb(balance);
+            return;
+        }
+        cb(0);
     });
+
+    // TODO: readd when on main net.
+    // getUserAndExecute(userId, (user) => {
+    //     console.log('got user', JSON.stringify(user));
+    //     // Get balances for the newly created account from the neolib blockchain.
+    //     neolib.getAssetBalance(user.address, neolib.VOCAL_SYMBOL).then((filledBalance) => {
+    //         console.log('getAssetBalance', address, JSON.stringify(filledBalance));
+    //         const symbols = filledBalance.assetSymbols;
+    //         if (symbols) {
+    //             // We retrieve the unspent coins from the assets object using the vocal symbol.
+    //             const assets = filledBalance.assets;
+    //
+    //             let vocalBalance;
+    //             if (assets.hasOwnProperty(neolib.VOCAL_SYMBOL)) {
+    //                 vocalBalance = assets[neolib.VOCAL_SYMBOL]
+    //             } else {
+    //                 // No vocal assets.
+    //                 vocalBalance = 0;
+    //             }
+    //             const retVal = {'address': user.address, 'balance': vocalBalance.unspent};
+    //             console.log('Vocal balance:', JSON.stringify(retVal));
+    //             cb(retVal);
+    //         } else {
+    //             cb(null);
+    //         }
+    //     }).catch((err) => {
+    //         "use strict";
+    //         throw err;
+    //     });
+    // });
 }
 
 // Sends or Pulls money between the specified userId and the master Vocal (issuer) NEO account.
 function modifyBalanceAndExecute(userId, amount, cb) {
-    try {
-        let actionMessage;
-        let sourceAddress;
-        let sourceKey;
-        let destAddress;
-        getUserAndExecute(userId, (user) => {
-            if (amount > 0) {
-                sourceAddress = neolib.NEO_ISSUER_ADDRESS;
-                sourceKey = neolib.NEO_ISSUER_SECRET;
-                destAddress = user.address;
-                actionMessage = user.username + " earned " + amount;
-            } else if (amount < 0) {
-                amount = -amount;
-                sourceAddress = user.address;
-                sourceKey = neolib.decryptKey(user.seed); // seed is encrypted on the user DB object.
-                destAddress = neolib.NEO_ISSUER_ADDRESS;
-                actionMessage = user.username + " used " + amount;
-            } else {
-                const errorMessage = "Not completed: 0 value transaction request for " + user.username;
-                console.error(errorMessage);
-                throw errorMessage;
-            }
+    const query = vocal.modifyBalance(userId, amount);
+    pool.query(query, (err, result) => {
+        console.log('modify balance', query, err, result);
+        if (err) {
+            console.error('modify balance error', err);
+            throw err
+        }
+        // Successfully modified balance. Proceed.
+        cb();
+    });
 
-            // Convert the amount to a string for the neolib transaction.
-            amount = amount.toString();
-            console.log('amount: ' + amount + " " + typeof(amount));
-            console.log('modifyBalanceAndExecute', from.publicKey(), to.publicKey(), amount, actionMessage);
-
-            neolib.sendTransaction(sourceAddress, sourceKey, destAddress, amount, actionMessage,
-                (msg) => {
-                    console.log('success: ' + msg);
-                    cb();
-                }, (err) => {
-                    console.error('neolib transaction error', JSON.stringify(err));
-                    throw err;
-                }
-            );
-        });
-    } catch (e) {
-        return res.status(500).json(e);
-    }
+    // TODO: readd when on main net.
+    // let actionMessage;
+    // let sourceAddress;
+    // let sourceKey;
+    // let destAddress;
+    // getUserAndExecute(userId, (user) => {
+    //     if (amount > 0) {
+    //         sourceAddress = neolib.NEO_ISSUER_ADDRESS;
+    //         sourceKey = neolib.NEO_ISSUER_SECRET;
+    //         destAddress = user.address;
+    //         actionMessage = user.username + " earned " + amount;
+    //     } else if (amount < 0) {
+    //         amount = -amount;
+    //         sourceAddress = user.address;
+    //         sourceKey = neolib.decryptKey(user.seed); // seed is encrypted on the user DB object.
+    //         destAddress = neolib.NEO_ISSUER_ADDRESS;
+    //         actionMessage = user.username + " used " + amount;
+    //     } else {
+    //         const errorMessage = "Not completed: 0 value transaction request for " + user.username;
+    //         console.error(errorMessage);
+    //         throw errorMessage;
+    //     }
+    //
+    //     // Convert the amount to a string for the neolib transaction.
+    //     amount = amount.toString();
+    //     console.log('amount: ' + amount + " " + typeof(amount));
+    //     console.log('modifyBalanceAndExecute', from.publicKey(), to.publicKey(), amount, actionMessage);
+    //
+    //     neolib.sendTransaction(sourceAddress, sourceKey, destAddress, amount, actionMessage,
+    //         (msg) => {
+    //             console.log('success: ' + msg);
+    //             cb();
+    //         }, (err) => {
+    //             console.error('neolib transaction error', JSON.stringify(err));
+    //             throw err;
+    //         }
+    //     );
+    // });
 }
 
 /* Map endpoints */

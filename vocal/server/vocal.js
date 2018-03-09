@@ -46,6 +46,16 @@ const library = (function () {
         return `UPDATE issues SET active = NOT active WHERE issue_id='${issueId}'`;
     }
 
+    // Deprecated (maintain by querying sc).
+    function modifyBalance(userId, amount) {
+        return `UPDATE users SET balance = balance+${amount} where id='${userId}'`;
+    }
+
+    // Deprecated (maintain by querying sc).
+    function getBalance(userId) {
+        return `SELECT balance from users where id='${userId}'`;
+    }
+
     function getUserQuery(userId) {
         return `SELECT * FROM users where ID='${userId}'`;
     }
@@ -84,8 +94,10 @@ const library = (function () {
         checkVoteQuery: checkVoteQuery,
         getAddress: getAddress,
         deleteIssueQuery: deleteIssueQuery,
-        getRandom: getRandom,
         isBlank: isBlank,
+        getRandom: getRandom,
+        getBalance: getBalance,
+        modifyBalance: modifyBalance,
         getUserQuery: getUserQuery,
         getIssuesForRegionQuery: getIssuesForRegionQuery,
         getIssuesForUserQuery: getIssuesForUserQuery,
