@@ -1,7 +1,6 @@
 -- Author: Chris Buonocore
 -- Vocal Coin SQL schema setup code
 
--- TODO: Figure out migration strategy, rather than drop,  qif these schemas need to evolve once deployed (they almost certainly will).
 -- DROP DATABASE IF EXISTS vocal;
 CREATE DATABASE vocal;
 
@@ -44,5 +43,6 @@ CREATE TABLE users (
   address VARCHAR,
   seed VARCHAR,
   username VARCHAR(16),
-  pubkey VARCHAR
+  pubkey VARCHAR,
+  balance float(8) // optional
 );

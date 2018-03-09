@@ -19,6 +19,8 @@ venv/
 venv
 sc/README.md
 
+vocal/server/db/vocalfb.json
+
 # Docker
 Dockerfile
 docker-compose.yml
