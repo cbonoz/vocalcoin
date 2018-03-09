@@ -3,7 +3,7 @@ const library = (function () {
 
     const VOTE_REWARD = 5;
     const ISSUE_COST = 50;
-    const DEFAULT_BALANCE = 50;
+    const DEFAULT_BALANCE = 100;
 
     const getRandom = (items) => {
         return items[Math.floor(Math.random()*items.length)];

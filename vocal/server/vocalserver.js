@@ -399,84 +399,89 @@ app.post('/api/signin', (req, res) => {
     const username = body.username;
 
     // Look up the user.
+    try {
 
-    const query = vocal.getUserQuery(userId);
-    pool.query(query, (err, result) => {
-        console.log('get user', err, result);
+        const query = vocal.getUserQuery(userId);
+        pool.query(query, (err1, result) => {
+            console.log('get user', err1, result);
 
-        if (err) {
-            console.error('get user error', err);
-            return res.status(500).json(err);
-        }
+            if (err1) {
+                console.error('get user error', err1);
+                throw err1;
+            }
 
-        const rows = result.rows;
+            const rows = result.rows;
 
-        if (rows instanceof Array && rows.length && rows[0] && rows[0]['address']) {
-            const user = rows[0];
-            // User already created with address.
-            console.log('found user', user);
-            const address = user['address'];
+            if (rows instanceof Array && rows.length && rows[0] && rows[0]['address']) {
+                const user = rows[0];
+                // User already created with address.
+                console.log('found user', user);
+                const address = user['address'];
 
-            // Return the auth token after the user is confirmed.
-            admin.auth().createCustomToken(userId).then((customToken) => {
-                // Send token back to client.
-                console.log(userId, customToken);
-                db.users.assignToken(userId, customToken);
-                return res.json({
-                    "token": customToken,
-                    "address": address
-                });
-            }).catch((error) => {
-                console.error("Error creating custom token:", error);
-                return res.json(error);
-            });
-
-        } else {
-            // User does not exist
-            const username = body.username;
-            const seed = neolib.createPrivateKey();
-            const keypair = neolib.createKeyPair(seed);
-            const publicKey = keypair.publicKey;
-            const address = keypair.address;
-            console.log('createNewUser', address, seed, publicKey);
-
-            const encSeed = neolib.encryptKey(seed);
-
-            neolib.createAccount(keypair,
-                (accErr) => {
-                    console.error('create account error', accErr);
-                    return res.status(500).json(accErr);
-                },
-                (accRes) => {
-                    const userQuery = vocal.insertUserQuery(userId, email, address, encSeed, username);
-                    console.log('userQuery', userQuery);
-                    pool.query(userQuery, (err, result) => {
-                        console.log('insert user', err, JSON.stringify(result));
-                        if (err) {
-                            console.error('create user error', err);
-                            return res.status(500).json(err);
-                        }
-
-                        // Return the auth token after the user is confirmed.
-                        admin.auth().createCustomToken(userId).then((customToken) => {
-                            // Send token back to client.
-                            console.log(userId, customToken);
-                            db.users.assignToken(userId, customToken);
-                            return res.json({
-                                "token": customToken,
-                                "address": address
-                            });
-                        }).catch((error) => {
-                            console.error("Error creating custom token:", error);
-                            return res.json(error);
-                        });
+                // Return the auth token after the user is confirmed.
+                admin.auth().createCustomToken(userId).then((customToken) => {
+                    // Send token back to client.
+                    console.log(userId, customToken);
+                    db.users.assignToken(userId, customToken);
+                    return res.json({
+                        "token": customToken,
+                        "address": address
                     });
-                }
-            );
+                }).catch((error) => {
+                    console.error("Error creating custom token:", error);
+                    throw error;
+                });
 
-        }
+            } else {
+                // User does not exist
+                const username = body.username;
+                const seed = neolib.createPrivateKey();
+                const keypair = neolib.createKeyPair(seed);
+                const publicKey = keypair.publicKey;
+                const address = keypair.address;
+                console.log('createNewUser', address, seed, publicKey);
 
-    });
+                const encSeed = neolib.encryptKey(seed);
+
+                neolib.createAccount(keypair,
+                    (accErr) => {
+                        console.error('create account error', accErr);
+                        throw accErr;
+                    },
+                    (accRes) => {
+                        const userQuery = vocal.insertUserQuery(userId, email, address, encSeed, username);
+                        console.log('userQuery', userQuery);
+                        pool.query(userQuery, (err, result) => {
+                            console.log('insert user', err, JSON.stringify(result));
+                            if (err) {
+                                console.error('create user error', err);
+                                throw err;
+                            }
+
+                            // Succesfully created first user, grant DEFAULT_BALANCE vocal to new account.
+                            modifyBalanceAndExecute(userId, vocal.DEFAULT_BALANCE, () => {
+                                // Return the auth token after the user is confirmed.
+                                admin.auth().createCustomToken(userId).then((customToken) => {
+                                    // Send token back to client.
+                                    console.log(userId, customToken);
+                                    db.users.assignToken(userId, customToken);
+                                    return res.json({
+                                        "token": customToken,
+                                        "address": address
+                                    });
+                                }).catch((error) => {
+                                    console.error("Error creating custom token:", error);
+                                    throw error;
+                                });
+                            });
+                        });
+                    }
+                );
+            }
+        });
+    } catch (e) {
+        return res.status(500).json(new Error(e));
+    }
 });
 
 /* Query methods */
