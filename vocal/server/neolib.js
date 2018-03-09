@@ -12,7 +12,7 @@ const library = (function () {
     const NEO_ENC_PASSWORD = process.env.VOCAL_NEO_ENC_PASSWORD;
     const RPC_URL = 'https://seed1.neo.org:20332';
 
-    // SmartContract address for Vocal.
+    // Deployed Vocal SmartContract address.
     const VOCAL_SCRIPT_HASH = process.env.VOCAL_NEO_SCRIPT_HASH || '5b7074e873973a6ed3708862f219a6fbf4d1c411';
 
     // Semantic Style by using default import
@@ -38,6 +38,7 @@ const library = (function () {
 
         const script = Neon.create.script([getName, getDecimals, getSymbol, getTotalSupply]);
 
+        // Use this pattern for smart contract invocations.
         rpc.Query.invokeScript(script).execute(RPC_URL)
             .then(res => {
                 success(res); // You should get a result with state: "HALT, BREAK"

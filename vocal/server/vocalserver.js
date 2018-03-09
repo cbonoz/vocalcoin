@@ -129,7 +129,7 @@ function getBalanceAndExecute(userId, cb) {
     });
 }
 
-// Sends or Pulls money between the specified userId and the master (issuer) NEO account for Vocal.
+// Sends or Pulls money between the specified userId and the master Vocal (issuer) NEO account.
 function modifyBalanceAndExecute(userId, amount, cb) {
     try {
         let actionMessage;
