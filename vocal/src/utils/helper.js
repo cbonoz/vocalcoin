@@ -1,12 +1,12 @@
 const library = (function () {
     const getRandom = (items) => {
         return items[Math.floor(Math.random()*items.length)];
-    }
+    };
 
     const formatDateTimeMs = (timeMs) => {
         const date = new Date(parseInt(timeMs));
         return `${date.toDateString()} ${date.toLocaleTimeString()}`;
-    }
+    };
 
     function getAgreeScoreFromVotes(votes) {
         let score = 0;

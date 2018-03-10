@@ -35,7 +35,7 @@ const MapWithASearchBox = compose(
     }),
     lifecycle({
         componentWillMount() {
-            const refs = {}
+            const refs = {};
             // console.log('coords', this.props.coords);
             let latitude = 41.9;
             let longitude = -87.624;
@@ -78,7 +78,7 @@ const MapWithASearchBox = compose(
                         self.setState({error: null});
 
                         api.getHasVoted(userId, issueId).then((res) => {
-                            console.log('hasvoted', res)
+                            console.log('hasvoted', res);
                             self.setState({hasVoted: res});
                         }).catch((err) => {
                             self.setState({hasVoted: false, error: err});
@@ -157,7 +157,7 @@ const MapWithASearchBox = compose(
                     self.state.getIssuesForRegion();
                     // refs.map.fitBounds(bounds);
                 },
-            })
+            });
         },
     }),
     withScriptjs,

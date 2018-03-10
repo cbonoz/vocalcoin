@@ -6,7 +6,7 @@ import helper from '../../utils/helper';
 import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
 import { toast } from 'react-toastify';
 
-import vocal from '../../assets/vocal_title.png';
+import vocalTitle from '../../assets/vocal_title.png';
 import vocalWebp from '../../optimized_media/vocal_title.webp';
 
 export default class IssueModal extends Component {
@@ -70,7 +70,7 @@ export default class IssueModal extends Component {
         api.postIssue(issue).then((res) => {
             self.setState({ postIssueEnabled: true });
             console.log('postIssue: ' + res);
-            toast(<div><b>Issue Created!</b></div>);
+            toast(<div><b>Issue Created! (Cost {api.ISSUE_COST} Vocal)</b></div>);
             self.props.toggleIssueModal();
         }).catch((err) => {
             self.setState({ postIssueEnabled: true, error: err});
@@ -102,7 +102,7 @@ export default class IssueModal extends Component {
                     <Modal.Body>
                         <hr />
                         <div>
-                            <img src={vocal} webp={vocalWebp} className="modal-image" />
+                            <img src={vocalTitle} webp={vocalWebp} className="modal-image" />
 
                             <form>
                                 <FormGroup bsSize="large" controlId="formBasicText" className="issue-form-group">

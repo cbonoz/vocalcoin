@@ -163,6 +163,8 @@ const library = (function () {
         getRandom: getRandom,
         getAddress: getAddress,
         formatDateTimeMs: formatDateTimeMs,
+        ISSUE_COST: 50,
+        VOTE_REWARD: 5
     }
 
 })();
