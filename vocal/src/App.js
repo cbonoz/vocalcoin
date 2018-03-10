@@ -75,10 +75,10 @@ class App extends Component {
     componentDidMount() {
         const self = this;
         this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
-            console.log('auth state changed, user:', user);
             if (user) {
                 // console.log('user:', JSON.stringify(user));
                 const userId = user.uid;
+                console.log('login, user:', user.uid);
                 const address = localStorage.getItem("address");
                 api.postUserQuery(user, address).then((data) => {
                     // console.log('retrieved user data', JSON.stringify(data));

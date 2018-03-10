@@ -8,11 +8,10 @@ import vocalWebp from '../../optimized_media/vocal_title.webp';
 export default class LoginModal extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-            // previewBuild: process.env.REACT_VOCAL_PREVIEW_BUILD || false
-            previewBuild: false
-        }
+            previewBuild: false // Controls whether the login form is visible/accessible (or 'Coming Soon' messaged instead).
+        };
         console.log('preview', this.state.previewBuild);
     }
 

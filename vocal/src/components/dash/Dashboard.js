@@ -70,7 +70,7 @@ export default class Dashboard extends Component {
             self.setState({ balance: vocalBalance, address: vocalAddress});
         }).catch((err) => {
             console.error('getBalance error', JSON.stringify(err));
-            self.setState({ balance: "", address: "Temporary error retrieving Account" });
+            self.setState({ balance: "N/A", address: "Temporary error retrieving Account" });
         });
     }
 

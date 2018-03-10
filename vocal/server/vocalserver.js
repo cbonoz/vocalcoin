@@ -86,13 +86,13 @@ app.get('/api/hello', (req, res) => {
 function getAddressAndExecute(userId, cb) {
     const query = vocal.getAddress(userId);
     pool.query(query, (err, result) => {
-        console.log('vocal address', err, result)
+        console.log('vocal address', err, result);
         if (err || !result.rows) {
             console.error('vocal address error', err);
-            throw err;
+            throw new Error(err);
         }
         const address = result.rows[0]['address'];
-        console.log('got address', address);
+        console.log('got address', addreess);
         cb(address);
     });
 }
@@ -103,13 +103,13 @@ function getBalanceAndExecute(userId, cb) {
         console.log('getbalance', query, err, result);
         if (err) {
             console.error('getbalance error', err);
-            throw err;
+            throw new Error(err);
         }
 
         const rows = result.rows;
         if (rows) {
             const balance = rows[0]['balance'];
-            console.log('balance', address, balance);
+            console.log('balance', userId, balance);
             cb(balance);
             return;
         }
@@ -154,7 +154,7 @@ function modifyBalanceAndExecute(userId, amount, cb) {
         console.log('modify balance', query, err, result);
         if (err) {
             console.error('modify balance error', err);
-            throw err
+            throw new Error(err);
         }
         // Successfully modified balance. Proceed.
         cb();
@@ -180,7 +180,7 @@ function modifyBalanceAndExecute(userId, amount, cb) {
     //     } else {
     //         const errorMessage = "Not completed: 0 value transaction request for " + user.username;
     //         console.error(errorMessage);
-    //         throw errorMessage;
+    //         throw new Error(errorMessage);
     //     }
     //
     //     // Convert the amount to a string for the neolib transaction.
@@ -194,7 +194,7 @@ function modifyBalanceAndExecute(userId, amount, cb) {
     //             cb();
     //         }, (err) => {
     //             console.error('neolib transaction error', JSON.stringify(err));
-    //             throw err;
+    //             throw new Error(err);
     //         }
     //     );
     // });
@@ -378,11 +378,11 @@ app.get('/api/votes/:issueId', passport.authenticate('bearer', {
 function getUserAndExecute(userId, cb) {
     const query = vocal.getUserQuery(userId);
     pool.query(query, (err, result) => {
-        console.log('get user', err, result)
+        console.log('get user', err, result);
 
         if (err) {
             console.error('get user error', err);
-            throw err;
+            throw new Error(err);
         }
 
         const rows = result.rows;
@@ -407,7 +407,7 @@ app.post('/api/signin', (req, res) => {
 
             if (err1) {
                 console.error('get user error', err1);
-                throw err1;
+                throw new Error(err1);
             }
 
             const rows = result.rows;
@@ -429,7 +429,7 @@ app.post('/api/signin', (req, res) => {
                     });
                 }).catch((error) => {
                     console.error("Error creating custom token:", error);
-                    throw error;
+                    throw new Error(error);
                 });
 
             } else {
@@ -443,11 +443,8 @@ app.post('/api/signin', (req, res) => {
 
                 const encSeed = neolib.encryptKey(seed);
 
-                neolib.createAccount(keypair,
-                    (accErr) => {
-                        console.error('create account error', accErr);
-                        throw accErr;
-                    },
+                // Create account on the neo blockchain, then create a record in the public DB.
+                neolib.createAccountFromPrivateKey(seed,
                     (accRes) => {
                         const userQuery = vocal.insertUserQuery(userId, email, address, encSeed, username);
                         console.log('userQuery', userQuery);
@@ -455,7 +452,7 @@ app.post('/api/signin', (req, res) => {
                             console.log('insert user', err, JSON.stringify(result));
                             if (err) {
                                 console.error('create user error', err);
-                                throw err;
+                                throw new Error(err);
                             }
 
                             // Succesfully created first user, grant DEFAULT_BALANCE vocal to new account.
@@ -471,10 +468,15 @@ app.post('/api/signin', (req, res) => {
                                     });
                                 }).catch((error) => {
                                     console.error("Error creating custom token:", error);
-                                    throw error;
+                                    throw new Error(error);
                                 });
                             });
                         });
+                    },
+                    (accErr) => {
+                        const errorMessage = "Error creating account: " + JSON.stringify(accErr);
+                        console.error(errorMessage);
+                        throw new Error(errorMessage);
                     }
                 );
             }

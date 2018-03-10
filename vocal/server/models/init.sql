@@ -44,5 +44,5 @@ CREATE TABLE users (
   seed VARCHAR,
   username VARCHAR(16),
   pubkey VARCHAR,
-  balance float(8) // optional
+  balance float(8) -- optional
 );

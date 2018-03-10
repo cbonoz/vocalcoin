@@ -56,15 +56,6 @@ const library = (function () {
         return api.getBalanceFrom(balance, api.neonDB);
     }
 
-    function createAccount(pair, success, failure) {
-        // TODO: determine if action required to create account after calling createKeyPair
-        if (wallet.isAddress(pair.address)) {
-            success(pair);
-        } else {
-            failure(pair);
-        }
-    }
-
     function createAccountFromPrivateKey(key, success, failure) {
         const account = Neon.create.account(key);
         if (wallet.isAddress(account.address)) {
@@ -133,7 +124,6 @@ const library = (function () {
         NEO_ENC_PASSWORD: NEO_ENC_PASSWORD,
         createAccountFromPrivateKey: createAccountFromPrivateKey,
         createWalletFromAccount: createWalletFromAccount,
-        createAccount: createAccount,
         createKeyPair: createKeyPair,
         createPrivateKey: createPrivateKey,
         createNewToken: createNewToken,

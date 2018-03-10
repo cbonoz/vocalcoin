@@ -18,12 +18,12 @@ print(TOPICS)
 
 PREFIXES = [
     "How do you feel about {0}?",
-    "Is {0} important?",
+    "Is/Are {0} important in this region?",
     "Do you want {0}?",
     "Do you agree with {0}?",
-    "Do you think {0} is a high priority?",
-    "Where do you stand on {0}?",
-    "Should "
+    "Do you think {0} is a high priority for this city?",
+    "For residents, what is your opinion on {0}?",
+    "Should we take a stance on {0} here? Describe the pros and cons."
 ]
 
 def generate_lat_lng():
