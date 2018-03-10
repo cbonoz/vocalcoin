@@ -108,8 +108,11 @@ function getBalanceAndExecute(userId, cb) {
 
         const rows = result.rows;
         if (rows) {
-            const balance = rows[0]['balance'];
+            let balance = rows[0]['balance'];
             console.log('balance', userId, balance);
+            if (!balance) {
+                balance = vocal.DEFAULT_BALANCE;
+            }
             cb(balance);
             return;
         }
