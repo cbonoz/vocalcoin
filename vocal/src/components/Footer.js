@@ -24,10 +24,10 @@ export default class Footer extends Component {
                         <p className="footer-company-name">Vocal Project &copy; 2018</p>
 
                         <div className="footer-icons">
-                            <a href="/"><i className="fa fa-facebook"></i></a>
-                            <a href="/"><i className="fa fa-twitter"></i></a>
-                            <a href="/"><i className="fa fa-linkedin"></i></a>
-                            <a href="/"><i className="fa fa-github"></i></a>
+                            {/*<a href="/"><i className="fa fa-facebook"></i></a>*/}
+                            {/*<a href="/"><i className="fa fa-twitter"></i></a>*/}
+                            {/*<a href="/"><i className="fa fa-linkedin"></i></a>*/}
+                            {/*<a href="/"><i className="fa fa-github"></i></a>*/}
                         </div>
 
                     </div>
