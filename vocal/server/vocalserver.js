@@ -520,21 +520,21 @@ app.get('/api/address/:userId', passport.authenticate('bearer', {
 });
 
 // Socket IO handlers //
-io.origins('*:*'); // for latest version
-io.on('connection', function (client) {
-    client.on('connect', function () {
-        console.log('user connect');
-    });
-    client.on('action', function (event) {
-        const query = vocal.insertEventQuery(event.name, event.time);
-        pool.query(query);
-        console.log('action', JSON.stringify(event));
-        io.emit('incoming', event)
-    });
-    client.on('disconnect', function () {
-        console.log('user disconnect');
-    });
-});
+// io.origins('*:*'); // for latest version
+// io.on('connection', function (client) {
+//     client.on('connect', function () {
+//         console.log('user connect');
+//     });
+//     client.on('action', function (event) {
+//         const query = vocal.insertEventQuery(event.name, event.time);
+//         pool.query(query);
+//         console.log('action', JSON.stringify(event));
+//         io.emit('incoming', event)
+//     });
+//     client.on('disconnect', function () {
+//         console.log('user disconnect');
+//     });
+// });
 
 // DB Connection and Server start //
 

@@ -8,25 +8,26 @@ const library = (function () {
 
     const BASE_URL = process.env.REACT_VOCAL_BASE_URL || `http://localhost:${PORT}`;
     // const BASE_URL = `https://www.vocalcoin.com:${PORT}`;
-    console.log('base url', BASE_URL);
-    const socket = require('socket.io-client')(BASE_URL);
+
+    // TODO: readd socket.
+    // console.log('base url', BASE_URL);
+    // const socket = require('socket.io-client')(BASE_URL);
 
     const getHeaders = () => {
         const token = localStorage.getItem("tok");
-        const headers = {
+        return {
             headers: { Authorization: "Bearer " + token }
         };
-        return headers;
-    }
+    };
 
     const getRandom = (items) => {
         return items[Math.floor(Math.random()*items.length)];
-    }
+    };
 
     const formatDateTimeMs = (timeMs) => {
         const date = new Date(timeMs);
         return `${date.toDateString()} ${date.toLocaleTimeString()}`;
-    }
+    };
 
     // Get issues within the bounding box of the map.
     function getIssuesForRegion(lat1, lng1, lat2, lng2) {
@@ -55,10 +56,6 @@ const library = (function () {
         });
     }
 
-    // function getIssueDetails(issueId) {
-    //     const url = `${BASE_URL}/api/issue/${issueId}`;
-    //     return axios.get(url, getHeaders()).then(response => response.data);
-    // }
 
     function getIssuesForUserId(userId) {
         const url = `${BASE_URL}/api/issues/${userId}`;
@@ -70,17 +67,7 @@ const library = (function () {
         return axios.get(url, getHeaders()).then(response => response.data);
     }
 
-    // UNUSED.
-    function postVocal(userId) {
-        const url = `${BASE_URL}/api/vocal/modify`;
-        return axios.post(url, {
-            userId: userId
-        }, getHeaders()).then(response => {
-            const data = response.data;
-            return data;
-        });
-    }
-
+    // TODO: add support for deleting issues (or just mark deleted).
     function postDeleteIssue(userId, issueId) {
         const url = `${BASE_URL}/api/issue/delete`;
         return axios.post(url, {
@@ -103,10 +90,10 @@ const library = (function () {
             issue: JSON.stringify(issue)
         }, getHeaders()).then(response => {
             const data = response.data;
-            const eventName = `New Issue added: ${issue.title}`;
-            socket.emit('action', { name: eventName, time: Date.now() }, (data) => {
-                console.log('action ack', data);
-            });
+            // const eventName = `New Issue added: ${issue.title}`;
+            // socket.emit('action', { name: eventName, time: Date.now() }, (data) => {
+            //     console.log('action ack', data);
+            // });
             return data;
         });
     }
@@ -175,7 +162,6 @@ const library = (function () {
         getRandom: getRandom,
         getAddress: getAddress,
         formatDateTimeMs: formatDateTimeMs,
-        socket: socket
     }
 
 })();
