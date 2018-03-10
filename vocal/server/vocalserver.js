@@ -111,6 +111,7 @@ function getBalanceAndExecute(userId, cb) {
             let balance = rows[0]['balance'];
             console.log('balance', userId, balance);
             if (!balance) {
+                console.log('null balance, using default', vocal.DEFAULT_BALANCE);
                 balance = vocal.DEFAULT_BALANCE;
             }
             cb(balance);
@@ -446,7 +447,7 @@ app.post('/api/signin', (req, res) => {
 
                 const encSeed = neolib.encryptKey(seed);
 
-                // Create account on the neo blockchain, then create a record in the public DB.
+                // Create account on the neo blockchain, then create a user record in the Vocal DB.
                 neolib.createAccountFromPrivateKey(seed,
                     (accRes) => {
                         const userQuery = vocal.insertUserQuery(userId, email, address, encSeed, username);
@@ -454,8 +455,9 @@ app.post('/api/signin', (req, res) => {
                         pool.query(userQuery, (err, result) => {
                             console.log('insert user', err, JSON.stringify(result));
                             if (err) {
-                                console.error('create user error', err);
-                                throw new Error(err);
+                                const errorMessage = JSON.stringify(err);
+                                console.error('create user error', errorMessage);
+                                throw new Error(errorMessage);
                             }
 
                             // Succesfully created first user, grant DEFAULT_BALANCE vocal to new account.
