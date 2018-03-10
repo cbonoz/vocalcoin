@@ -72,8 +72,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(cors());
 
-const ISSUE_COST = vocal.ISSUE_COST;
-
 pool.on('error', (err, client) => {
     console.error('Unexpected error on idle client', err)
     process.exit(-1)
@@ -83,10 +81,25 @@ app.get('/api/hello', (req, res) => {
     return res.json("hello world");
 });
 
+function getUserAndExecute(userId, cb) {
+    const query = vocal.getUserQuery(userId);
+    pool.query(query, (err, result) => {
+        if (err) {
+            console.error('getUser error', err);
+            throw new Error(err);
+        }
+
+        console.log('getUser success', result);
+
+        const rows = result.rows;
+        const user = rows[0];
+        cb(user);
+    });
+}
+
 function getAddressAndExecute(userId, cb) {
     const query = vocal.getAddress(userId);
     pool.query(query, (err, result) => {
-        console.log('vocal address', err, result);
         if (err || !result.rows) {
             console.error('vocal address error', err);
             throw new Error(err);
@@ -279,20 +292,21 @@ app.post('/api/issue', passport.authenticate('bearer', {
         getBalanceAndExecute(userId, (balanceFromBlockchain) => {
             // const balanceFromBlockchain = contract.getBalance(address);
             const balance = parseFloat(balanceFromBlockchain['balance']);
-            if (balance < ISSUE_COST) {
-                const errorMessage = `Insufficient balance (${balance}), require ${ISSUE_COST}`;
+            if (balance < vocal.ISSUE_COST) {
+                const errorMessage = `Insufficient balance (${balance}), require ${vocal.ISSUE_COST}`;
                 return res.status(401).json(new Error(errorMessage));
             }
 
-            modifyBalanceAndExecute(userId, -ISSUE_COST, () => {
-                // Now insert the new issue.
+            modifyBalanceAndExecute(userId, -vocal.ISSUE_COST, () => {
+                // Insert the new issue after the deduction made.
                 const query = vocal.insertIssueQuery(issue);
                 pool.query(query, (err, result) => {
-                    console.log('postIssue', err, result);
                     if (err) {
                         console.error('postIssue error', err);
+                        // TODO: reverse the balance modification should the deduction succeed, but insert issue fail.
                         return res.status(500).json(new Error(err));
                     }
+                    console.log('postIssue success', result);
                     // pool.end()
                     return res.json(result.rows);
                 });
@@ -314,11 +328,12 @@ app.post('/api/issue/delete', passport.authenticate('bearer', {
     const query = vocal.deleteIssueQuery(userId, issueId);
 
     pool.query(query, (err, result) => {
-        console.log('delete issue', err, result);
         if (err) {
             console.error('delete issue error', err);
             return res.status(500).json(err);
         }
+
+        console.log('delete issue success', result);
         return res.json(result.rows);
     });
 });
@@ -331,12 +346,12 @@ app.get('/api/issues/:userId', passport.authenticate('bearer', {
     const userId = req.params.userId;
     const query = vocal.getIssuesForUserQuery(userId);
     pool.query(query, (err, result) => {
-        console.log('getIssues', err, result)
-
         if (err) {
             console.error('getIssues error', err);
             return res.status(500).json(err);
         }
+
+        console.log('getIssues success', result);
         // pool.end()
         return res.json(result.rows);
     });
@@ -349,14 +364,12 @@ app.get('/api/hasvoted/:userId/:issueId', passport.authenticate('bearer', {
     const issueId = req.params.issueId;
     const checkVoteQuery = vocal.checkVoteQuery(userId, issueId);
     pool.query(checkVoteQuery, (err, result) => {
-        console.log('query', checkVoteQuery);
-        console.log('has voted', err, result);
-
         if (err) {
             console.error('postVote error', err);
             return res.status(500).json(err);
         }
 
+        console.error('postVote success', checkVoteQuery, result);
         const rows = result.rows;
         return res.json(rows.length > 0);
     });
@@ -369,31 +382,15 @@ app.get('/api/votes/:issueId', passport.authenticate('bearer', {
     const query = vocal.getVotesForIssueIdQuery(issueId);
 
     pool.query(query, (err, result) => {
-        console.log('getVotes', err, result)
         if (err) {
             console.error('getVotes error', err);
             return res.status(500).json(err);
         }
+        console.log('getVotes success', result);
         // pool.end()
         return res.json(result.rows);
     });
 });
-
-function getUserAndExecute(userId, cb) {
-    const query = vocal.getUserQuery(userId);
-    pool.query(query, (err, result) => {
-        console.log('get user', err, result);
-
-        if (err) {
-            console.error('get user error', err);
-            throw new Error(err);
-        }
-
-        const rows = result.rows;
-        const user = rows[0];
-        cb(user);
-    });
-}
 
 app.post('/api/signin', (req, res) => {
     const body = req.body;
@@ -402,17 +399,16 @@ app.post('/api/signin', (req, res) => {
     const email = body.email;
     const username = body.username;
 
-    // Look up the user.
     try {
-
+        // Look up the user.
         const query = vocal.getUserQuery(userId);
         pool.query(query, (err1, result) => {
-            console.log('get user', err1, result);
-
             if (err1) {
-                console.error('get user error', err1);
+                console.error('getUser error', err1);
                 throw new Error(err1);
             }
+
+            console.log('getUser success', result);
 
             const rows = result.rows;
 
@@ -438,44 +434,43 @@ app.post('/api/signin', (req, res) => {
 
             } else {
                 // User does not exist
-                const username = body.username;
                 const seed = neolib.createPrivateKey();
                 const keypair = neolib.createKeyPair(seed);
                 const publicKey = keypair.publicKey;
                 const address = keypair.address;
-                console.log('createNewUser', address, seed, publicKey);
 
                 const encSeed = neolib.encryptKey(seed);
 
                 // Create account on the neo blockchain, then create a user record in the Vocal DB.
                 neolib.createAccountFromPrivateKey(seed,
                     (accRes) => {
-                        const userQuery = vocal.insertUserQuery(userId, email, address, encSeed, username);
-                        console.log('userQuery', userQuery);
+                        const userQuery = vocal.insertUserQuery(
+                            userId, email, address, encSeed, username, publicKey, vocal.DEFAULT_BALANCE);
+                        console.log('createNewUser', address, seed, publicKey);
+
                         pool.query(userQuery, (err, result) => {
-                            console.log('insert user', err, JSON.stringify(result));
                             if (err) {
                                 const errorMessage = JSON.stringify(err);
-                                console.error('create user error', errorMessage);
+                                console.error('createNewUser error', errorMessage);
                                 throw new Error(errorMessage);
                             }
+                            console.log('createNewUser success', userQuery, JSON.stringify(result));
 
-                            // Succesfully created first user, grant DEFAULT_BALANCE vocal to new account.
-                            modifyBalanceAndExecute(userId, vocal.DEFAULT_BALANCE, () => {
-                                // Return the auth token after the user is confirmed.
-                                admin.auth().createCustomToken(userId).then((customToken) => {
-                                    // Send token back to client.
-                                    console.log(userId, customToken);
-                                    db.users.assignToken(userId, customToken);
-                                    return res.json({
-                                        "token": customToken,
-                                        "address": address
-                                    });
-                                }).catch((error) => {
-                                    console.error("Error creating custom token:", error);
-                                    throw new Error(error);
+                            // Return the auth/session token after the Vocal DB user is successfully created.
+                            admin.auth().createCustomToken(userId).then((customToken) => {
+                                // Send token back to client.
+                                console.log(userId, customToken);
+                                db.users.assignToken(userId, customToken);
+                                return res.json({
+                                    "token": customToken,
+                                    "address": address
                                 });
+                            }).catch((error) => {
+                                error = JSON.stringify(error);
+                                console.error("Error creating custom token:", error);
+                                throw new Error(error);
                             });
+
                         });
                     },
                     (accErr) => {
@@ -498,10 +493,13 @@ app.get('/api/balance/:userId', passport.authenticate('bearer', {
 }), (req, res) => {
     const userId = req.params.userId;
     try {
-        getBalanceAndExecute(userId, (retVal) => {
-            res.json(retVal);
+        getUserAndExecute(userId, (user) => {
+            const address = user.address;
+            const balance = user.balance;
+            res.json({"address": address, "balance": balance});
         });
     } catch (err) {
+        console.error(err);
         return res.json(err);
     }
 });
@@ -518,23 +516,6 @@ app.get('/api/address/:userId', passport.authenticate('bearer', {
         return res.status(500).json(err)
     }
 });
-
-// Socket IO handlers //
-// io.origins('*:*'); // for latest version
-// io.on('connection', function (client) {
-//     client.on('connect', function () {
-//         console.log('user connect');
-//     });
-//     client.on('action', function (event) {
-//         const query = vocal.insertEventQuery(event.name, event.time);
-//         pool.query(query);
-//         console.log('action', JSON.stringify(event));
-//         io.emit('incoming', event)
-//     });
-//     client.on('disconnect', function () {
-//         console.log('user disconnect');
-//     });
-// });
 
 // DB Connection and Server start //
 

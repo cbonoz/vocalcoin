@@ -4,10 +4,11 @@ const library = (function () {
     const crypto = require('crypto');
 
     const PORT = 9007;
+    const SECURE_PORT = 443;
     const MAX_EVENTS = 8;
 
-    const BASE_URL = process.env.REACT_VOCAL_BASE_URL || `http://localhost:${PORT}`;
-    // const BASE_URL = `https://www.vocalcoin.com:${PORT}`;
+    // const BASE_URL = process.env.REACT_VOCAL_BASE_URL || `http://localhost:${PORT}`;
+    const BASE_URL = `https://www.vocalcoin.com:${SECURE_PORT}`;
 
     // TODO: readd socket.
     // console.log('base url', BASE_URL);

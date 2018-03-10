@@ -62,9 +62,9 @@ export default class Dashboard extends Component {
         const self = this;
         const currentUser = self.state.currentUser;
         const userId = currentUser.uid;
-        self.setState({ loading: true, err: null })
+        self.setState({ loading: true, err: null });
         api.getBalance(userId).then((res) => {
-            // console.log('getBalance: ' + JSON.stringify(res));
+            console.log('getBalance: ' + JSON.stringify(res));
             const vocalBalance = res['balance'];
             const vocalAddress = res['address'];
             self.setState({ balance: vocalBalance, address: vocalAddress});

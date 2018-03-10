@@ -19,8 +19,10 @@ export default class Sidebar extends Component {
             'Your Issues',
             'Help'
         ];
+        const balance = self.props.balance;
 
         return (
+
             <div className="sidebar-container">
                 <ListGroup>
                     <ListGroupItem className={"sidebar-item"} header={"Vocal Control Panel"} bsStyle="info">
@@ -32,7 +34,7 @@ export default class Sidebar extends Component {
                     })}
                 </ListGroup>
 
-                <div className="your-balance">Account Balance:<br/> <span className="emph">{self.props.balance}</span></div>
+                <div className="your-balance">Vocal Account Balance:<br/> <span className="emph">{balance && parseFloat(balance).toFixed(8)}</span></div>
                
             </div>
         )
