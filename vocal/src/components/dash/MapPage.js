@@ -73,12 +73,11 @@ const MapWithASearchBox = compose(
                     if (self.state.showVoteModal) {
                         const userId = self.props.currentUser.uid;
                         const issueId = issue.id;
-                        console.log('check voted', userId, issueId);
-
                         self.setState({error: null});
 
+                        // console.log('check voted', userId, issueId);
                         api.getHasVoted(userId, issueId).then((res) => {
-                            console.log('hasVoted', res);
+                            // console.log('hasVoted', res);
                             self.setState({hasVoted: res});
                         }).catch((err) => {
                             self.setState({hasVoted: false, error: err});
@@ -111,7 +110,7 @@ const MapWithASearchBox = compose(
                     const ne_lat = currBounds.getNorthEast().lat();
                     const ne_lon = currBounds.getNorthEast().lng();
                     api.getIssuesForRegion(sw_lat, sw_lon, ne_lat, ne_lon).then((issues) => {
-                        console.log('issues', JSON.stringify(issues));
+                        // console.log('issues', JSON.stringify(issues));
                         self.setState({issues: issues, error: null});
                     }).catch((err) => {
                         toast(<div><b>Error retrieving issues: Server Offline</b></div>);
