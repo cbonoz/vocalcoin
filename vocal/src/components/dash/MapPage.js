@@ -26,6 +26,7 @@ import {MarkerWithLabel} from "react-google-maps/lib/components/addons/MarkerWit
 
 const google = window.google;
 // https://github.com/googlemaps/v3-utility-library/issues/393 (use fixed api version).
+// https://console.developers.google.com/apis/credentials/key/39?authuser=0&project=vocal-1514420086329&pli=1
 const MapWithASearchBox = compose(
     withProps({
         googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${maputil.apiKey}&v=3.31&libraries=geometry,drawing,places`,

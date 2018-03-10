@@ -24,14 +24,14 @@ export default class Issue extends Component {
     deleteIssue(issue) {
         const self = this;
         const issueId = issue.id
-        console.log('delete', issueId);
+        // console.log('delete', issueId);
 
         const userId = self.props.currentUser.uid;
 
         if (!self.state.loading) {
             self.setState({ loading: true , err: null});
             api.postDeleteIssue(userId, issueId).then((data) => {
-                console.log(JSON.stringify(data));
+                // console.log(JSON.stringify(data));
                 self.setState({ loading: false });
                 toast(<div><b>Deleted Issue</b></div>);
                 if (self.props.updateIssues) {
@@ -45,12 +45,12 @@ export default class Issue extends Component {
 
     fetchComments(issue) {
         const self = this;
-        console.log('clicked', issue.id);
+        // console.log('clicked', issue.id);
         if (!self.state.loading) {
             self.setState({ loading: true, err: null });
             api.getVotesForIssueId(issue.id).then((data) => {
                 const issueVotes = data;
-                console.log(JSON.stringify(issueVotes));
+                // console.log(JSON.stringify(issueVotes));
                 self.setState({ loading: false, votes: issueVotes });
             }).catch((err) => {
                 self.setState({ loading: false, err: err })

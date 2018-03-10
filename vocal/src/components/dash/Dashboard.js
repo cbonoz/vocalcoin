@@ -64,12 +64,12 @@ export default class Dashboard extends Component {
         const userId = currentUser.uid;
         self.setState({ loading: true, err: null });
         api.getBalance(userId).then((res) => {
-            console.log('getBalance: ' + JSON.stringify(res));
+            // console.log('getBalance: ' + JSON.stringify(res));
             const vocalBalance = res['balance'];
             const vocalAddress = res['address'];
             self.setState({ balance: vocalBalance, address: vocalAddress});
         }).catch((err) => {
-            console.error('getBalance error', JSON.stringify(err));
+            // console.error('getBalance error', JSON.stringify(err));
             self.setState({ balance: "N/A", address: "Temporary error retrieving Account" });
         });
     }

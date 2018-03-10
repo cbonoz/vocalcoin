@@ -58,7 +58,7 @@ export default class IssueModal extends Component {
             active: true,
             time: Date.now()
         };
-        console.log('issue', JSON.stringify(issue));
+        // console.log('issue', JSON.stringify(issue));
         return issue;
     }
 
@@ -69,7 +69,7 @@ export default class IssueModal extends Component {
 
         api.postIssue(issue).then((res) => {
             self.setState({ postIssueEnabled: true });
-            console.log('postIssue: ' + res);
+            // console.log('postIssue: ' + res);
             toast(<div><b>Issue Created! (Cost {api.ISSUE_COST} Vocal)</b></div>);
             self.props.toggleIssueModal();
         }).catch((err) => {

@@ -30,7 +30,7 @@ export default class VoteModal extends Component {
 
     handleVoteChange(selectedVotes) {
         const self = this;
-        console.info(selectedVotes);
+        // console.info(selectedVotes);
         self.setState({voteAgree: selectedVotes});
     }
 
@@ -42,7 +42,7 @@ export default class VoteModal extends Component {
         const self = this;
 
         const issue = self.props.issue;
-        console.log('create vote for issue', issue.id);
+        // console.log('create vote for issue', issue.id);
         const currentUser = self.props.currentUser;
 
         const voteAgree = self.state.voteAgree;
@@ -63,7 +63,7 @@ export default class VoteModal extends Component {
             time: Date.now()
         };
 
-        console.log('vote', JSON.stringify(vote));
+        // console.log('vote', JSON.stringify(vote));
         return vote;
     }
 
@@ -75,13 +75,13 @@ export default class VoteModal extends Component {
 
         postVote(vote).then((res) => {
             self.setState({ postVoteEnabled: true, justVoted: true });
-            console.log('postVote: ' + res);
+            // console.log('postVote: ' + res);
             toast(<div><b>Vote Cast! (Earned {api.VOTE_REWARD} Vocal)</b></div>);
             self.props.triggerVoteModal(issue, false);
             // TODO: alert vote that vote was cast and close the modal.
 
         }).catch((err) => {
-            console.log('post vote', err);
+            // console.log('post vote', err);
             self.setState({ postVoteEnabled: true, error: err});
         });
     }

@@ -12,7 +12,7 @@ export default class LoginModal extends Component {
         this.state = {
             previewBuild: false // Controls whether the login form is visible/accessible (or 'Coming Soon' messaged instead).
         };
-        console.log('preview', this.state.previewBuild);
+        // console.log('preview', this.state.previewBuild);
     }
 
     render() {

@@ -53,7 +53,7 @@ export default class LoginForm extends Component {
 
     handleCheckboxChange(event) {
         const isRegister = event.target.checked;
-        console.log("checkbox changed!", isRegister);
+        // console.log("checkbox changed!", isRegister);
         const newLoginText = isRegister ? "Register" : "Sign In";
         const newLoginStyle = isRegister ? "danger" : "success";
         this.setState({isRegister: isRegister, loginButtonText: newLoginText, loginButtonStyle: newLoginStyle});
@@ -89,13 +89,13 @@ export default class LoginForm extends Component {
             return;
         }
 
-        console.log('handle register');
+        // console.log('handle register');
 
         self.setState({loading: true});
 
         createUser(email, password)
             .then(function (res) {
-                console.log('logged in');
+                // console.log('logged in');
                 self.setState({loading: false});
                 self.props.onLogin();
             })
@@ -103,7 +103,7 @@ export default class LoginForm extends Component {
                 self.setState({error: error, loading: false});
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.error('error creating new account', errorCode, errorMessage);
+                // console.error('error creating new account', errorCode, errorMessage);
             });
 
         event.preventDefault();
