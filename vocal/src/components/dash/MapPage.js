@@ -78,7 +78,7 @@ const MapWithASearchBox = compose(
                         self.setState({error: null});
 
                         api.getHasVoted(userId, issueId).then((res) => {
-                            console.log('hasvoted', res);
+                            console.log('hasVoted', res);
                             self.setState({hasVoted: res});
                         }).catch((err) => {
                             self.setState({hasVoted: false, error: err});

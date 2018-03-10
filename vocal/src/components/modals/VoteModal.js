@@ -4,6 +4,7 @@ import { Button, ButtonGroup, ButtonToolbar, ControlLabel, FormControl, FormGrou
 import VoteStats from './VoteStats';
 
 import { postVote } from './../../utils/api';
+import api from './../../utils/api';
 import helper from './../../utils/helper';
 
 import { ToastContainer } from 'react-toastify'; // https://fkhadra.github.io/react-toastify/#How-it-works-
@@ -15,7 +16,6 @@ export default class VoteModal extends Component {
         super(props)
         this.state = {
             postVoteEnabled: true,
-            hasVoted: false,
             issue: this.props.issue,
             error: null,
             voteAgree: 1, // defaults to agree
@@ -91,7 +91,7 @@ export default class VoteModal extends Component {
         const issue = self.props.issue;
         const currentUser = self.props.currentUser;
 
-        const hasVoted = self.props.hasVoted || self.state.justVoted; 
+        const hasVoted = self.props.hasVoted || self.state.justVoted;
 
         return (
             <div>
