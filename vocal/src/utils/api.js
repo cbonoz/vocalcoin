@@ -127,7 +127,7 @@ const library = (function () {
 
     function getBalance(userId) {
         const url = `${BASE_URL}/api/balance/${userId}`;
-        console.log('getBalance', url);
+        // console.log('getBalance', url);
         return axios.get(url, getHeaders()).then(response => response.data); 
     }
 

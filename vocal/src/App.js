@@ -78,7 +78,7 @@ class App extends Component {
             if (user) {
                 // console.log('user:', JSON.stringify(user));
                 const userId = user.uid;
-                console.log('login, user:', user.uid);
+                // console.log('login, user:', user.uid);
                 const address = localStorage.getItem("address");
                 api.postUserQuery(user, address).then((data) => {
                     // console.log('retrieved user data', JSON.stringify(data));
