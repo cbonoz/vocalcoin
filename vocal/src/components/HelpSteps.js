@@ -49,7 +49,7 @@ export default class HelpSteps extends Component {
                     </Row>
                     <Row>
                         <Col xs={half * 2} md={this.props.maxSize}>
-                            <p className="centered home-bottom-text bold">That's it. You can now search, create, and contribute to issues&nbsp;<br/>happening around the world.</p>
+                            <p className="centered home-bottom-text neo-logo-text">That's it. You can now search, create, and contribute to issues&nbsp;<br/>happening around the world.</p>
                         </Col>
                     </Row>
                 </Grid>
