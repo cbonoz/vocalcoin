@@ -25,10 +25,10 @@ import {MarkerClusterer} from "react-google-maps/lib/components/addons/MarkerClu
 import {MarkerWithLabel} from "react-google-maps/lib/components/addons/MarkerWithLabel";
 
 const google = window.google;
-
+// https://github.com/googlemaps/v3-utility-library/issues/393 (use fixed api version).
 const MapWithASearchBox = compose(
     withProps({
-        googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${maputil.apiKey}&v=3.exp&libraries=geometry,drawing,places`,
+        googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${maputil.apiKey}&v=3.31&libraries=geometry,drawing,places`,
         loadingElement: <div style={{height: `100%`}}/>,
         containerElement: <div style={{height: `800px`}}/>,
         mapElement: <div style={{height: `100%`}}/>,
@@ -111,6 +111,7 @@ const MapWithASearchBox = compose(
                     const ne_lat = currBounds.getNorthEast().lat();
                     const ne_lon = currBounds.getNorthEast().lng();
                     api.getIssuesForRegion(sw_lat, sw_lon, ne_lat, ne_lon).then((issues) => {
+                        console.log('issues', JSON.stringify(issues));
                         self.setState({issues: issues, error: null});
                     }).catch((err) => {
                         toast(<div><b>Error retrieving issues: Server Offline</b></div>);
@@ -237,9 +238,10 @@ const MapWithASearchBox = compose(
 
                 {/* From issues in region */}
                 {props.issues.map((issue, index) => {
-                    const position = {lat: issue.lat, lng: issue.lng};
-                    const createdAt = helper.formatDateTimeMs(issue.time);
-                    // TODO: determine if DblClick should have different behavior from single.
+                    const position = {lat: issue['lat'], lng: issue['lng']};
+                    const createdAt = helper.formatDateTimeMs(issue['time']);
+                    const title = helper.capitalize(issue['title']);
+
                     return (<MarkerWithLabel
                         key={index}
                         position={position}
@@ -256,7 +258,7 @@ const MapWithASearchBox = compose(
                         }}>
                         {/* Label content */}
                         <div>
-                            Active Issue:<br/><b>{helper.capitalize(issue.title)}</b><br/>
+                            Active Issue:<br/><b>{title}</b><br/>
                             Started: <b>{createdAt}</b>
 
                         </div>
