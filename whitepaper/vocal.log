@@ -1,10 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  1 MAR 2018 21:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  9 MAR 2018 20:44
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/cbuonocore/personal/coins/vocalcoin/whitepaper/vocal.tex
-(/Users/cbuonocore/personal/coins/vocalcoin/whitepaper/vocal.tex
+**vocal.tex
+(./vocal.tex
 LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/IEEEtran/IEEEtran.cls
@@ -909,7 +908,7 @@ LaTeX Warning: Overwriting file `./vocal.bib'.
 
 
 LaTeX Warning: Writing text `      ' before \end{filecontents}
-               as last line of vocal.bib on input line 35.
+               as last line of vocal.bib on input line 30.
 
 
 Package biblatex Info: Trying to load language 'english'...
@@ -923,40 +922,40 @@ File: english.lbx 2016/12/05 v3.7 biblatex localization (PK/JW/AB)
 (./vocal.aux)
 \openout1 = `vocal.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 76.
-LaTeX Font Info:    Try loading font information for OML+txmi on input line 76.
+LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 36.
+LaTeX Font Info:    Try loading font information for OML+txmi on input line 36.
 
  (/usr/local/texlive/2017/texmf-dist/tex/latex/txfonts/omltxmi.fd
 File: omltxmi.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 76.
-LaTeX Font Info:    Try loading font information for OMS+txsy on input line 76.
+LaTeX Font Info:    ... okay on input line 36.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 36.
+LaTeX Font Info:    ... okay on input line 36.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 36.
+LaTeX Font Info:    ... okay on input line 36.
+LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 36.
+LaTeX Font Info:    Try loading font information for OMS+txsy on input line 36.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/txfonts/omstxsy.fd
 File: omstxsy.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 76.
-LaTeX Font Info:    Try loading font information for OMX+txex on input line 76.
+LaTeX Font Info:    ... okay on input line 36.
+LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 36.
+LaTeX Font Info:    Try loading font information for OMX+txex on input line 36.
 
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/txfonts/omxtxex.fd
 File: omxtxex.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 76.
-LaTeX Font Info:    Try loading font information for U+txexa on input line 76.
+LaTeX Font Info:    ... okay on input line 36.
+LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 36.
+LaTeX Font Info:    Try loading font information for U+txexa on input line 36.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/txfonts/utxexa.fd
 File: utxexa.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Try loading font information for OT1+txr on input line 76.
+LaTeX Font Info:    ... okay on input line 36.
+LaTeX Font Info:    Try loading font information for OT1+txr on input line 36.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/txfonts/ot1txr.fd
 File: ot1txr.fd 2000/12/15 v3.1
@@ -1006,44 +1005,36 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'vocal.bbl' found.
 
 (./vocal.bbl)
-Package biblatex Info: Reference section=0 on input line 76.
-Package biblatex Info: Reference segment=0 on input line 76.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
+Package biblatex Info: Reference section=0 on input line 36.
+Package biblatex Info: Reference segment=0 on input line 36.
  [1{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
-]
-Underfull \hbox (badness 1400) in paragraph at lines 211--212
-[]\OT1/txr/m/n/10 Vocal is largely a coin which will con-nect to other
- []
-
-<assets/architecture.png, id=16, 438.63875pt x 304.13625pt>
+] <assets/architecture.png, id=16, 438.63875pt x 304.13625pt>
 File: assets/architecture.png Graphic file (type png)
 
 <use assets/architecture.png>
-Package pdftex.def Info: assets/architecture.png used on input line 222.
+Package pdftex.def Info: assets/architecture.png used on input line 146.
 (pdftex.def)             Requested size: 227.62204pt x 157.8269pt.
-LaTeX Font Info:    Try loading font information for U+txmia on input line 238.
+LaTeX Font Info:    Try loading font information for U+txmia on input line 158.
 
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/txfonts/utxmia.fd
 File: utxmia.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Try loading font information for U+txsya on input line 238.
+LaTeX Font Info:    Try loading font information for U+txsya on input line 158.
 
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/txfonts/utxsya.fd
 File: utxsya.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Try loading font information for U+txsyb on input line 238.
+LaTeX Font Info:    Try loading font information for U+txsyb on input line 158.
 
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/txfonts/utxsyb.fd
 File: utxsyb.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Try loading font information for U+txsyc on input line 238.
+LaTeX Font Info:    Try loading font information for U+txsyc on input line 158.
 
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/txfonts/utxsyc.fd
@@ -1058,21 +1049,21 @@ Missing character: There is no ™ in font txr!
 Missing character: There is no â in font txr!
 Missing character: There is no € in font txr!
 Missing character: There is no ™ in font txr!
-LaTeX Font Info:    Try loading font information for OT1+txss on input line 291
+LaTeX Font Info:    Try loading font information for OT1+txss on input line 207
 .
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/txfonts/ot1txss.fd
 File: ot1txss.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Font shape `OT1/txss/bx/n' in size <8> not available
-(Font)              Font shape `OT1/txss/b/n' tried instead on input line 291.
+(Font)              Font shape `OT1/txss/b/n' tried instead on input line 207.
 LaTeX Font Info:    Font shape `OT1/txss/b/n' will be
-(Font)              scaled to size 7.59998pt on input line 291.
+(Font)              scaled to size 7.59998pt on input line 207.
 LaTeX Font Info:    Font shape `OT1/txss/m/n' will be
-(Font)              scaled to size 7.59998pt on input line 291.
- [3]
+(Font)              scaled to size 7.59998pt on input line 207.
 
-LaTeX Warning: Empty bibliography on input line 346.
+
+LaTeX Warning: Empty bibliography on input line 235.
 
 
 ** Conference Paper **
@@ -1085,7 +1076,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4
+[3] [4
 
 ] (./vocal.aux)
 Package logreq Info: Writing requests to 'vocal.run.xml'.
@@ -1093,13 +1084,13 @@ Package logreq Info: Writing requests to 'vocal.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 26671 strings out of 492995
- 525554 string characters out of 6132704
- 897477 words of memory out of 5000000
+ 26670 strings out of 492995
+ 525394 string characters out of 6132704
+ 896477 words of memory out of 5000000
  29860 multiletter control sequences out of 15000+600000
  76082 words of font info for 161 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
- 62i,8n,56p,10497b,698s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,8n,56p,10443b,698s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2017/texmf-dist/fonts/type1/public/txfonts/rtxb.pfb></usr/local/texlive/
 2017/texmf-dist/fonts/type1/public/txfonts/rtxmi.pfb></usr/local/texlive/2017/t
@@ -1111,7 +1102,7 @@ elvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/ut
 mb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb>
 </usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/loca
 l/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on vocal.pdf (4 pages, 133232 bytes).
+Output written on vocal.pdf (4 pages, 132824 bytes).
 PDF statistics:
  68 PDF objects out of 1000 (max. 8388607)
  48 compressed objects within 1 object stream
