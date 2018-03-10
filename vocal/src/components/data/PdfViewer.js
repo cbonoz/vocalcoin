@@ -62,7 +62,7 @@ export default class PdfViewer extends Component {
 
         <div className="centered paper-download-link bold">
           {/* TODO: fix url */}
-          <a href="/vocal.pdf" download>Download PDF</a>
+          <a href={vocalPDF} download>Download PDF</a>
         </div>
       </div>
     );
